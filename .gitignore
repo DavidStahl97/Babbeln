@@ -1,12 +1,49 @@
+#excluded types
 *.suo
 *.tmp
 *.sdf
 *.VC.opendb
 
+#excluded general folders
 bin/
 Assets/
 obj/
 ipch/
 packages/
 .vs/
-Dependencies/
+boost_1_60_0/
+
+#excluded dependencies
+**/pa_stable_v19_20140130/pa_stable_v19_20140130
+**/portaudio/bindings/
+**/portaudio/build/msvc/Backup/
+**/portaudio/build/msvc/Win32/
+**/portaudio/cmake_support/
+**/portaudio/doc/
+**/portaudio/examples/
+**/portaudio/pablio/
+**/portaudio/qa/
+**/portaudio/test/
+**/portaudio/testcvs/
+**/portaudio/aclocal.m4
+**/portaudio/CMakeLists.txt
+**/portaudio/config.guess
+**/portaudio/config.sub
+**/portaudio/configure
+**/portaudio/configure.in
+**/portaudio/depcomp
+**/portaudio/Doxyfile
+**/portaudio/Doxyfile.developer
+**/portaudio/fixdir.bat
+**/portaudio/fixfile.bat
+**/portaudio/index.html
+**/portaudio/install-sh
+**/portaudio/LICENSE.txt
+**/portaudio/ltmain.sh
+**/portaudio/Makefile.in
+**/portaudio/missing
+**/portaudio/portaudio-2.0.pc.in
+**/portaudio/README.configure.txt
+**/portaudio/README.txt
+**/portaudio/SConstruct
+**/portaudio/build/scons/

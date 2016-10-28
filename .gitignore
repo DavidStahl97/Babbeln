@@ -5,3 +5,7 @@
 bin/
 Assets/
 obj/
+ipch/
+Dependencies/
+packages/
+.vs/

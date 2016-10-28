@@ -137,9 +137,8 @@
                         <controls:DefaultTextBox Grid.Column="1"
                              x:Name="SearchTextBox"
                              DefaultText="Nach Personen suchen"
-                             HorizontalAlignment="Left"
                              VerticalAlignment="Center"
-                             BorderThickness="0">
+                             BorderThickness="0" Margin="0,4">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="TextChanged">
                                     <common:InteractiveCommand Command="{Binding SearchTextBoxChanged}"/>
@@ -219,7 +218,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </controls:DefaultTextBox>
-                                  
+
                 <Button Grid.Column="1" 
                     x:Name="SendButton" 
                     Content="&#xE102;" 
@@ -233,6 +232,6 @@
             </Grid>
         </Grid>
     </Grid>
-    
+
 </UserControl>
                 

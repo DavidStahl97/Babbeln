@@ -14,7 +14,7 @@
                                  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
                                  Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"
                                  TextWrapping="Wrap"
-                                 VerticalScrollBarVisibility="Visible" 
+                                 VerticalScrollBarVisibility="Hidden" 
                                  AcceptsReturn="True"
                                  TextChanged="TextBox_TextChanged"/>
                         <Label Content="{Binding Path=DefaultText}"

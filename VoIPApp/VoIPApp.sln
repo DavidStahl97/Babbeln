@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoIPApp.Modules.Chat", "VoI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoIPApp.Common", "VoIPApp.Common\VoIPApp.Common.csproj", "{4B42B02B-4187-4591-9376-09786DBA1F75}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "VoIPApp.Setup", "VoIPApp.Setup\VoIPApp.Setup.vdproj", "{9E97B015-5BFB-4F15-B602-92CB0910CCC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +150,15 @@ Global
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|x64.Build.0 = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|x86.ActiveCfg = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|x86.Build.0 = Release|Any CPU
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Debug|Any CPU.ActiveCfg = Debug
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Debug|x64.ActiveCfg = Debug
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Debug|x86.ActiveCfg = Debug
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Release|Any CPU.ActiveCfg = Release
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Release|x64.ActiveCfg = Release
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.Release|x86.ActiveCfg = Release
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.ReleaseMinDependency|Any CPU.ActiveCfg = Release
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.ReleaseMinDependency|x64.ActiveCfg = Release
+		{9E97B015-5BFB-4F15-B602-92CB0910CCC7}.ReleaseMinDependency|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,12 @@
 *.suo
 *.tmp
 *.sdf
+*.VC.opendb
 
 bin/
 Assets/
 obj/
 ipch/
-Dependencies/
 packages/
 .vs/
+Dependencies/

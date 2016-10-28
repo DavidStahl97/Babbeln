@@ -7,8 +7,8 @@
 #define PA_SAMPLE_TYPE paFloat32
 #define SAMPLE_SILENCE 0.0f
 
-#include <boost\array.hpp>
 #include <boost\lockfree\spsc_queue.hpp>
+#include <boost\array.hpp>
 #include <boost\pool\object_pool.hpp>
 
 typedef float Sample;

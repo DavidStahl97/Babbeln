@@ -1,0 +1,28 @@
+﻿<Window x:Class="VoIPApp.Views.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:VoIPApp.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="{Binding Title}" Height="600" Width="800" MinHeight="600" MinWidth="800" Margin="0">
+    <DockPanel>
+        
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <views:HamburgerMenu  Margin="10,20,10,10">
+                    <views:HamburgerMenuItem Text="Home" Icon="&#xE10F;"/>
+                    <views:HamburgerMenuItem Text="Friends" Icon="&#xE125;"/>
+                    <views:HamburgerMenuItem Text="Chat" Icon="&#xE119;"/>
+                    <views:HamburgerMenuItem Text="Options" Icon="&#xE115;"/>
+                </views:HamburgerMenu>
+            </Grid>
+            <Grid Grid.Column="1">
+                <ContentControl prism:RegionManager.RegionName="ChatRegion" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

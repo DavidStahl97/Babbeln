@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="VoIPApp.Views.HamburgerMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VoIPApp"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+Margin="0">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListStyle">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Bd" Property="Background" Value="LightGray"/>
+                                <Setter TargetName="Bd" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#c6c6c6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid x:Name="MainGrid" MouseLeave="MainGrid_MouseLeave" Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="64"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" 
+                    HorizontalAlignment="Left"  
+                    x:Name="ProfileIconContainer" 
+                    MouseEnter="ProfileIconContainer_MouseEnter"
+                    Margin="0,0,0,10">
+            <Image Source="{Binding ProfileIcon}" 
+                   Margin="0,0,0,10" 
+                   x:Name="ProfileImage"
+                   Width="Auto"
+                   Height="Auto"/>
+            <TextBlock Visibility="Collapsed" 
+                       Text="{Binding ProfileName}" 
+                       x:Name="ProfileName" 
+                       HorizontalAlignment="Center"
+                       Foreground="Gray"/>
+        </StackPanel>
+
+        <ListBox Grid.Row="1" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                 BorderThickness="0" 
+                 x:Name="MenuItemList" 
+                 ItemsSource="{Binding Content}" 
+                 Margin="0" 
+                 Padding="0"
+                 ItemContainerStyle="{StaticResource MenuListStyle}">
+        </ListBox>
+    </Grid>
+    
+</UserControl>

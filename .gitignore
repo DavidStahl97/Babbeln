@@ -1,3 +1,7 @@
 *.suo
 *.tmp
 *.sdf
+
+bin/
+Assets/
+obj/

@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="VoIPApp.Modules.Chat.Views.VoiceChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             MinHeight="100" MinWidth="300">
+    <Grid>
+        <Button x:Name="btn" Content="&#xE137;" FontFamily="Segoe MDL2 Assets" Command="{Binding CancelCallCommand}"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="VoIPApp.Common.Controls.DefaultTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             x:Name="parent">
+
+    <Grid DataContext="{Binding ElementName=parent}">
+        <TextBox Name="MyTextBox" Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.Template>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"                  BorderThickness="{Binding Path=BorderThickness}" 
+                                 Foreground="Gray" 
+                                 Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
+                                 Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Visible" 
+                                 AcceptsReturn="True"
+                                 TextChanged="TextBox_TextChanged"/>
+                        <Label Content="{Binding Path=DefaultText}"
+                                Foreground="LightGray"
+                                IsHitTestVisible="False"
+                                x:Name="UserMessage"
+                                Visibility="Hidden"
+                                />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Text" Value=""/>
+                                <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Visibility" TargetName="UserMessage" Value="Visible"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </TextBox.Template>
+        </TextBox>
+    </Grid>
+</UserControl>

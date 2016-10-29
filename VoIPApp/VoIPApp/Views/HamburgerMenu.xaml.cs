@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,24 +37,9 @@ namespace VoIPApp.Views
             private set { }
         }
 
-        public new List<HamburgerMenuItem> Content
-        {
-            get { return (List<HamburgerMenuItem>)GetValue(ContentProperty); }
-            set
-            {
-                SetValue(ContentProperty, value);
-            }
-        }
-
-        public new static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(List<HamburgerMenuItem>), typeof(HamburgerMenu),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
-
         public HamburgerMenu()
         {
-            Content = new List<HamburgerMenuItem>();
             InitializeComponent();
-            MenuItemList.ItemsSource = Content;
         }
 
         private void ProfileIconContainer_MouseEnter(object sender, MouseEventArgs e)

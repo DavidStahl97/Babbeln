@@ -7,6 +7,7 @@ using CPPWrapper;
 using System.ComponentModel;
 using VoIPApp.Modules.Chat.Services;
 using VoIPApp.Modules.Chat.ViewModels;
+using VoIPApp.Modules.Chat.Views;
 
 namespace VoIPApp.Modules.Chat
 {
@@ -18,13 +19,15 @@ namespace VoIPApp.Modules.Chat
         private readonly AudioStreamingService audioStreamer;
         private readonly IChatService chatService;
 
-        public ChatModule(RegionManager regionManager, IUnityContainer container)
+        public ChatModule(IRegionManager regionManager, IUnityContainer container)
         {
             this.regionManager = regionManager;
             this.container = container;
 
             this.audioStreamer = new AudioStreamingService();
             this.chatService = new ChatService();
+
+            this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
 
             this.audioInitWorker = new BackgroundWorker();
             audioInitWorker.DoWork += audioInitWorker_DoWork;
@@ -35,9 +38,8 @@ namespace VoIPApp.Modules.Chat
             this.container.RegisterInstance(audioStreamer);
             this.container.RegisterInstance(chatService);
             this.container.RegisterType<VoiceChatViewModel>();
+            this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
 
-            this.regionManager.RegisterViewWithRegion(RegionNames.ChatRegion, () => this.container.Resolve<Views.ChatView>());
-            
             audioInitWorker.RunWorkerAsync();
         }
 

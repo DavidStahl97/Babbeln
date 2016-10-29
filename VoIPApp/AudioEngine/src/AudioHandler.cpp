@@ -122,4 +122,52 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 	return paContinue;
 }
 
+const std::vector<std::string> AudioHandler::GetInputDevices() const
+{
+	return GetDevices(InputDevice);
+}
+
+const std::vector<std::string> AudioHandler::GetOutputDevices() const
+{
+	return GetDevices(OutputDevice);
+}
+
+const std::vector<std::string> AudioHandler::GetDevices(DeviceType type) const
+{
+	int numDevices = Pa_GetDeviceCount();
+	const PaDeviceInfo* deviceInfo;
+	std::vector<std::string> deviceNames;
+
+	if (numDevices < 0)
+	{
+		return std::vector<std::string>();
+	}
+
+	for (int i = 0; i < numDevices; i++)
+	{
+		deviceInfo = Pa_GetDeviceInfo(i);
+		switch (type)
+		{
+		case InputDevice:
+			if (deviceInfo->maxInputChannels > 0)
+			{
+				deviceNames.push_back(deviceInfo->name);
+			}
+			break;
+
+		case OutputDevice:
+			if (deviceInfo->maxOutputChannels > 0)
+			{
+				deviceNames.push_back(deviceInfo->name);
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	return deviceNames;
+}
+
 

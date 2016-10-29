@@ -8,8 +8,7 @@ namespace VoIPApp.Common
 {
     public static class RegionNames
     {
-        public const string ContentRegion = "ContentRegion";
-        public const string FriendListRegion = "FriendListRegion";
-        public const string ChatRegion = "ChatRegion";
+        public const string MainContentRegion = "MainContentRegion";
+        public const string MainNavigationRegion = "MainNavigationRegion";
     }
 }

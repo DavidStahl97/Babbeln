@@ -51,15 +51,24 @@
     <Compile Include="Controls\DefaultTextBox.xaml.cs">
       <DependentUpon>DefaultTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HamburgerMenuItem.xaml.cs">
+      <DependentUpon>HamburgerMenuItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InteractiveCommand.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="ModuleNames.cs" />
+    <Compile Include="NavigationURIs.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Page Include="Controls\DefaultTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\HamburgerMenuItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

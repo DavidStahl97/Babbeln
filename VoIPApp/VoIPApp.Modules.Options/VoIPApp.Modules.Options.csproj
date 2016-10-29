@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AB8B448C-DD74-4D60-A041-3E5D03A32180}</ProjectGuid>
+    <ProjectGuid>{B4724469-0555-42F1-A3AA-209F2A0FA9D6}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VoIPApp.Modules.Chat</RootNamespace>
-    <AssemblyName>VoIPApp.Modules.Chat</AssemblyName>
+    <RootNamespace>VoIPApp.Modules.Options</RootNamespace>
+    <AssemblyName>VoIPApp.Modules.Options</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -81,8 +81,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatModule.cs" />
-    <Compile Include="CustomSorter.cs" />
+    <Compile Include="OptionsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -96,18 +95,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Services\ChatService.cs" />
-    <Compile Include="Services\IChatService.cs" />
-    <Compile Include="ViewModels\ChatViewModel.cs" />
-    <Compile Include="ViewModels\VoiceChatViewModel.cs" />
-    <Compile Include="Views\ChatNavigationItemView.xaml.cs">
-      <DependentUpon>ChatNavigationItemView.xaml</DependentUpon>
+    <Compile Include="Views\OptionsNavigationItemView.xaml.cs">
+      <DependentUpon>OptionsNavigationItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ChatView.xaml.cs">
-      <DependentUpon>ChatView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\VoiceChatView.xaml.cs">
-      <DependentUpon>VoiceChatView.xaml</DependentUpon>
+    <Compile Include="Views\OptionsView.xaml.cs">
+      <DependentUpon>OptionsView.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -121,40 +113,27 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\ChatNavigationItemView.xaml">
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\OptionsNavigationItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ChatView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VoiceChatView.xaml">
+    <Page Include="Views\OptionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AudioStreamingCLI\AudioStreamingCLI.vcxproj">
-      <Project>{df57a206-e5bd-4f8e-a93d-ef2beb6c37b3}</Project>
-      <Name>AudioStreamingCLI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VoIPApp.Common\VoIPApp.Common.csproj">
       <Project>{4b42b02b-4187-4591-9376-09786dba1f75}</Project>
       <Name>VoIPApp.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\profile1.png" />
-    <Resource Include="Assets\profile2.png" />
-    <Resource Include="Assets\profile3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\search.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetDir)VoIPApp.Modules.Chat.dll" "$(SolutionDir)VoIPApp\bin\$(ConfigurationName)\DirectoryModules\" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetDir)VoIPApp.Modules.Options.dll" "$(SolutionDir)VoIPApp\bin\$(ConfigurationName)\DirectoryModules\" /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

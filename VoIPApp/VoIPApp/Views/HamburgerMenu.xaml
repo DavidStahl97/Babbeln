@@ -7,8 +7,7 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-Margin="0">
+             d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListStyle">
@@ -36,7 +35,7 @@ Margin="0">
         </Style>
     </UserControl.Resources>
 
-    <Grid x:Name="MainGrid" MouseLeave="MainGrid_MouseLeave" Background="White">
+    <Grid x:Name="MainGrid" MouseLeave="MainGrid_MouseLeave">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="64"/>
         </Grid.ColumnDefinitions>
@@ -67,10 +66,10 @@ Margin="0">
                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                  BorderThickness="0" 
                  x:Name="MenuItemList" 
-                 ItemsSource="{Binding Content}" 
                  Margin="0" 
                  Padding="0"
-                 ItemContainerStyle="{StaticResource MenuListStyle}">
+                 ItemContainerStyle="{StaticResource MenuListStyle}"
+                 prism:RegionManager.RegionName="MainNavigationRegion">
         </ListBox>
     </Grid>
     

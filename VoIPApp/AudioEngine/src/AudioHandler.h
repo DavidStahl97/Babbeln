@@ -3,12 +3,20 @@
 
 #include "Common.h"
 #include <portaudio.h>
+#include <string>
+#include <vector>
 
 static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 	unsigned long framesPerBuffer,
 	const PaStreamCallbackTimeInfo* timeInfo,
 	PaStreamCallbackFlags statusFlags,
 	void *userData);
+
+enum DeviceType
+{
+	InputDevice,
+	OutputDevice
+};
 
 class AudioHandler
 {
@@ -19,12 +27,15 @@ public:
 	void Init();
 	void Start();
 	void Stop();
+	const std::vector<std::string> GetInputDevices() const;
+	const std::vector<std::string> GetOutputDevices() const;
 
 private:
 	int AudioCallback(const void* inputBuffer, void* outputBuffer,
 		unsigned long framesPerBuffer,
 		const PaStreamCallbackTimeInfo* timeInfo,
 		PaStreamCallbackFlags statusFlags);
+	const std::vector<std::string> GetDevices(DeviceType type) const;
 
 private:
 	PaStreamParameters	m_InputParamters;

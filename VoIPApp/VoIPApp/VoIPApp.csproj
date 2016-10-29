@@ -104,12 +104,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Views\HamburgerMenu.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\HamburgerMenuItem.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shell.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,9 +121,6 @@
     <Compile Include="ViewModels\HamburgerMenuViewModel.cs" />
     <Compile Include="Views\HamburgerMenu.xaml.cs">
       <DependentUpon>HamburgerMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\HamburgerMenuItem.xaml.cs">
-      <DependentUpon>HamburgerMenuItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>

@@ -22,7 +22,7 @@ namespace VoIPApp
             {
                 bootstrapper.Run();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

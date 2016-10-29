@@ -127,7 +127,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
                 currentFriendID = (Friends.CurrentItem as Friend).ID;
                 Messages.AddRange(chatService.GetMessages(currentFriendID));
             }
-            catch(NullReferenceException ex) { }
+            catch(NullReferenceException) { }
 
             callCommand.RaiseCanExecuteChanged();
         }
@@ -162,7 +162,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
                     return true;
                 }
             }
-            catch (NullReferenceException ex) { }
+            catch (NullReferenceException) { }
 
             return false;
         }

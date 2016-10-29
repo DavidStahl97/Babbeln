@@ -6,6 +6,8 @@
 
 #excluded general folders
 bin/
+Debug/
+Release/
 Assets/
 obj/
 ipch/

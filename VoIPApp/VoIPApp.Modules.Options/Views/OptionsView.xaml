@@ -1,9 +1,24 @@
 ﻿<UserControl x:Class="VoIPApp.Modules.Options.Views.OptionsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:common="clr-namespace:VoIPApp.Common;assembly=VoIPApp.Common"
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <TextBlock Text="Options"/>
-    </Grid>
+    <StackPanel>
+        <ComboBox ItemsSource="{Binding Path=InputDevices}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <common:InteractiveCommand Command="{Binding InputDeviceSelectionChanged}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ComboBox>
+        <ComboBox ItemsSource="{Binding Path=OutputDevices}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <common:InteractiveCommand Command="{Binding OutputDeviceSelectionChanged}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ComboBox>
+    </StackPanel>
 </UserControl>

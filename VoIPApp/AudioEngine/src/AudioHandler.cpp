@@ -132,6 +132,41 @@ const std::vector<std::string> AudioHandler::GetOutputDevices() const
 	return GetDevices(OutputDevice);
 }
 
+void AudioHandler::SetInputDevice(const std::string& inputDevice)
+{
+	PaDeviceIndex i = GetDeviceIndexByName(inputDevice);
+	if (i != -1)
+	{
+		m_InputParamters.device = i;
+	}
+}
+
+void AudioHandler::SetOutputDevice(const std::string& outputDevice)
+{
+	PaDeviceIndex i = GetDeviceIndexByName(outputDevice);
+	if (i != -1)
+	{
+		m_OutputParameters.device = i;
+	}
+}
+
+PaDeviceIndex AudioHandler::GetDeviceIndexByName(const std::string& deviceName)
+{
+	int numDevices = Pa_GetDeviceCount();
+	const PaDeviceInfo* deviceInfo;
+
+	for (int i = 0; i < numDevices; ++i)
+	{
+		deviceInfo = Pa_GetDeviceInfo(i);
+		if (deviceName.compare(deviceInfo->name) == 0)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
 const std::vector<std::string> AudioHandler::GetDevices(DeviceType type) const
 {
 	int numDevices = Pa_GetDeviceCount();

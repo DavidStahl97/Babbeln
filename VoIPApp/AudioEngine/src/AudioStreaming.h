@@ -14,9 +14,11 @@ public:
 	void Stop();
 	void Init();
 
-private:
+public:
 	AudioHandler		m_Audio;
 	UDPHandler			m_UDPClient;
+
+private:
 	LockfreeQueue		m_PlayingQeue;
 	LockfreeQueue		m_RecordingQueue;
 	SampleBufferPool	m_Pool;

@@ -95,6 +95,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="Views\OptionsNavigationItemView.xaml.cs">
       <DependentUpon>OptionsNavigationItemView.xaml</DependentUpon>
     </Compile>
@@ -112,9 +113,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Views\OptionsNavigationItemView.xaml">
       <SubType>Designer</SubType>
@@ -126,6 +125,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AudioStreamingCLI\AudioStreamingCLI.vcxproj">
+      <Project>{df57a206-e5bd-4f8e-a93d-ef2beb6c37b3}</Project>
+      <Name>AudioStreamingCLI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VoIPApp.Common\VoIPApp.Common.csproj">
       <Project>{4b42b02b-4187-4591-9376-09786dba1f75}</Project>
       <Name>VoIPApp.Common</Name>

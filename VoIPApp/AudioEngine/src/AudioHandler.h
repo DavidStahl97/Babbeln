@@ -29,6 +29,8 @@ public:
 	void Stop();
 	const std::vector<std::string> GetInputDevices() const;
 	const std::vector<std::string> GetOutputDevices() const;
+	void SetInputDevice(const std::string& inputDevice);
+	void SetOutputDevice(const std::string& outputDevice);
 
 private:
 	int AudioCallback(const void* inputBuffer, void* outputBuffer,
@@ -36,6 +38,7 @@ private:
 		const PaStreamCallbackTimeInfo* timeInfo,
 		PaStreamCallbackFlags statusFlags);
 	const std::vector<std::string> GetDevices(DeviceType type) const;
+	PaDeviceIndex GetDeviceIndexByName(const std::string& deviceName);
 
 private:
 	PaStreamParameters	m_InputParamters;

@@ -4,6 +4,7 @@ using Prism.Regions;
 using System;
 using VoIPApp.Common;
 using VoIPApp.Modules.Options.Views;
+using CPPWrapper;
 
 namespace VoIPApp.Modules.Options
 {
@@ -12,7 +13,7 @@ namespace VoIPApp.Modules.Options
         private readonly IRegionManager regionManager;
         private readonly IUnityContainer container;
 
-        public OptionsModule(IRegionManager regionManager, IUnityContainer container)
+        public OptionsModule(IRegionManager regionManager, IUnityContainer container, AudioStreamingService audioStreamingService)
         {
             this.regionManager = regionManager;
             this.container = container;

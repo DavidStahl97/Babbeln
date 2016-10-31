@@ -4,11 +4,15 @@ using VoIPApp.Views;
 using System.Windows;
 using Prism.Modularity;
 using System;
+using CPPWrapper;
 
 namespace VoIPApp
 {
     class Bootstrapper : UnityBootstrapper
     {
+
+        private readonly AudioStreamingService audioStreamingService = new AudioStreamingService();
+
         protected override DependencyObject CreateShell()
         {
             return Container.Resolve<Shell>();
@@ -28,6 +32,13 @@ namespace VoIPApp
         {
             DirectoryModuleCatalog directoryCatalog = new DirectoryModuleCatalog() { ModulePath = @".\DirectoryModules" };
             ((AggregateModuleCatalog)ModuleCatalog).AddCatalog(directoryCatalog);
+        }
+
+        protected override void ConfigureContainer()
+        {
+            base.ConfigureContainer();
+
+            Container.RegisterInstance(audioStreamingService);
         }
     }
 }

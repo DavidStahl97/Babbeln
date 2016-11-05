@@ -39,4 +39,23 @@ void AudioStreamer::StopAsync()
 
 	m_Audio.StopAsync();
 	m_UDPClient.StopAsync();
+
+	SampleBuffer* buffer;
+	while (!m_PlayingQeue.empty())
+	{
+		m_PlayingQeue.pop(buffer);
+		if (buffer != nullptr)
+		{
+			m_Pool.free(buffer);
+		}
+	}
+
+	while (!m_RecordingQueue.empty())
+	{
+		m_RecordingQueue.pop(buffer);
+		if (buffer != nullptr)
+		{
+			m_Pool.free(buffer);
+		}
+	}
 }

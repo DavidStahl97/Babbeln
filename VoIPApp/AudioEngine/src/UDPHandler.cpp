@@ -1,6 +1,6 @@
 #include "UDPHandler.h"
 #include <boost\thread.hpp>
-
+#include "G711Codec.h"
 
 UDPHandler::UDPHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool)
 	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool),
@@ -33,6 +33,8 @@ void UDPHandler::StopAsync()
 
 void UDPHandler::Send()
 {
+	SampleBuffer* pcmBuffer = nullptr;
+
 	while (!stop)
 	{
 		if (m_RecordingQueue.empty())
@@ -42,21 +44,28 @@ void UDPHandler::Send()
 		}
 		else
 		{
-			m_RecordingQueue.pop(m_SendBuffer);
+			m_RecordingQueue.pop(pcmBuffer);
 			break;
 		}
 	}
 
-	m_Socket.async_send_to(boost::asio::buffer(*m_SendBuffer, sizeof(SampleBuffer)), *m_Iterator,
-		boost::bind(&UDPHandler::HandleSent, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred));
+	if (pcmBuffer != nullptr)
+	{
+		m_SendBuffer = m_CompressedPool.malloc();
+		G711Codec::Encode(*pcmBuffer, *m_SendBuffer);
+		m_Pool.free(pcmBuffer);
+
+		m_Socket.async_send_to(boost::asio::buffer(*m_SendBuffer, sizeof(CompressedSampleBuffer)), *m_Iterator,
+			boost::bind(&UDPHandler::HandleSent, this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred));
+	}
 }
 
 void UDPHandler::Receive()
 {
-	m_RecvBuffer = m_Pool.malloc();
-	m_Socket.async_receive_from(boost::asio::buffer(*m_RecvBuffer, sizeof(SampleBuffer)), m_Endpoint,
+	m_RecvBuffer = m_CompressedPool.malloc();
+	m_Socket.async_receive_from(boost::asio::buffer(*m_RecvBuffer, sizeof(CompressedSampleBuffer)), m_Endpoint,
 		boost::bind(&UDPHandler::HandleReceived, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
@@ -64,7 +73,7 @@ void UDPHandler::Receive()
 
 void UDPHandler::HandleSent(const boost::system::error_code& error, size_t bytesSent)
 {
-	m_Pool.free(m_SendBuffer);
+	m_CompressedPool.free(m_SendBuffer);
 	
 	if (!error || error == boost::asio::error::message_size)
 	{
@@ -72,6 +81,7 @@ void UDPHandler::HandleSent(const boost::system::error_code& error, size_t bytes
 	}
 	else
 	{
+		//TO-DO!!!!!!!!!!!!!!!
 		LOG(error.message())
 			Send();
 	}
@@ -79,7 +89,12 @@ void UDPHandler::HandleSent(const boost::system::error_code& error, size_t bytes
 
 void UDPHandler::HandleReceived(const boost::system::error_code& error, size_t bytesReceive)
 {
-	m_PlayingQueue.push(m_RecvBuffer);
+	SampleBuffer* pcmBuffer = m_Pool.malloc();
+
+	G711Codec::Decode(*m_RecvBuffer, *pcmBuffer);
+	m_PlayingQueue.push(pcmBuffer);
+
+	m_CompressedPool.free(m_RecvBuffer);
 
 	if (!error || error == boost::asio::error::message_size)
 	{
@@ -87,6 +102,7 @@ void UDPHandler::HandleReceived(const boost::system::error_code& error, size_t b
 	}
 	else
 	{
+		//TO-DO!!!!!!!!!!!!!!!
 		LOG(error.message())
 			Receive();
 	}

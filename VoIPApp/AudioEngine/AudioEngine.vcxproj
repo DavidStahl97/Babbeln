@@ -19,18 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\audiocodec\MuLawEncoder.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="src\G711Codec.cpp" />
     <ClCompile Include="src\AudioHandler.cpp" />
     <ClCompile Include="src\AudioStreaming.cpp" />
     <ClCompile Include="src\UDPHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\audiocodec\Constants.h" />
-    <ClInclude Include="src\audiocodec\MuLawEncoder.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="src\G711Codec.h" />
     <ClInclude Include="src\AudioHandler.h" />
     <ClInclude Include="src\AudioStreaming.h" />
     <ClInclude Include="src\Common.h" />

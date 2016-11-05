@@ -23,11 +23,12 @@ private:
 	void HandleReceived(const boost::system::error_code& error, size_t bytesReceived);
 
 private:
-	LockfreeQueue&		m_RecordingQueue;
-	LockfreeQueue&		m_PlayingQueue;
-	SampleBufferPool&	m_Pool;
-	SampleBuffer*		m_SendBuffer;
-	SampleBuffer*		m_RecvBuffer;
+	LockfreeQueue&				m_RecordingQueue;
+	LockfreeQueue&				m_PlayingQueue;
+	SampleBufferPool&			m_Pool;
+	CompressedSampleBufferPool  m_CompressedPool;
+	CompressedSampleBuffer*		m_SendBuffer;
+	CompressedSampleBuffer*		m_RecvBuffer;
 
 	boost::asio::io_service m_IOService;
 	udp::socket				m_Socket;

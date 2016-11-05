@@ -18,8 +18,8 @@ namespace CPPWrapper {
 		AudioStreamingService();
 
 		void Init();
-		void Start(String^ hostname, int port);
-		void Stop();
+		void StartAsync(String^ hostname, int port);
+		void StopAsync();
 		List<String^>^ GetInputDevice();
 		List<String^>^ GetOutputDevice();
 		void SetInputDevice(String^ inputDevice);

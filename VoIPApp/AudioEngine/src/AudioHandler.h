@@ -25,8 +25,8 @@ public:
 	~AudioHandler();
 
 	void Init();
-	void Start();
-	void Stop();
+	void StartAsync();
+	void StopAsync();
 	const std::vector<std::string> GetInputDevices() const;
 	const std::vector<std::string> GetOutputDevices() const;
 	void SetInputDevice(const std::string& inputDevice);

@@ -10,8 +10,8 @@ class AudioStreamer
 public:
 	AudioStreamer();
 	~AudioStreamer();
-	void Start(const std::string& targetIP, int port);
-	void Stop();
+	void StartAsync(const std::string& targetIP, int port);
+	void StopAsync();
 	void Init();
 
 public:

@@ -6,26 +6,34 @@ UDPHandler::UDPHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueu
 	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool),
 	m_Socket(m_IOService)
 {
-
+	
 }
 
-void UDPHandler::Start(const std::string& targetIP, int port)
+void UDPHandler::StartAsync(const std::string& targetIP, int port)
 {
+	stop = false;
+	m_IOService.reset();
+
+	m_Socket.open(udp::v4());
+	m_Socket.bind(udp::endpoint(udp::v4(), port));
 	m_Iterator = udp::resolver(m_IOService).resolve(udp::resolver::query(udp::v4(), targetIP.c_str(), std::to_string(port).c_str()));
 
 	Send();
 	Receive();
-	m_IOService.run();
+	
+	boost::thread t(boost::bind(&boost::asio::io_service::run, &this->m_IOService));
 }
 
-void UDPHandler::Stop()
+void UDPHandler::StopAsync()
 {
+	stop = true;
+	m_Socket.close();
 	m_IOService.stop();
 }
 
 void UDPHandler::Send()
 {
-	while (true)
+	while (!stop)
 	{
 		if (m_RecordingQueue.empty())
 		{
@@ -57,9 +65,16 @@ void UDPHandler::Receive()
 void UDPHandler::HandleSent(const boost::system::error_code& error, size_t bytesSent)
 {
 	m_Pool.free(m_SendBuffer);
-
+	
 	if (!error || error == boost::asio::error::message_size)
+	{
 		Send();
+	}
+	else
+	{
+		LOG(error.message())
+			Send();
+	}
 }
 
 void UDPHandler::HandleReceived(const boost::system::error_code& error, size_t bytesReceive)
@@ -67,5 +82,12 @@ void UDPHandler::HandleReceived(const boost::system::error_code& error, size_t b
 	m_PlayingQueue.push(m_RecvBuffer);
 
 	if (!error || error == boost::asio::error::message_size)
+	{
 		Receive();
+	}
+	else
+	{
+		LOG(error.message())
+			Receive();
+	}
 }

@@ -3,6 +3,7 @@
 
 #include <boost\asio.hpp>
 #include <string>
+#include <atomic>
 #include "Common.h"
 
 class UDPHandler
@@ -12,8 +13,8 @@ public:
 
 	UDPHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool);
 
-	void Start(const std::string& targetIP, int port);
-	void Stop();
+	void StartAsync(const std::string& targetIP, int port);
+	void StopAsync();
 
 private:
 	void Send();
@@ -32,6 +33,8 @@ private:
 	udp::socket				m_Socket;
 	udp::endpoint			m_Endpoint;
 	udp::resolver::iterator m_Iterator;
+
+	std::atomic<bool> stop;
 };
 
 

@@ -24,6 +24,9 @@
     <ClCompile Include="src\UDPHandler.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="src\audiocodec\MuLawEncoder.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AudioHandler.h">
@@ -36,6 +39,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="src\UDPHandler.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audiocodec\MuLawEncoder.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audiocodec\Constants.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

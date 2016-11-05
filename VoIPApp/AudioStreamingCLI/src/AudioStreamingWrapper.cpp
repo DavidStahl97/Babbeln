@@ -15,15 +15,15 @@ namespace CPPWrapper
 		m_AudioStreamer->Init();
 	}
 
-	void AudioStreamingService::Start(System::String^ hostname, int port)
+	void AudioStreamingService::StartAsync(System::String^ hostname, int port)
 	{
 		const std::string& nativeString = msclr::interop::marshal_as<std::string>(hostname);
-		m_AudioStreamer->Start(nativeString, port);
+		m_AudioStreamer->StartAsync(nativeString, port);
 	}
 
-	void AudioStreamingService::Stop()
+	void AudioStreamingService::StopAsync()
 	{
-		m_AudioStreamer->Stop();
+		m_AudioStreamer->StopAsync();
 	}
 
 	List<String^>^ AudioStreamingService::GetInputDevice()

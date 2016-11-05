@@ -25,36 +25,18 @@ void AudioStreamer::Init()
 	m_Audio.Init();
 }
 
-void AudioStreamer::Start(const std::string& targetIP, int port)
+void AudioStreamer::StartAsync(const std::string& targetIP, int port)
 {
-	std::cout << "started audio stream" << std::endl;
-	m_Audio.Start();
-	m_UDPClient.Start(targetIP, port);
+	LOG("started audio stream")
+
+	m_Audio.StartAsync();
+	m_UDPClient.StartAsync(targetIP, port);
 }
 
-void AudioStreamer::Stop()
+void AudioStreamer::StopAsync()
 {
-	std::cout << "stopped audio stream" << std::endl;
+	LOG("stopped audio stream")
 
-	m_UDPClient.Stop();
-	m_Audio.Stop();
-
-	SampleBuffer* buffer;
-	while (!m_PlayingQeue.empty())
-	{
-		m_PlayingQeue.pop(buffer);
-		if (buffer != nullptr)
-		{
-			m_Pool.free(buffer);
-		}
-	}
-
-	while (!m_RecordingQueue.empty())
-	{
-		m_RecordingQueue.pop(buffer);
-		if (buffer != nullptr)
-		{
-			m_Pool.free(buffer);
-		}
-	}
+	m_Audio.StopAsync();
+	m_UDPClient.StopAsync();
 }

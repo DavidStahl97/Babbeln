@@ -46,7 +46,7 @@ void AudioHandler::Init()
 	m_InputParamters.hostApiSpecificStreamInfo = NULL;
 }
 
-void AudioHandler::Start()
+void AudioHandler::StartAsync()
 {
 	/* Record some audio. -------------------------------------------- */
 	PaError err = Pa_OpenStream(
@@ -71,7 +71,7 @@ void AudioHandler::Start()
 	}
 }
 
-void AudioHandler::Stop()
+void AudioHandler::StopAsync()
 {
 	PaError err = Pa_AbortStream(m_AudioStream);
 	err = Pa_CloseStream(m_AudioStream);

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using CPPWrapper;
 using Prism.Interactivity.InteractionRequest;
+using System.ComponentModel;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
@@ -27,12 +28,12 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         public void StartStreaming(string targetIP)
         {
-            audioStreamer.Start(targetIP, 10000);
+            audioStreamer.StartAsync(targetIP, 10000);
         }
 
         public void StopStreaming()
         {
-            audioStreamer.Stop();
+            audioStreamer.StopAsync();
         }
 
         public ICommand CancelCallCommand

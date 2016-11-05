@@ -39,6 +39,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoIPApp.Modules.Options", "VoIPApp.Modules.Options\VoIPApp.Modules.Options.csproj", "{B4724469-0555-42F1-A3AA-209F2A0FA9D6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioStreamingTest", "AudioStreamingTest\AudioStreamingTest.vcxproj", "{49FD7CDC-14B5-4ABE-B78A-3B064FE4F793}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FBDF6AEA-037B-40D3-B85E-104D5842E439} = {FBDF6AEA-037B-40D3-B85E-104D5842E439}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

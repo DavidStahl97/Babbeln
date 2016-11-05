@@ -11,6 +11,7 @@ Release/
 obj/
 ipch/
 packages/
+audiocodec/
 .vs/
 
 #excluded dependencies

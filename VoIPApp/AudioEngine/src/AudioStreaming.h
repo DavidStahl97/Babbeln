@@ -22,6 +22,8 @@ private:
 	LockfreeQueue		m_PlayingQeue;
 	LockfreeQueue		m_RecordingQueue;
 	SampleBufferPool	m_Pool;
+
+	bool m_StartedSuccessfully;
 };
 
 

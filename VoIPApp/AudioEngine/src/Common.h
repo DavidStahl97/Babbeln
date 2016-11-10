@@ -27,4 +27,13 @@ typedef boost::lockfree::spsc_queue<SampleBuffer*, boost::lockfree::capacity<64>
 typedef boost::object_pool<SampleBuffer> SampleBufferPool;
 typedef boost::object_pool<CompressedSampleBuffer> CompressedSampleBufferPool;
 
+typedef int VoIPError;
+enum VoIPErrorCode
+{
+	VoIP_NoError = 0,
+
+	VoIP_NoInputDevice = -1000,
+	VoIP_NoOutputDevice
+};
+
 #endif

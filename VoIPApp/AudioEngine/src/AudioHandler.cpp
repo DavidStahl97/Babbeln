@@ -46,8 +46,18 @@ void AudioHandler::Init()
 	m_InputParamters.hostApiSpecificStreamInfo = NULL;
 }
 
-void AudioHandler::StartAsync()
+VoIPError AudioHandler::StartAsync()
 {
+	if (m_OutputParameters.device == paNoDevice)
+	{
+		return VoIP_NoOutputDevice;
+	}
+
+	if (m_InputParamters.device == paNoDevice)
+	{
+		return VoIP_NoInputDevice;
+	}
+
 	/* Record some audio. -------------------------------------------- */
 	PaError err = Pa_OpenStream(
 		&m_AudioStream,
@@ -61,13 +71,13 @@ void AudioHandler::StartAsync()
 	if (err != paNoError)
 	{
 		//error handling
-		return;
+		return -1;
 	}
 
 	err = Pa_StartStream(m_AudioStream);
 	if (err != paNoError)
 	{
-		return;
+		return -1;
 	}
 }
 

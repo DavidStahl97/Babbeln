@@ -25,7 +25,7 @@ public:
 	~AudioHandler();
 
 	void Init();
-	void StartAsync();
+	VoIPError StartAsync();
 	void StopAsync();
 	const std::vector<std::string> GetInputDevices() const;
 	const std::vector<std::string> GetOutputDevices() const;

@@ -17,11 +17,15 @@ void UDPHandler::StartAsync(const std::string& targetIP, int port)
 	m_Socket.open(udp::v4());
 	m_Socket.bind(udp::endpoint(udp::v4(), port));
 	m_Iterator = udp::resolver(m_IOService).resolve(udp::resolver::query(udp::v4(), targetIP.c_str(), std::to_string(port).c_str()));
-
-	Send();
-	Receive();
 	
+	boost::thread s(boost::bind(&UDPHandler::Send, this));
+	Receive();
 	boost::thread t(boost::bind(&boost::asio::io_service::run, &this->m_IOService));
+}
+
+void UDPHandler::StartLoop()
+{
+
 }
 
 void UDPHandler::StopAsync()

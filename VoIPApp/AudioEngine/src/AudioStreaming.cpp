@@ -29,7 +29,13 @@ void AudioStreamer::StartAsync(const std::string& targetIP, int port)
 {
 	LOG("started audio stream")
 
-	m_Audio.StartAsync();
+	m_StartedSuccessfully = true;
+
+	if (m_Audio.StartAsync() != VoIP_NoError)
+	{
+		m_StartedSuccessfully = false;
+		return;
+	}
 	m_UDPClient.StartAsync(targetIP, port);
 }
 
@@ -37,25 +43,28 @@ void AudioStreamer::StopAsync()
 {
 	LOG("stopped audio stream")
 
-	m_Audio.StopAsync();
-	m_UDPClient.StopAsync();
-
-	SampleBuffer* buffer;
-	while (!m_PlayingQeue.empty())
+	if (m_StartedSuccessfully)
 	{
-		m_PlayingQeue.pop(buffer);
-		if (buffer != nullptr)
+		m_Audio.StopAsync();
+		m_UDPClient.StopAsync();
+
+		SampleBuffer* buffer;
+		while (!m_PlayingQeue.empty())
 		{
-			m_Pool.free(buffer);
+			m_PlayingQeue.pop(buffer);
+			if (buffer != nullptr)
+			{
+				m_Pool.free(buffer);
+			}
 		}
-	}
 
-	while (!m_RecordingQueue.empty())
-	{
-		m_RecordingQueue.pop(buffer);
-		if (buffer != nullptr)
+		while (!m_RecordingQueue.empty())
 		{
-			m_Pool.free(buffer);
+			m_RecordingQueue.pop(buffer);
+			if (buffer != nullptr)
+			{
+				m_Pool.free(buffer);
+			}
 		}
 	}
 }

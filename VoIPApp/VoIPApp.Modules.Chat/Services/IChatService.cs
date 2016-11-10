@@ -13,6 +13,5 @@ namespace VoIPApp.Modules.Chat.Services
         Dictionary<int, Friend> Friends { get; set; }
         ObservableCollection<Message> GetMessages(int id);
         void AddMessage(int id, Message message);
-        string GetFriendIP(int id);
     }
 }

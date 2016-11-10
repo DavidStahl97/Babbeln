@@ -19,9 +19,9 @@ namespace VoIPApp.Modules.Chat.Services
             Friends = new Dictionary<int, Friend>();
             Messages = new Dictionary<int, ObservableCollection<Message>>();
 
-            Friends.Add(0, new Friend { Name = "David Stahl", ProfileName = "@totalhirn", Icon = "..\\Assets\\profile1.png", ID = 0, CurrentStatus = Status.Online});
+            Friends.Add(0, new Friend { Name = "David Stahl", ProfileName = "@totalhirn", Icon = "..\\Assets\\profile1.png", ID = 0, CurrentStatus = Status.Online, IP = "192.168.1.53"});
             Friends.Add(1, new Friend { Name = "David Stahl2", ProfileName = "@totalhirn", Icon = "..\\Assets\\profile1.png", ID = 1, CurrentStatus = Status.Online });
-            Friends.Add(2, new Friend { Name = "Lovedeep Singh", ProfileName = "@Love2Skill", Icon = "..\\Assets\\profile2.png", ID = 2, CurrentStatus = Status.Online });
+            Friends.Add(2, new Friend { Name = "Rebecca", ProfileName = "@becci", Icon = "..\\Assets\\profile2.png", ID = 2, CurrentStatus = Status.Online, IP = ""});
             Friends.Add(3, new Friend { Name = "Pedro Mano", ProfileName = "@crazycape", Icon = "..\\Assets\\profile3.png", ID = 3, CurrentStatus = Status.Online });
             Friends.Add(4, new Friend { Name = "ahl", ProfileName = "@crazycape", Icon = "..\\Assets\\profile3.png", ID = 4, CurrentStatus = Status.Offline });
 
@@ -64,11 +64,6 @@ namespace VoIPApp.Modules.Chat.Services
         public void AddMessage(int id, Message message)
         {
             Messages[id].Add(message);
-        }
-
-        public string GetFriendIP(int id)
-        {
-            return "127.0.0.1";
         }
     }
 }

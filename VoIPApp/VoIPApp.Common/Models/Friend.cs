@@ -13,6 +13,7 @@ namespace VoIPApp.Common.Models
         public string Icon { get; set; }
         public int ID { get; set; }
         public Status CurrentStatus { get; set; }
+        public string IP { get; set; }
     }
 
     public enum Status

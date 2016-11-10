@@ -169,6 +169,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private void OnCall(object obj)
         {
+            Friend currentFriend = Friends.CurrentItem as Friend;
+
             calling = true;
             callCommand.RaiseCanExecuteChanged();
 
@@ -184,7 +186,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
                     callCommand.RaiseCanExecuteChanged();
                 });
 
-            voiceChatViewModel.StartStreaming(chatService.GetFriendIP(currentFriendID));
+            voiceChatViewModel.StartStreaming(currentFriend.IP);
         }
     }
 }

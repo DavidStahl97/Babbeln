@@ -21,7 +21,6 @@ private:
 	void Receive();
 	void HandleSent(const boost::system::error_code& error, size_t bytesSent);
 	void HandleReceived(const boost::system::error_code& error, size_t bytesReceived);
-	void StartLoop();
 
 private:
 	LockfreeQueue&				m_RecordingQueue;

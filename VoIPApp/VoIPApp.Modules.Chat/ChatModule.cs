@@ -17,14 +17,18 @@ namespace VoIPApp.Modules.Chat
         private readonly IUnityContainer container;
         private readonly AudioStreamingService audioStreamer;
         private readonly BackgroundWorker audioInitWorker;
-        private readonly IChatService chatService;
+        private readonly IFriendsService chatService;
+        private readonly IMessageService messageService;
+        private readonly IVoIPService voIPService;
 
         public ChatModule(IRegionManager regionManager, IUnityContainer container, AudioStreamingService audioStreamer)
         {
             this.regionManager = regionManager;
             this.container = container;
 
-            this.chatService = new ChatService();
+            this.chatService = new FriendsService();
+            this.messageService = new MessageService();
+            this.voIPService = new VoIPService(audioStreamer);
             this.audioStreamer = audioStreamer;
 
             this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
@@ -36,6 +40,8 @@ namespace VoIPApp.Modules.Chat
         public void Initialize()
         {          
             this.container.RegisterInstance(chatService);
+            this.container.RegisterInstance(messageService);
+            this.container.RegisterInstance(voIPService);
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
 

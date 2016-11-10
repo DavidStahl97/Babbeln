@@ -19,7 +19,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
 {
     public class ChatViewModel : BindableBase
     {
-        private readonly IChatService chatService;
+        private readonly IFriendsService friendsService;
+        private readonly IMessageService messageService;
         private readonly ListCollectionView friends;
         private readonly ObservableCollection<Message> messages;
         private readonly DelegateCommand<object> sendCommand;
@@ -31,9 +32,9 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private int currentFriendID;
         private bool calling;
 
-        public ChatViewModel(IChatService chatService, IUnityContainer container)
+        public ChatViewModel(IFriendsService friendsService, IMessageService messageService, IUnityContainer container)
         {
-            if(chatService == null)
+            if(friendsService == null)
             {
                 throw new ArgumentNullException("chatService");
             }
@@ -43,10 +44,16 @@ namespace VoIPApp.Modules.Chat.ViewModels
                 throw new ArgumentNullException("container");
             }
 
-            this.container = container;
-            this.chatService = chatService;
+            if(messageService == null)
+            {
+                throw new ArgumentNullException("messageService");
+            }
 
-            friends = new ListCollectionView(chatService.Friends.Values.ToList());
+            this.container = container;
+            this.friendsService = friendsService;
+            this.messageService = messageService;
+
+            friends = new ListCollectionView(friendsService.Friends.Values.ToList());
             messages = new ObservableCollection<Message>();
 
             this.sendCommand = new DelegateCommand<object>(this.OnSend, this.CanSend);
@@ -125,7 +132,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             try
             {
                 currentFriendID = (Friends.CurrentItem as Friend).ID;
-                Messages.AddRange(chatService.GetMessages(currentFriendID));
+                Messages.AddRange(messageService.GetMessages(currentFriendID));
             }
             catch(NullReferenceException) { }
 
@@ -136,7 +143,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             string userMessage = arg as string;
             Message message = new Message { Text = userMessage, FriendID = -1 };
-            chatService.AddMessage(currentFriendID, message);
+            messageService.AddMessage(currentFriendID, message);
             Messages.Add(message);
         }
 
@@ -181,12 +188,12 @@ namespace VoIPApp.Modules.Chat.ViewModels
                 voiceChatViewModel,
                 finishCall =>
                 {
-                    voiceChatViewModel.StopStreaming();
+                    voiceChatViewModel.StopCall();
                     calling = false;
                     callCommand.RaiseCanExecuteChanged();
                 });
 
-            voiceChatViewModel.StartStreaming(currentFriend.IP);
+            voiceChatViewModel.StartCall(currentFriend.IP);
         }
     }
 }

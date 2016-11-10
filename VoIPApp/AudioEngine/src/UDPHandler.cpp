@@ -23,11 +23,6 @@ void UDPHandler::StartAsync(const std::string& targetIP, int port)
 	boost::thread t(boost::bind(&boost::asio::io_service::run, &this->m_IOService));
 }
 
-void UDPHandler::StartLoop()
-{
-
-}
-
 void UDPHandler::StopAsync()
 {
 	stop = true;

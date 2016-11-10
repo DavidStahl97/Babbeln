@@ -8,9 +8,8 @@ using VoIPApp.Common.Models;
 
 namespace VoIPApp.Modules.Chat.Services
 {
-    public interface IChatService
+    public interface IMessageService
     {
-        Dictionary<int, Friend> Friends { get; set; }
         ObservableCollection<Message> GetMessages(int id);
         void AddMessage(int id, Message message);
     }

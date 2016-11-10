@@ -7,17 +7,18 @@ using System.Windows.Input;
 using CPPWrapper;
 using Prism.Interactivity.InteractionRequest;
 using System.ComponentModel;
+using VoIPApp.Modules.Chat.Services;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
     public class VoiceChatViewModel : BindableBase, IConfirmation, IInteractionRequestAware
     {
-        private readonly AudioStreamingService audioStreamer;
+        private readonly IVoIPService voIPService;
         private readonly DelegateCommand<object> cancelCallCommand;
 
-        public VoiceChatViewModel(AudioStreamingService audioStreamer)
+        public VoiceChatViewModel(IVoIPService voIPService)
         {
-            this.audioStreamer = audioStreamer;
+            this.voIPService = voIPService;
             this.cancelCallCommand = new DelegateCommand<object>(this.OnCancelCall);
         }
 
@@ -26,14 +27,14 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.FinishInteraction();
         }
 
-        public void StartStreaming(string targetIP)
+        public void StartCall(string targetIP)
         {
-            audioStreamer.StartAsync(targetIP, 10000);
+            voIPService.StartCall(targetIP);
         }
 
-        public void StopStreaming()
+        public void StopCall()
         {
-            audioStreamer.StopAsync();
+            voIPService.StopCall();
         }
 
         public ICommand CancelCallCommand

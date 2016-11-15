@@ -98,7 +98,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Service References\ServiceReference\Reference.cs">
+    <Compile Include="Service References\VoiceServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -120,6 +120,7 @@
     <Compile Include="Views\VoiceChatView.xaml.cs">
       <DependentUpon>VoiceChatView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VoiceServiceManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -131,11 +132,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\ServiceReference\service.wsdl" />
-    <None Include="Service References\ServiceReference\service.xsd">
+    <None Include="Service References\VoiceServiceReference\VoiceService.wsdl" />
+    <None Include="Service References\VoiceServiceReference\VoiceService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference\service1.xsd">
+    <None Include="Service References\VoiceServiceReference\VoiceService1.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -158,9 +159,9 @@
       <Project>{df57a206-e5bd-4f8e-a93d-ef2beb6c37b3}</Project>
       <Name>AudioStreamingCLI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VoiceSessionInitializerLibrary\VoiceSessionInitializerLibrary.csproj">
-      <Project>{14faf725-5448-4f35-ab5b-37323d083a75}</Project>
-      <Name>VoiceSessionInitializerLibrary</Name>
+    <ProjectReference Include="..\VoiceServiceLibrary\VoiceServiceLibrary.csproj">
+      <Project>{b567a563-9089-465b-81f2-28d5b67d3f2c}</Project>
+      <Name>VoiceServiceLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\VoIPApp.Common\VoIPApp.Common.csproj">
       <Project>{4b42b02b-4187-4591-9376-09786dba1f75}</Project>
@@ -179,16 +180,19 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference\" />
+    <WCFMetadataStorage Include="Service References\VoiceServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\VoiceServiceReference\VoiceService.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference\configuration.svcinfo" />
+    <None Include="Service References\VoiceServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference\Reference.svcmap">
+    <None Include="Service References\VoiceServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\VoiceServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

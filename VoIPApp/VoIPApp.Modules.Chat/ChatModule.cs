@@ -8,23 +8,23 @@ using System.ComponentModel;
 using VoIPApp.Modules.Chat.Services;
 using VoIPApp.Modules.Chat.ViewModels;
 using VoIPApp.Modules.Chat.Views;
-using VoiceSessionInitializerLibrary;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using VoiceServiceLibrary;
 
 namespace VoIPApp.Modules.Chat
 {
-    public class ChatModule : IModule
+    public class ChatModule : IModule, IDisposable
     {
         private readonly IRegionManager regionManager;
         private readonly IUnityContainer container;
         private readonly AudioStreamingService audioStreamer;
         private readonly BackgroundWorker audioInitWorker;
-        private readonly BackgroundWorker sessionInitWorker;
         private readonly IFriendsService chatService;
         private readonly IMessageService messageService;
         private readonly IVoIPService voIPService;
-        private SessionInitializerService sessionInitializerService;
+        private readonly VoiceServiceManager voiceServiceManager;
+        private readonly VoiceService voiceService;
 
         public ChatModule(IRegionManager regionManager, IUnityContainer container, AudioStreamingService audioStreamer)
         {
@@ -36,13 +36,13 @@ namespace VoIPApp.Modules.Chat
             this.voIPService = new VoIPService(audioStreamer);
             this.audioStreamer = audioStreamer;
 
+            this.voiceService = new VoiceService();
+            this.voiceServiceManager = new VoiceServiceManager(voiceService);
+
             this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
 
             this.audioInitWorker = new BackgroundWorker();
             audioInitWorker.DoWork += audioInitWorker_DoWork;
-
-            this.sessionInitWorker = new BackgroundWorker();
-            sessionInitWorker.DoWork += sessionInitWorker_DoWork;
         }
 
         public void Initialize()
@@ -50,40 +50,23 @@ namespace VoIPApp.Modules.Chat
             this.container.RegisterInstance(chatService);
             this.container.RegisterInstance(messageService);
             this.container.RegisterInstance(voIPService);
+            this.container.RegisterInstance(voiceService);
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
 
             audioInitWorker.RunWorkerAsync();
-            sessionInitWorker.RunWorkerAsync();
+
+            voiceServiceManager.StartVoiceService();
         }
 
         private void audioInitWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            audioStreamer.Init();    
+            audioStreamer.Init();
         }
 
-        private void sessionInitWorker_DoWork(object sender, DoWorkEventArgs e)
+        public void Dispose()
         {
-            this.sessionInitializerService = new SessionInitializerService();
-
-            Uri baseAddress = new Uri("http://localhost:8000/VoIPApp/");
-            ServiceHost host = new ServiceHost(sessionInitializerService, baseAddress);
-
-            try
-            {
-                host.AddServiceEndpoint(typeof(ISessionInitializerService), new WSHttpBinding(), "SessionInitialService");
-
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-                smb.HttpGetEnabled = true;
-                host.Description.Behaviors.Add(smb);
-
-                host.Open();
-            }
-            catch (CommunicationException ce)
-            {
-                Console.WriteLine(ce.ToString());
-                host.Abort();
-            }
+            voiceServiceManager.StopVoiceService();
         }
     }
 }

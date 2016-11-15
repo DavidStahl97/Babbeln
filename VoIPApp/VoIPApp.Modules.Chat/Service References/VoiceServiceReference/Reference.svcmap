@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c122532c-6b32-4d8c-a1d4-a886b4534a43" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f27ae85c-dcb3-462c-9a2b-d445d4d75ac7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,12 +19,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/VoiceSessionInitializerLibrary/Service1/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://localhost/VoIPApp/VoiceService" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="f49c269b-a4bd-4fb8-ab55-f7d425a74435" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/VoiceSessionInitializerLibrary/Service1/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="0dd1690f-a8ea-4538-9fea-11c317d2dbc6" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/VoiceSessionInitializerLibrary/Service1/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="406ad622-488d-4d2c-baca-d308a3b59cf4" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/VoiceSessionInitializerLibrary/Service1/mex" />
+    <MetadataFile FileName="VoiceService.disco" MetadataType="Disco" ID="65f81c80-c74c-4b63-af77-83984b9ebfc5" SourceId="1" SourceUrl="http://localhost/VoIPApp/VoiceService?disco" />
+    <MetadataFile FileName="VoiceService.wsdl" MetadataType="Wsdl" ID="5882268b-7508-443f-bfe9-4d297df55112" SourceId="1" SourceUrl="http://localhost/VoIPApp/VoiceService?wsdl" />
+    <MetadataFile FileName="VoiceService.xsd" MetadataType="Schema" ID="fb5140eb-6a84-472b-a89c-b5091994566b" SourceId="1" SourceUrl="http://localhost/VoIPApp/VoiceService?xsd=xsd0" />
+    <MetadataFile FileName="VoiceService1.xsd" MetadataType="Schema" ID="6566079c-55f9-4e6e-8655-e1f698874542" SourceId="1" SourceUrl="http://localhost/VoIPApp/VoiceService?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

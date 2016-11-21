@@ -11,9 +11,8 @@ static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 }
 
 AudioHandler::AudioHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool)
-	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool)
+	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool), m_Gain(1.0)
 {
-
 }
 
 AudioHandler::~AudioHandler()
@@ -112,7 +111,21 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 	{
 		if (playReadPointer != nullptr)
 		{
-			*playWritePointer++ = *playReadPointer++;
+			Sample sample = *playReadPointer;
+			double dSample = (double)sample * m_Gain;
+			if (dSample > DBL_MAX)
+			{
+				dSample = DBL_MAX;
+			}
+			else if (dSample < DBL_MIN)
+			{
+				dSample = DBL_MIN;
+			}
+
+			*playWritePointer = (short)dSample;
+
+			playWritePointer++;
+			playReadPointer++;
 		}
 		else
 		{
@@ -213,6 +226,11 @@ const std::vector<std::string> AudioHandler::GetDevices(DeviceType type) const
 	}
 
 	return deviceNames;
+}
+
+void AudioHandler::SetVolumeGain(double gain)
+{
+	m_Gain = gain;
 }
 
 

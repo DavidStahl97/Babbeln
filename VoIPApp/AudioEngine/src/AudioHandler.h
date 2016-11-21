@@ -5,6 +5,7 @@
 #include <portaudio.h>
 #include <string>
 #include <vector>
+#include <atomic>
 
 static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 	unsigned long framesPerBuffer,
@@ -31,6 +32,7 @@ public:
 	const std::vector<std::string> GetOutputDevices() const;
 	void SetInputDevice(const std::string& inputDevice);
 	void SetOutputDevice(const std::string& outputDevice);
+	void SetVolumeGain(double gain);
 
 private:
 	int AudioCallback(const void* inputBuffer, void* outputBuffer,
@@ -48,6 +50,8 @@ private:
 	LockfreeQueue&		m_RecordingQueue;
 	LockfreeQueue&		m_PlayingQueue;
 	SampleBufferPool&   m_Pool;
+
+	std::atomic<double>  m_Gain;
 
 	friend static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 		unsigned long framesPerBuffer,

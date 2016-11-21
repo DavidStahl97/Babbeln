@@ -64,4 +64,9 @@ namespace CPPWrapper
 
 		return managedStrings;
 	}
+
+	void AudioStreamingService::SetVolumeGain(double gain)
+	{
+		m_AudioStreamer->m_Audio.SetVolumeGain(gain);
+	}
 }

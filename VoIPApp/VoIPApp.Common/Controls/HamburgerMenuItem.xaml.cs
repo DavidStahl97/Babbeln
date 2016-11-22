@@ -20,26 +20,42 @@ namespace VoIPApp.Common.Controls
     /// </summary>
     public partial class HamburgerMenuItem : UserControl
     {
+        /// <summary>
+        /// text that will be displayed when the HamburgerMenu is opened
+        /// </summary>
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
 
+        /// <summary>
+        /// <see cref="DependencyProperty"/> for <see cref="Text"/>
+        /// </summary>
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string),
               typeof(HamburgerMenuItem), new PropertyMetadata(""));
 
+
+        /// <summary>
+        /// font icon that will be displayed in HamburgerMenu
+        /// </summary>
         public string Icon
         {
             get { return (string)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
         }
 
+        /// <summary>
+        /// <see cref="DependencyProperty"/> of <see cref="Icon"/>
+        /// </summary>
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(string),
               typeof(HamburgerMenuItem), new PropertyMetadata(""));
 
+        /// <summary>
+        /// creates a new instance of the <see cref="HamburgerMenuItem"/> class
+        /// </summary>
         public HamburgerMenuItem()
         {
             InitializeComponent();

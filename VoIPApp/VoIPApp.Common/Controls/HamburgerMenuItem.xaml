@@ -7,6 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="parent">
     <UserControl.Resources>
+        <!--mouse hover effect for labels-->
         <Style TargetType="Label" x:Key="LableStyle" >
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
             <Setter Property="FontSize" Value="36"/>

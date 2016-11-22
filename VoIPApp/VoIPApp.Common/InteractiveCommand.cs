@@ -10,6 +10,9 @@ using System.Windows.Interactivity;
 
 namespace VoIPApp.Common
 {
+    /// <summary>
+    /// allows the interactive commands to pass the EventArgs to the Commands
+    /// </summary>
     public class InteractiveCommand : TriggerAction<DependencyObject>
     {
         protected override void Invoke(object parameter)

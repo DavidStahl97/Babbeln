@@ -13,6 +13,10 @@ namespace VoIPApp
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// creates and runs the bootstrapper
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

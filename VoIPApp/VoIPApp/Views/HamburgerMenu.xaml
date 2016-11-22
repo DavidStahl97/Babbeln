@@ -10,6 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
+        <!--Style for ListBoxItem-->
         <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListStyle">
             <Setter Property="Template">
                 <Setter.Value>
@@ -44,6 +45,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!--Top section with profile picture and name-->
         <StackPanel Grid.Row="0" 
                     HorizontalAlignment="Left"  
                     x:Name="ProfileIconContainer" 
@@ -61,6 +63,7 @@
                        Foreground="Gray"/>
         </StackPanel>
 
+        <!--bottom section with HamburgerMenuItems-->
         <ListBox Grid.Row="1" 
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 

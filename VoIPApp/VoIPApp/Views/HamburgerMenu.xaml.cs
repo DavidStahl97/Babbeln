@@ -22,26 +22,46 @@ namespace VoIPApp.Views
     /// </summary>
     public partial class HamburgerMenu : UserControl
     {
+        /// <summary>
+        /// true when the <see cref="HamburgerMenu"/> is opened
+        /// </summary>
         private bool isOpen;
+        /// <summary>
+        /// true when the animation is finished
+        /// </summary>
         private bool animFinished = true;
 
+        /// <summary>
+        /// size of the profile picture when the <see cref="HamburgerMenu"/> is opened
+        /// </summary>
         public int PictureSizeBig
         {
             get { return 128; }
             private set { }
         }
 
+        /// <summary>
+        /// size of the profile picture when the <see cref="HamburgerMenu"/> is closed
+        /// </summary>
         public int PictureSizeSmall
         {
             get { return 64; }
             private set { }
         }
 
+        /// <summary>
+        /// creates a new instance of the <see cref="HamburgerMenu"/> class
+        /// </summary>
         public HamburgerMenu()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// starts the animation if the mouse hovers over the profile picture and the <see cref="HamburgerMenu"/> is not already opened or is not animating
+        /// </summary>
+        /// <param name="sender">sender of the event</param>
+        /// <param name="e">mouse information</param>
         private void ProfileIconContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             if(!isOpen && animFinished)
@@ -63,11 +83,21 @@ namespace VoIPApp.Views
             }
         }
 
+        /// <summary>
+        /// sets <see cref="animFinished"/> to true when the animation is completed
+        /// </summary>
+        /// <param name="sender">sender of the event</param>
+        /// <param name="e">event arguments</param>
         private void animationCompleted(object sender, EventArgs e)
         {
             animFinished = true;
         }
 
+        /// <summary>
+        /// starts the animation that will set it to the original size when the mouse leaves the profile picture
+        /// </summary>
+        /// <param name="sender">sender of the event</param>
+        /// <param name="e">mouse information</param>
         private void MainGrid_MouseLeave(object sender, MouseEventArgs e)
         {
             if(isOpen && animFinished)

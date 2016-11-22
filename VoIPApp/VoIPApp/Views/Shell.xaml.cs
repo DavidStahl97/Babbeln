@@ -7,10 +7,19 @@ using VoIPApp.Common;
 namespace VoIPApp.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Shell.xaml
     /// </summary>
     public partial class Shell : Window
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Shell"/> class.
+        /// <para>
+        /// registers a callback that will be fired after the modules finished loading.
+        /// the callback will request a navigation to the ChatView
+        /// </para>
+        /// </summary>
+        /// <param name="moduleManager">the applications modulemanager</param>
+        /// <param name="regionManager">the applications regionmanager</param>
         public Shell(IModuleManager moduleManager, IRegionManager regionManager)
         {
             InitializeComponent();

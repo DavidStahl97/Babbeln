@@ -8,23 +8,41 @@ using System.Windows.Media.Imaging;
 
 namespace VoIPApp.ViewModels
 {
+    /// <summary>
+    /// Data Context for <see cref="VoIPApp.Views.HamburgerMenu"/>
+    /// </summary>
     public class HamburgerMenuViewModel : BindableBase
     {
+        /// <summary>
+        /// bitmap profile image
+        /// </summary>
         private BitmapImage profileIcon;
+        /// <summary>
+        /// profile name of the user
+        /// </summary>
         private string profileName;
 
+        /// <summary>
+        /// creates a new instance of the <see cref="HamburgerMenuViewModel"/> class. Initializes the <see cref="profileIcon"/> and <see cref="profileName"/>
+        /// </summary>
         public HamburgerMenuViewModel()
         {
             profileIcon = new BitmapImage(new Uri("pack://application:,,,/Assets/profile_high.jpg"));
             profileName = "Günther";
         }
 
+        /// <summary>
+        /// bindable property for <see cref="profileIcon"/>
+        /// </summary>
         public BitmapImage ProfileIcon
         {
             get { return this.profileIcon; }
             set { SetProperty(ref this.profileIcon, value); }
         }
 
+        /// <summary>
+        /// bindable property for <see cref="profileName"/>
+        /// </summary>
         public string ProfileName
         {
             get { return this.profileName; }

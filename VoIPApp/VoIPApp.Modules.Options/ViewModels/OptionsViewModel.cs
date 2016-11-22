@@ -10,12 +10,28 @@ using System.Windows.Controls;
 
 namespace VoIPApp.Modules.Options.ViewModels
 {
+    /// <summary>
+    /// data context for <see cref="VoIPApp.Modules.Options.Views.OptionsView"/>
+    /// </summary>
     public class OptionsViewModel : BindableBase
     {
+        /// <summary>
+        /// audio streaming service used to get the audio devices etc.
+        /// </summary>
         private readonly AudioStreamingService audioStreamingService;
+        /// <summary>
+        /// command that will be fired when the input device selection changed
+        /// </summary>
         private readonly DelegateCommand<object> inputDeviceSelectionChanged;
+        /// <summary>
+        /// command that wiil be fired when the output device selection changed
+        /// </summary>
         private readonly DelegateCommand<object> outputDeviceSelectionChanged;
 
+        /// <summary>
+        /// creates a new instance of the <see cref="OptionsViewModel"/> class
+        /// </summary>
+        /// <param name="audioStreamingService">will be injected by the <see cref="IUnityContainer"/>, stored in <see cref="audioStreamingService"/></param>
         public OptionsViewModel(AudioStreamingService audioStreamingService)
         {
             this.audioStreamingService = audioStreamingService;
@@ -27,20 +43,36 @@ namespace VoIPApp.Modules.Options.ViewModels
             OutputDevices = new ObservableCollection<string>(audioStreamingService.GetOutputDevice());
         }
 
+        /// <summary>
+        /// collection of the input devices
+        /// </summary>
         public ObservableCollection<string> InputDevices { get; }
 
+        /// <summary>
+        /// collection of the output devices
+        /// </summary>
         public ObservableCollection<string> OutputDevices { get; }
 
+        /// <summary>
+        /// property for <see cref="inputDeviceSelectionChanged"/>
+        /// </summary>
         public ICommand InputDeviceSelectionChanged
         {
             get { return inputDeviceSelectionChanged; }
         }
 
+        /// <summary>
+        /// property for <see cref="outputDeviceSelectionChanged"/>
+        /// </summary>
         public ICommand OutputDeviceSelectionChanged
         {
             get { return outputDeviceSelectionChanged; }
         }
 
+        /// <summary>
+        /// sets the new output device in the <see cref="audioStreamingService"/> when changed
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnOutputDeviceSelectionChanged(object obj)
         {
             string selectedDeviceName = GetSelectedStringFromEventArgs(obj as SelectionChangedEventArgs);
@@ -50,6 +82,10 @@ namespace VoIPApp.Modules.Options.ViewModels
             }
         }
 
+        /// <summary>
+        /// sets the new input sevice int the <see cref="audioStreamingService"/> when changed
+        /// </summary>
+        /// <param name="obj"></param>
         private void OnInputDeviceSelectionChanged(object obj)
         {
             string selectedDeviceName = GetSelectedStringFromEventArgs(obj as SelectionChangedEventArgs);
@@ -59,6 +95,11 @@ namespace VoIPApp.Modules.Options.ViewModels
             }
         }
 
+        /// <summary>
+        /// helper method that gets the <see cref="string"/> of the selected item
+        /// </summary>
+        /// <param name="arg">event args from combobox selection changed</param>
+        /// <returns>string of the selected combobox item</returns>
         private string GetSelectedStringFromEventArgs(SelectionChangedEventArgs arg)
         {
             ComboBox comboBox = arg.Source as ComboBox;

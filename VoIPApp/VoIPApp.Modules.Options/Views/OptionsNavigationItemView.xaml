@@ -7,5 +7,6 @@
              xmlns:controls="clr-namespace:VoIPApp.Common.Controls;assembly=VoIPApp.Common"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <!--will be presented in the HamburgerMenu-->
     <controls:HamburgerMenuItem Icon="&#xE115;" Text="Options" MouseLeftButtonDown="HamburgerMenuItem_MouseLeftButtonDown"/>
 </UserControl>

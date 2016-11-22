@@ -8,6 +8,9 @@ namespace VoIPApp.Modules.Options.Views
     /// </summary>
     public partial class OptionsView : UserControl
     {
+        /// <summary>
+        /// creates a new instance of the <see cref="OptionsView"/> class
+        /// </summary>
         public OptionsView()
         {
             InitializeComponent();

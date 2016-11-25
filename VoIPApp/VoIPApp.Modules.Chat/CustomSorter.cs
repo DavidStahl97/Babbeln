@@ -8,15 +8,31 @@ using VoIPApp.Common.Models;
 
 namespace VoIPApp.Modules.Chat
 {
+    /// <summary>
+    /// custom sorter for friend list
+    /// </summary>
     public class CustomSorter : IComparer
     {
+        /// <summary>
+        /// the input <see cref="string"/> that the user wants to search after
+        /// </summary>
         private readonly string filter;
 
+        /// <summary>
+        /// creates a new instance of the <see cref="CustomSorter"/> class
+        /// </summary>
+        /// <param name="filter">stored in <see cref="filter"/></param>
         public CustomSorter(string filter)
         {
             this.filter = filter;
         }
 
+        /// <summary>
+        /// compares to <see cref="Friend"/>s based on <see cref="filter"/>
+        /// </summary>
+        /// <param name="x">first <see cref="Friend"/></param>
+        /// <param name="y">second <see cref="Friend"/></param>
+        /// <returns></returns>
         public int Compare(object x, object y)
         {
             Friend a = x as Friend;

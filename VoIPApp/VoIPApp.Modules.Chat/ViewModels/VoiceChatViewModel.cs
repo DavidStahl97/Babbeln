@@ -11,6 +11,9 @@ using VoIPApp.Modules.Chat.Services;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
+    /// <summary>
+    /// data context for <see cref="VoIPApp.Modules.Chat.Views.VoiceChatView"/>
+    /// </summary>
     public class VoiceChatViewModel : BindableBase, IConfirmation, IInteractionRequestAware
     {
         private readonly IVoIPService voIPService;

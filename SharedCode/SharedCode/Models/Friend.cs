@@ -1,39 +1,53 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
-namespace VoIPApp.Common.Models
+namespace SharedCode.Models
 {
     /// <summary>
     /// represents a friend of the user
     /// </summary>
+    [DataContract]
     public class Friend
     {
         /// <summary>
         /// name of the friend
         /// </summary>
+        [DataMember]
         public string Name { get; set; }
+        
         /// <summary>
         /// profile name of the friend
         /// </summary>
+        [DataMember]
         public string ProfileName { get; set; }
+
         /// <summary>
         /// profile picture of the friend
         /// </summary>
+        [DataMember]
         public string Icon { get; set; }
+
         /// <summary>
         /// id of the friend
         /// </summary>
-        public int ID { get; set; }
+        [DataMember]
+        public ObjectId _id { get; set; }
+
         /// <summary>
         /// represents the current status of the friend for example Online or Offline
         /// </summary>
-        public Status CurrentStatus { get; set; }
+        [DataMember]
+        public string Status { get; set; }
+
         /// <summary>
         /// ip of the friend
         /// </summary>
+        [DataMember]
         public string IP { get; set; }
     }
 

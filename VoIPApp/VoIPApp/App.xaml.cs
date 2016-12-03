@@ -26,9 +26,9 @@ namespace VoIPApp
             {
                 bootstrapper.Run();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine("Failed running the bootstrapper: " + ex.Message);
             }
         }
     }

@@ -2,6 +2,7 @@
 using Prism.Regions;
 using System;
 using System.Windows;
+using System.Windows.Input;
 using VoIPApp.Common;
 
 namespace VoIPApp.Views
@@ -36,6 +37,12 @@ namespace VoIPApp.Views
                                 var result = nr.Result;
                             }
                         );
+                    }
+
+                    var viewModel = (VoIPApp.ViewModels.ShellViewModel)DataContext;
+                    if((viewModel != null) && viewModel.LoadModuleCompleted.CanExecute(null))
+                    {
+                        viewModel.LoadModuleCompleted.Execute(null);
                     }
                 };
         }

@@ -76,6 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -109,6 +110,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Service References\ServerServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\VoiceServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -144,6 +150,19 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\ServerServiceReference\ServerService1.wsdl" />
+    <None Include="Service References\ServerServiceReference\ServerService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerServiceReference\ServerService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerServiceReference\ServerService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServerServiceReference\ServerService33.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\VoiceServiceReference\VoiceService.wsdl" />
     <None Include="Service References\VoiceServiceReference\VoiceService.xsd">
       <SubType>Designer</SubType>
@@ -192,6 +211,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServerServiceReference\" />
     <WCFMetadataStorage Include="Service References\VoiceServiceReference\" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +225,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\VoiceServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServerServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Practices.Unity;
+using MongoDB.Bson;
 using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
+using SharedCode.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using VoIPApp.Common.Models;
 using VoIPApp.Modules.Chat.Services;
 
 namespace VoIPApp.Modules.Chat.ViewModels
@@ -29,7 +30,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private readonly DelegateCommand<object> messageTextBoxChanged;
         private readonly InteractionRequest<VoiceChatViewModel> showVoiceChatRequest;
         private readonly IUnityContainer container;
-        private int currentFriendID;
+        private ObjectId currentFriendID;
         private bool calling;
 
         public ChatViewModel(IFriendsService friendsService, IMessageService messageService, IUnityContainer container)
@@ -53,7 +54,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.friendsService = friendsService;
             this.messageService = messageService;
 
-            friends = new ListCollectionView(friendsService.Friends.Values.ToList());
+            friends = new ListCollectionView(friendsService.Friends);
             messages = new ObservableCollection<Message>();
 
             this.sendCommand = new DelegateCommand<object>(this.OnSend, this.CanSend);
@@ -63,6 +64,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
 
             Friends.CurrentChanged += SelectedFriendChanged;
+
+            friendsService.UpdateFriendsList();
         }
 
         public ICollectionView Friends
@@ -131,7 +134,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             try
             {
-                currentFriendID = (Friends.CurrentItem as Friend).ID;
+                currentFriendID = (Friends.CurrentItem as Friend)._id;
                 Messages.AddRange(messageService.GetMessages(currentFriendID));
             }
             catch(NullReferenceException) { }
@@ -139,11 +142,11 @@ namespace VoIPApp.Modules.Chat.ViewModels
             callCommand.RaiseCanExecuteChanged();
         }
 
-        private void OnSend(object arg)
+        private async void OnSend(object arg)
         {
             string userMessage = arg as string;
-            Message message = new Message { Text = userMessage, FriendID = -1 };
-            messageService.AddMessage(currentFriendID, message);
+            Message message = new Message { Text = userMessage, FriendID = currentFriendID, Date = new DateTime() };
+            await messageService.SendMessage(message);
             Messages.Add(message);
         }
 
@@ -164,7 +167,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             try
             {
                 Friend currentFriend = Friends.CurrentItem as Friend;
-                if (currentFriend.CurrentStatus == Status.Online && !calling)
+                if (currentFriend.Status == Status.Online.ToString() && !calling)
                 {
                     return true;
                 }

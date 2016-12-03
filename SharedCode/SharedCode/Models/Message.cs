@@ -1,31 +1,35 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoIPApp.Common.Models
+namespace SharedCode.Models
 {
     /// <summary>
     /// elements of a message
     /// </summary>
+    [DataContract]
     public class Message
     {
         /// <summary>
         /// text of a message
         /// </summary>
+        [DataMember]
         public string Text { get; set; }
-        /// <summary>
-        /// hour when the message was sent
-        /// </summary>
-        public int Hour { get; set; }
-        /// <summary>
-        /// minute when the message was sent
-        /// </summary>
-        public int Minute { get; set; }
+
         /// <summary>
         /// friend id of the sender
         /// </summary>
-        public int FriendID { get; set; }
+        [DataMember]
+        public ObjectId FriendID { get; set; }
+
+        /// <summary>
+        /// point of time when message was sent
+        /// </summary>
+        [DataMember]
+        public DateTime Date { get; set; }
     }
 }

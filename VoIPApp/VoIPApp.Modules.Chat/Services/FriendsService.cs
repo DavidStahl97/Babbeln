@@ -1,28 +1,59 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using SharedCode.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VoIPApp.Common.Models;
+using SharedCode.Services;
 
 namespace VoIPApp.Modules.Chat.Services
 {
     public class FriendsService : IFriendsService
     {
-        public Dictionary<int, Friend> Friends { get; set; }
+        private readonly IMongoCollection<BsonDocument> friendCollection;
 
-        public FriendsService()
+        public FriendsService(IUnityContainer container)
         {
-            Friends = new Dictionary<int, Friend>();
-
-            Friends.Add(0, new Friend { Name = "David Stahl", ProfileName = "@totalhirn", Icon = "..\\Assets\\profile1.png", ID = 0, CurrentStatus = Status.Online, IP = "192.168.1.53"});
-            Friends.Add(1, new Friend { Name = "David Stahl2", ProfileName = "@totalhirn", Icon = "..\\Assets\\profile1.png", ID = 1, CurrentStatus = Status.Online, IP = "127.0.0.1" });
-            Friends.Add(2, new Friend { Name = "Rebecca", ProfileName = "@becci", Icon = "..\\Assets\\profile2.png", ID = 2, CurrentStatus = Status.Online, IP = "192.168.1.33"});
-            Friends.Add(3, new Friend { Name = "Pedro Mano", ProfileName = "@crazycape", Icon = "..\\Assets\\profile3.png", ID = 3, CurrentStatus = Status.Online });
-            Friends.Add(4, new Friend { Name = "ahl", ProfileName = "@crazycape", Icon = "..\\Assets\\profile3.png", ID = 4, CurrentStatus = Status.Offline });
+            DataBaseService dbService = container.Resolve<DataBaseService>();
+            this.friendCollection = dbService.Database.GetCollection<BsonDocument>("users");
+            Friends = new ObservableCollection<Friend>();
         }
 
+        public ObservableCollection<Friend> Friends { get; set; }
+
+        public async Task UpdateFriendsList()
+        {
+            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+
+            FilterDefinition<BsonDocument> filter = builder.Empty;
+            foreach (Friend f in Friends)
+            {
+                filter = filter & builder.Not(builder.Eq("_id", f._id));
+            }
+
+            using (IAsyncCursor<BsonDocument> cursor = await friendCollection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    IEnumerable<BsonDocument> batch = cursor.Current;
+                    foreach(BsonDocument document in batch)
+                    {
+                        Friends.Add(BsonSerializer.Deserialize<Friend>(document));
+                    }
+                }
+            }
+        }
+
+        public async void UpdateFriendById(ObjectId id)
+        {
+            FilterDefinitionBuilder<BsonDocument> builder = new FilterDefinitionBuilder<BsonDocument>();
+            FilterDefinition<BsonDocument> filter = builder.Eq("_id", id);
+        }
 
     }
 }

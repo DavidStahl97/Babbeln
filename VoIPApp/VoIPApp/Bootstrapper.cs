@@ -5,6 +5,7 @@ using System.Windows;
 using Prism.Modularity;
 using System;
 using CPPWrapper;
+using SharedCode.Services;
 
 namespace VoIPApp
 {
@@ -14,9 +15,13 @@ namespace VoIPApp
     class Bootstrapper : UnityBootstrapper
     {
         /// <summary>
-        /// instance of the c++/cli <see cref="audioStreamingService"/>
+        /// instance of the c++/cli <see cref="audioStreamingService"/> for entire application
         /// </summary>
         private readonly AudioStreamingService audioStreamingService = new AudioStreamingService();
+        /// <summary>
+        /// instance of <see cref="DataBaseService"/> for entire application
+        /// </summary>
+        private readonly DataBaseService dataBaseService = new DataBaseService();
 
         /// <summary>
         /// creates shell
@@ -54,13 +59,14 @@ namespace VoIPApp
         }
 
         /// <summary>
-        /// registers the singleton instance of <see cref="audioStreamingService"/>
+        /// registers singleton instances of global services/>
         /// </summary>
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
 
             Container.RegisterInstance(audioStreamingService);
+            Container.RegisterInstance(dataBaseService);
         }
     }
 }

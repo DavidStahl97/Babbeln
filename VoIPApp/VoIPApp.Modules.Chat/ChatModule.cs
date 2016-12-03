@@ -38,7 +38,7 @@ namespace VoIPApp.Modules.Chat
         /// <summary>
         /// service for managing the friend list
         /// </summary>
-        private readonly IFriendsService chatService;
+        private readonly IFriendsService friendsService;
         /// <summary>
         /// service for managing messaging
         /// </summary>
@@ -67,7 +67,7 @@ namespace VoIPApp.Modules.Chat
             this.regionManager = regionManager;
             this.container = container;
 
-            this.chatService = new FriendsService();
+            this.friendsService = new FriendsService(container);
             this.messageService = new MessageService();
             this.voIPService = new VoIPService(audioStreamer);
             this.audioStreamer = audioStreamer;
@@ -87,7 +87,7 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         public void Initialize()
         {          
-            this.container.RegisterInstance(chatService);
+            this.container.RegisterInstance(friendsService);
             this.container.RegisterInstance(messageService);
             this.container.RegisterInstance(voIPService);
             this.container.RegisterInstance(voiceService);

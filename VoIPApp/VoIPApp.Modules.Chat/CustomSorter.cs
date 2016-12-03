@@ -1,10 +1,10 @@
-﻿using System;
+﻿using SharedCode.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VoIPApp.Common.Models;
 
 namespace VoIPApp.Modules.Chat
 {

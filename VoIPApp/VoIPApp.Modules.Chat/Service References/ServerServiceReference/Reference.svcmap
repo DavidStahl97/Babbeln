@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cd635005-4b32-4306-b34b-0b5ead907dae" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1111/VoIPServer/ServerService" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ServerService1.wsdl" MetadataType="Wsdl" ID="f8272e9b-aed7-430e-91aa-2a9f55ce178a" SourceId="1" SourceUrl="http://localhost:1111/VoIPServer/ServerService" />
+    <MetadataFile FileName="ServerService3.xsd" MetadataType="Schema" ID="5c45da9d-ca42-4d96-a9cf-13d90f052869" SourceId="1" SourceUrl="http://localhost:1111/VoIPServer/ServerService?xsd=xsd3" />
+    <MetadataFile FileName="ServerService31.xsd" MetadataType="Schema" ID="8ddf8d54-372a-4b08-b279-56c820d847be" SourceId="1" SourceUrl="http://localhost:1111/VoIPServer/ServerService?xsd=xsd2" />
+    <MetadataFile FileName="ServerService32.xsd" MetadataType="Schema" ID="87278ec5-1436-444b-8ac1-4edd6f04954b" SourceId="1" SourceUrl="http://localhost:1111/VoIPServer/ServerService?xsd=xsd0" />
+    <MetadataFile FileName="ServerService33.xsd" MetadataType="Schema" ID="9126898f-61ec-4ed4-953b-7ae0ee3b9b85" SourceId="1" SourceUrl="http://localhost:1111/VoIPServer/ServerService?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

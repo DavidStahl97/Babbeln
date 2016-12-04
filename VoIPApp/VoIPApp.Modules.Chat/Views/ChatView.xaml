@@ -15,6 +15,9 @@
                 <ResourceDictionary Source="pack://application:,,,/VoIPApp.Common;component/Themes/generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <!--multi converter to compare to ObjectIds-->
+            <local:ObjectIdMultiConverter x:Key="ObjectIdConverter"/>
+            
             <!--style for message list-->
             <Style x:Key="ListViewItemTemplate" TargetType="ListViewItem">
                 <Setter Property="Template">
@@ -36,7 +39,13 @@
                                             <Setter Property="Background" Value="LightGray"/>
                                             <Setter Property="Margin" Value="10,20,0,0"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=FriendID}" Value="-1">
+                                                <DataTrigger Value="True">
+                                                    <DataTrigger.Binding>
+                                                        <MultiBinding Converter="{StaticResource ObjectIdConverter}">
+                                                            <Binding Path="Sender"/>
+                                                            <Binding ElementName="ChatList" Path="DataContext.UserID"/>
+                                                        </MultiBinding>
+                                                    </DataTrigger.Binding>
                                                     <Setter Property="Grid.Column" Value="1"/>
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
                                                     <Setter Property="Background" Value="White"/>
@@ -53,8 +62,8 @@
                                            HorizontalAlignment="Right">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat=" {0}:{1}">
-                                                    <Binding Path="Hour"/>
-                                                    <Binding Path="Minute"/>
+                                                    <Binding Path="Date.Hour"/>
+                                                    <Binding Path="Date.Minute"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -198,7 +207,8 @@
                   BorderThickness="0"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  ItemContainerStyle="{DynamicResource ListViewItemTemplate}"/>
+                  ItemContainerStyle="{DynamicResource ListViewItemTemplate}"
+                  x:Name="ChatList"/>
 
 
             <!--Chat Input-->

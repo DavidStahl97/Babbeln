@@ -62,7 +62,7 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task SendMessage(Message msg)
         {
-            msg.User = userId;
+            msg.Sender = userId;
             await serverServiceClient.SendMessageAsync(msg);
         }
 
@@ -108,7 +108,7 @@ namespace VoIPApp.Modules.Chat.Services
                             _id = document["receiver"].AsObjectId;
                         }
 
-                        Message msg = new Message { User = userId, FriendID = _id, Date = document["date"].ToUniversalTime(), Text = document["text"].AsString };
+                        Message msg = new Message { Sender = userId, Receiver = _id, Date = document["date"].ToUniversalTime(), Text = document["text"].AsString };
 
                         ObservableCollection<Message> msgList;
                         if (messages.TryGetValue(_id, out msgList))

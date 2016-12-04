@@ -24,7 +24,7 @@ namespace SharedCode.Models
         /// friend id of the sender
         /// </summary>
         [DataMember]
-        public ObjectId FriendID { get; set; }
+        public ObjectId Receiver { get; set; }
 
         /// <summary>
         /// point of time when message was sent
@@ -33,6 +33,6 @@ namespace SharedCode.Models
         public DateTime Date { get; set; }
 
         [DataMember]
-        public ObjectId User { get; set; }
+        public ObjectId Sender { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.Practices.Unity;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using SharedCode.Models;
+using SharedCode.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +33,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private readonly InteractionRequest<VoiceChatViewModel> showVoiceChatRequest;
         private readonly IUnityContainer container;
         private ObjectId currentFriendID;
+        private ObjectId userId;
         private bool calling;
 
         public ChatViewModel(IFriendsService friendsService, IMessageService messageService, IUnityContainer container)
@@ -66,6 +69,19 @@ namespace VoIPApp.Modules.Chat.ViewModels
             Friends.CurrentChanged += SelectedFriendChanged;
 
             friendsService.UpdateFriendsList();
+
+            //remove
+            DataBaseService dataBaseService = container.Resolve<DataBaseService>();
+            IMongoCollection<BsonDocument> friendCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
+            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Name", "david");
+            List<BsonDocument> result = friendCollection.Find(filter).ToList();
+            this.userId = result[0]["_id"].AsObjectId;
+            //
+        }
+
+        public ObjectId UserID
+        {
+            get { return this.userId; }
         }
 
         public ICollectionView Friends
@@ -145,7 +161,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private async void OnSend(object arg)
         {
             string userMessage = arg as string;
-            Message message = new Message { Text = userMessage, FriendID = currentFriendID, Date = new DateTime() };
+            Message message = new Message { Text = userMessage, Receiver = currentFriendID, Date = DateTime.Now };
             await messageService.SendMessage(message);
             Messages.Add(message);
         }

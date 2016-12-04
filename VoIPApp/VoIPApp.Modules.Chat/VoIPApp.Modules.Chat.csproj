@@ -98,6 +98,7 @@
   <ItemGroup>
     <Compile Include="ChatModule.cs" />
     <Compile Include="CustomSorter.cs" />
+    <Compile Include="ObjectIdMultiConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

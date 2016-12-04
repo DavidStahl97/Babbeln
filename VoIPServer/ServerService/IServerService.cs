@@ -9,7 +9,7 @@ using System.Text;
 
 namespace VoIPServer.ServerServiceLibrary
 {
-    [ServiceContract(CallbackContract = typeof(IMessageCallBack))]
+    [ServiceContract(CallbackContract = typeof(IServerCallBack))]
     public interface IServerService
     {
         [OperationContract(IsOneWay =true)]
@@ -22,7 +22,7 @@ namespace VoIPServer.ServerServiceLibrary
         void Unsubscribe(ObjectId id);
     }
 
-    public interface IMessageCallBack
+    public interface IServerCallBack
     {
         [OperationContract(IsOneWay = true)]
         void OnMessageReceived(Message msg);

@@ -68,7 +68,7 @@ namespace VoIPApp.Modules.Chat
             this.container = container;
 
             this.friendsService = new FriendsService(container);
-            this.messageService = new MessageService();
+            this.messageService = new MessageService(container);
             this.voIPService = new VoIPService(audioStreamer);
             this.audioStreamer = audioStreamer;
 
@@ -85,7 +85,7 @@ namespace VoIPApp.Modules.Chat
         /// registers the types and singleton instance for the <see cref="IUnityContainer"/>, starts the <see cref="audioInitWorker"/>
         /// and the <see cref="voiceServiceManager"/>
         /// </summary>
-        public void Initialize()
+        public async void Initialize()
         {          
             this.container.RegisterInstance(friendsService);
             this.container.RegisterInstance(messageService);
@@ -97,6 +97,8 @@ namespace VoIPApp.Modules.Chat
             audioInitWorker.RunWorkerAsync();
 
             voiceServiceManager.StartVoiceService();
+
+            await messageService.PopulateMessageDictionary();
         }
 
         /// <summary>

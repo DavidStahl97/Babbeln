@@ -31,5 +31,8 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         public DateTime Date { get; set; }
+
+        [DataMember]
+        public ObjectId User { get; set; }
     }
 }

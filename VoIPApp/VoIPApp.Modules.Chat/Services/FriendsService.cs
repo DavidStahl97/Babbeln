@@ -28,9 +28,14 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task UpdateFriendsList()
         {
+            //remove
+            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Name", "david");
+            List<BsonDocument> result = await friendCollection.Find(filter).ToListAsync();
+            ObjectId userId = result[0]["_id"].AsObjectId;
+
             FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
 
-            FilterDefinition<BsonDocument> filter = builder.Empty;
+            filter = builder.Not(builder.Eq("_id", userId));
             foreach (Friend f in Friends)
             {
                 filter = filter & builder.Not(builder.Eq("_id", f._id));

@@ -17,7 +17,7 @@ namespace VoIPServer.ServerServiceLibrary
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, UseSynchronizationContext = true)]
     public class ServerService : IServerService
     {
-        private static readonly Dictionary<ObjectId, IMessageCallBack> subscribers = new Dictionary<ObjectId, IMessageCallBack>();
+        private static readonly Dictionary<ObjectId, IServerCallBack> subscribers = new Dictionary<ObjectId, IServerCallBack>();
         private static readonly DataBaseService dataBaseService = new DataBaseService();
 
         static ServerService()
@@ -29,16 +29,16 @@ namespace VoIPServer.ServerServiceLibrary
         {
             BsonDocument document = new BsonDocument
             {
-                {"sender", "127.0.0.1"},
+                {"sender", msg.User},
                 {"receiver", msg.FriendID},
                 {"date", msg.Date },
                 {"text", msg.Text }
             };
 
-            IMongoCollection<BsonDocument> messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messsages");
+            IMongoCollection<BsonDocument> messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messages");
             await messageCollection.InsertOneAsync(document);
 
-            IMessageCallBack cb;
+            IServerCallBack cb;
             if(subscribers.TryGetValue(msg.FriendID, out cb))
             {
                 cb.OnMessageReceived(msg);
@@ -47,7 +47,7 @@ namespace VoIPServer.ServerServiceLibrary
 
         public void Subscribe(ObjectId id)
         {
-            IMessageCallBack callback = OperationContext.Current.GetCallbackChannel<IMessageCallBack>();
+            IServerCallBack callback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
             if (!subscribers.ContainsKey(id))
             {
                 subscribers.Add(id, callback);

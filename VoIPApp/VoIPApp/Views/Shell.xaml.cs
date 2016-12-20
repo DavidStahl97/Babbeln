@@ -38,12 +38,6 @@ namespace VoIPApp.Views
                             }
                         );
                     }
-
-                    var viewModel = (VoIPApp.ViewModels.ShellViewModel)DataContext;
-                    if((viewModel != null) && viewModel.LoadModuleCompleted.CanExecute(null))
-                    {
-                        viewModel.LoadModuleCompleted.Execute(null);
-                    }
                 };
         }
     }

@@ -21,6 +21,11 @@ namespace VoIPServer
                 serviceHost.Open();
                 Console.WriteLine("The service is ready.");
                 Console.WriteLine("Press <ENTER> to terminate the service.");
+                foreach(var end in serviceHost.Description.Endpoints)
+                {
+                    Console.WriteLine(end.Address);
+                }
+               
                 Console.WriteLine();
                 Console.ReadLine();
 

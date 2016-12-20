@@ -6,25 +6,32 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace VoIPServer.ServerServiceLibrary
 {
-    [ServiceContract(CallbackContract = typeof(IServerCallBack))]
+    [ServiceContract(CallbackContract = typeof(IServerCallBack), SessionMode = SessionMode.Required)]
     public interface IServerService
     {
-        [OperationContract(IsOneWay =true)]
+        [OperationContract(IsOneWay = true)]
         void SendMessage(Message msg);
 
-        [OperationContract(IsOneWay = true)]
-        void Subscribe(ObjectId id);
+        [OperationContract(IsOneWay = false)]
+        bool Call(ObjectId receiver);
+
+        [OperationContract(IsOneWay = false)]
+        Task<ObjectId> Subscribe(string userName, string password, string ip);
 
         [OperationContract(IsOneWay = true)]
-        void Unsubscribe(ObjectId id);
+        void Unsubscribe();
     }
 
     public interface IServerCallBack
     {
         [OperationContract(IsOneWay = true)]
         void OnMessageReceived(Message msg);
+
+        [OperationContract(IsOneWay = false)]
+        void OnCall(ObjectId id);
     }
 }

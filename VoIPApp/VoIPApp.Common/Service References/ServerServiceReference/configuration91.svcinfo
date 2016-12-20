@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="7+iXktiE8IqF72dPiF98ia9lXY0=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="njDqucOMIPfNhz1yNco9gqK4W1E=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="wsDualHttpBinding" name="WSDualHttpBinding_IServerService">
       <properties>
@@ -97,10 +97,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSDualHttpBinding_IServerService" contract="ServerServiceReference.IServerService" bindingType="wsDualHttpBinding" address="http://localhost/VoIPServer/ServerService" bindingConfiguration="WSDualHttpBinding_IServerService">
+    <endpoint name="WSDualHttpBinding_IServerService" contract="ServerServiceReference.IServerService" bindingType="wsDualHttpBinding" address="http://localhost:10000/VoIPServer/ServerService" bindingConfiguration="WSDualHttpBinding_IServerService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost/VoIPServer/ServerService</serializedValue>
+          <serializedValue>http://localhost:10000/VoIPServer/ServerService</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

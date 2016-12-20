@@ -1,0 +1,24 @@
+﻿<Window x:Class="VoIPApp.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0"
+                 Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1"
+                 Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="3" 
+                Command="{Binding OkCommand}"
+                CommandParameter=""/>
+        <TextBlock Grid.Row="2" 
+                Text="{Binding Message}"/>
+    </Grid>
+</Window>

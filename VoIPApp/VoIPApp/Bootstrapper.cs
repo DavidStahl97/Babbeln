@@ -6,6 +6,8 @@ using Prism.Modularity;
 using System;
 using CPPWrapper;
 using SharedCode.Services;
+using VoIPApp.Common.Services;
+using VoIPApp.Services;
 
 namespace VoIPApp
 {
@@ -23,12 +25,17 @@ namespace VoIPApp
         /// </summary>
         private readonly DataBaseService dataBaseService = new DataBaseService();
 
+        private ServerServiceProxy serverServiceProxy = new ServerServiceProxy();
+
         /// <summary>
         /// creates shell
         /// </summary>
         /// <returns>returns the resolved shell object</returns>
         protected override DependencyObject CreateShell()
         {
+            LoginView loginView = new LoginView();
+            loginView.ShowDialog();
+
             return Container.Resolve<Shell>();
         }
 
@@ -67,6 +74,8 @@ namespace VoIPApp
 
             Container.RegisterInstance(audioStreamingService);
             Container.RegisterInstance(dataBaseService);
+            Container.RegisterInstance(serverServiceProxy);
+            Container.RegisterType<LoginService>();
         }
     }
 }

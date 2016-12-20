@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SharedCode.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SharedCode.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost/VoIPServer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
+  <xs:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
   <xs:complexType name="Message">
     <xs:sequence>
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="FriendID" type="q1:ObjectId" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Receiver" type="q1:ObjectId" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Sender" type="q2:ObjectId" />
       <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

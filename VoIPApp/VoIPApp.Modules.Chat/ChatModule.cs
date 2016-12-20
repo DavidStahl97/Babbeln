@@ -11,13 +11,14 @@ using VoIPApp.Modules.Chat.Views;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using VoiceServiceLibrary;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat
 {
     /// <summary>
     /// will be loaded by the module manager
     /// </summary>
-    public class ChatModule : IModule, IDisposable
+    public class ChatModule : IModule
     {
         /// <summary>
         /// <see cref="IRegionManager"/> of the application
@@ -48,10 +49,6 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         private readonly IVoIPService voIPService;
         /// <summary>
-        /// manages the wcf service for the <see cref="voIPService"/>
-        /// </summary>
-        private readonly VoiceServiceManager voiceServiceManager;
-        /// <summary>
         /// wcf service for voice chatting
         /// </summary>
         private readonly VoiceService voiceService;
@@ -62,30 +59,34 @@ namespace VoIPApp.Modules.Chat
         /// <param name="regionManager">injected by the <see cref="IUnityContainer"/>, stored in <see cref="regionManager"/></param>
         /// <param name="container">injected by the <see cref="IUnityContainer"/>, stored in <see cref="container"/></param>
         /// <param name="audioStreamer">injected by the <see cref="IUnityContainer"/>, stored in <see cref="audioStreamer"/></param>
-        public ChatModule(IRegionManager regionManager, IUnityContainer container, AudioStreamingService audioStreamer)
+        public ChatModule(IRegionManager regionManager, IUnityContainer container, ModuleManager moduleManager, AudioStreamingService audioStreamer, ServerServiceProxy serverServiceProxy)
         {
             this.regionManager = regionManager;
             this.container = container;
 
             this.friendsService = new FriendsService(container);
-            this.messageService = new MessageService(container);
-            this.voIPService = new VoIPService(audioStreamer);
+            this.messageService = new MessageService(container, moduleManager, serverServiceProxy);
+            this.voIPService = new VoIPService(audioStreamer, serverServiceProxy);
             this.audioStreamer = audioStreamer;
 
             this.voiceService = new VoiceService();
-            this.voiceServiceManager = new VoiceServiceManager(voiceService);
 
             this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
 
             this.audioInitWorker = new BackgroundWorker();
             audioInitWorker.DoWork += audioInitWorker_DoWork;
+
+            moduleManager.LoadModuleCompleted += (s, e) =>
+            {
+                audioInitWorker.RunWorkerAsync();
+            };
         }
 
         /// <summary>
         /// registers the types and singleton instance for the <see cref="IUnityContainer"/>, starts the <see cref="audioInitWorker"/>
         /// and the <see cref="voiceServiceManager"/>
         /// </summary>
-        public async void Initialize()
+        public void Initialize()
         {          
             this.container.RegisterInstance(friendsService);
             this.container.RegisterInstance(messageService);
@@ -93,12 +94,6 @@ namespace VoIPApp.Modules.Chat
             this.container.RegisterInstance(voiceService);
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
-
-            audioInitWorker.RunWorkerAsync();
-
-            voiceServiceManager.StartVoiceService();
-
-            await messageService.PopulateMessageDictionary();
         }
 
         /// <summary>
@@ -111,12 +106,5 @@ namespace VoIPApp.Modules.Chat
             audioStreamer.Init();
         }
 
-        /// <summary>
-        /// called when the module is disposed, stops the <see cref="voiceServiceManager"/>
-        /// </summary>
-        public void Dispose()
-        {
-            voiceServiceManager.StopVoiceService();
-        }
     }
 }

@@ -13,9 +13,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using VoIPApp.Common.Services;
 using VoIPApp.Modules.Chat.Services;
 
 namespace VoIPApp.Modules.Chat.ViewModels
@@ -60,8 +62,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             friends = new ListCollectionView(friendsService.Friends);
             messages = new ObservableCollection<Message>();
 
-            this.sendCommand = new DelegateCommand<object>(this.OnSend, this.CanSend);
-            this.callCommand = new DelegateCommand<object>(this.OnCall, this.CanCall);
+            this.sendCommand = DelegateCommand<object>.FromAsyncHandler(OnSend, CanSend);
+            this.callCommand = DelegateCommand<object>.FromAsyncHandler(this.OnCall, this.CanCall);
             this.searchTextBoxChanged = new DelegateCommand<object>(this.OnSearchTextBoxChanged);
             this.messageTextBoxChanged = new DelegateCommand<object>(this.OnMessageTextBoxChanged);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
@@ -70,13 +72,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             friendsService.UpdateFriendsList();
 
-            //remove
-            DataBaseService dataBaseService = container.Resolve<DataBaseService>();
-            IMongoCollection<BsonDocument> friendCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
-            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Name", "david");
-            List<BsonDocument> result = friendCollection.Find(filter).ToList();
-            this.userId = result[0]["_id"].AsObjectId;
-            //
+            this.userId = container.Resolve<ServerServiceProxy>().UserId;
         }
 
         public ObjectId UserID
@@ -121,7 +117,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private void OnMessageTextBoxChanged(object obj)
         {
-            (SendCommand as DelegateCommand<object>).RaiseCanExecuteChanged();
+            sendCommand.RaiseCanExecuteChanged();
         }
 
         private void OnSearchTextBoxChanged(object obj)
@@ -158,10 +154,10 @@ namespace VoIPApp.Modules.Chat.ViewModels
             callCommand.RaiseCanExecuteChanged();
         }
 
-        private async void OnSend(object arg)
+        private async Task OnSend(object arg)
         {
             string userMessage = arg as string;
-            Message message = new Message { Text = userMessage, Receiver = currentFriendID, Date = DateTime.Now };
+            Message message = new Message { Text = userMessage, Receiver = currentFriendID, Date = DateTime.Now, Sender = userId };
             await messageService.SendMessage(message);
             Messages.Add(message);
         }
@@ -193,7 +189,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             return false;
         }
 
-        private void OnCall(object obj)
+        private async Task OnCall(object obj)
         {
             Friend currentFriend = Friends.CurrentItem as Friend;
 
@@ -212,7 +208,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
                     callCommand.RaiseCanExecuteChanged();
                 });
 
-            voiceChatViewModel.StartCall(currentFriend.IP);
+            await voiceChatViewModel.StartCall(currentFriend);
         }
     }
 }

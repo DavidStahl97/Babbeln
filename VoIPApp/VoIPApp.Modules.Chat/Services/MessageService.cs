@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Prism.Modularity;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -10,60 +11,29 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using VoIPApp.Modules.Chat.ServerServiceReference;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat.Services
 {
-    public class MessageService : IMessageService, IDisposable, IServerServiceCallback
+    public class MessageService : IMessageService
     {
-        private readonly IServerService serverServiceClient;
+        private readonly ServerServiceProxy serverServiceProxy;
         private readonly IMongoCollection<BsonDocument> messageCollection;
         private readonly Dictionary<ObjectId, ObservableCollection<Message>> messages;
 
-        //remove
-        private readonly IMongoDatabase dataBase;
-        private readonly ObjectId userId;
-
-        public MessageService(IUnityContainer container)
+        public MessageService(IUnityContainer container, IModuleManager moduleManager, ServerServiceProxy serverServiceProxy)
         {
             DataBaseService dataBaseService = container.Resolve<DataBaseService>();
             this.messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messages");
-            this.dataBase = dataBaseService.Database;
 
             this.messages = new Dictionary<ObjectId, ObservableCollection<Message>>();
-
-            WSDualHttpBinding binding = new WSDualHttpBinding();
-            EndpointAddress endpoint = new EndpointAddress("http://localhost/VoIPServer/ServerService");
-            DuplexChannelFactory<IServerService> channelFactory = new DuplexChannelFactory<IServerService>(this, binding, endpoint);
-
-            try
-            {
-                serverServiceClient = channelFactory.CreateChannel();
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                if(serverServiceClient != null)
-                {
-                    ((ICommunicationObject)serverServiceClient).Abort();
-                }
-            }
-
-
-            //remove
-            IMongoCollection<BsonDocument> friendCollection = dataBase.GetCollection<BsonDocument>("users");
-            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Name", "david");
-            List<BsonDocument> result = friendCollection.Find(filter).ToList();
-            this.userId = result[0]["_id"].AsObjectId;
-            //
-
-            serverServiceClient.Subscribe(userId);
+            this.serverServiceProxy = serverServiceProxy;
         }
 
         public async Task SendMessage(Message msg)
         {
-            msg.Sender = userId;
-            await serverServiceClient.SendMessageAsync(msg);
+            VoIPApp.Common.ServerServiceReference.Message wcfMessage = new VoIPApp.Common.ServerServiceReference.Message { Date = msg.Date, Receiver = msg.Receiver, Sender = msg.Sender, Text = msg.Text };
+            await serverServiceProxy.ServerService.SendMessageAsync(wcfMessage);
         }
 
         public ObservableCollection<Message> GetMessages(ObjectId _id)
@@ -77,19 +47,10 @@ namespace VoIPApp.Modules.Chat.Services
             return msg;
         }
 
-        public void Dispose()
-        {
-            serverServiceClient.Unsubscribe(userId);
-            ((ICommunicationObject)serverServiceClient).Close();
-        }
-
-        public void OnMessageReceived(Message msg)
-        {
-            
-        }
-
         public async Task PopulateMessageDictionary()
         {
+            ObjectId userId = serverServiceProxy.UserId;
+
             FilterDefinitionBuilder<BsonDocument>
                 builder = Builders<BsonDocument>.Filter;
 

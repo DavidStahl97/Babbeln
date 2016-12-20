@@ -112,16 +112,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Service References\ServerServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\VoiceServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Services\FriendsService.cs" />
     <Compile Include="Services\IFriendsService.cs" />
     <Compile Include="Services\IMessageService.cs" />
@@ -139,7 +129,6 @@
     <Compile Include="Views\VoiceChatView.xaml.cs">
       <DependentUpon>VoiceChatView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VoiceServiceManager.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -151,26 +140,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Service References\ServerServiceReference\ServerService.wsdl" />
-    <None Include="Service References\ServerServiceReference\VoIPServer.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\VoiceServiceReference\VoiceService.wsdl" />
-    <None Include="Service References\VoiceServiceReference\VoiceService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\VoiceServiceReference\VoiceService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\ChatNavigationItemView.xaml">
@@ -207,43 +176,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServerServiceReference\" />
-    <WCFMetadataStorage Include="Service References\VoiceServiceReference\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\VoiceServiceReference\VoiceService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\VoiceServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\VoiceServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\VoiceServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\VoIPServer.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

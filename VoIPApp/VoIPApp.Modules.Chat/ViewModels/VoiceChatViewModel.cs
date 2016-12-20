@@ -8,6 +8,8 @@ using CPPWrapper;
 using Prism.Interactivity.InteractionRequest;
 using System.ComponentModel;
 using VoIPApp.Modules.Chat.Services;
+using SharedCode.Models;
+using System.Threading.Tasks;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
@@ -30,9 +32,12 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.FinishInteraction();
         }
 
-        public void StartCall(string targetIP)
+        public async Task StartCall(Friend f)
         {
-            voIPService.StartCall(targetIP);
+            if (await voIPService.StartCall(f))
+            {
+                this.FinishInteraction();
+            }
         }
 
         public void StopCall()

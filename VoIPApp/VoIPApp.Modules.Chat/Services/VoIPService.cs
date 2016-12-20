@@ -1,20 +1,22 @@
 ﻿using CPPWrapper;
+using MongoDB.Bson;
+using SharedCode.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using VoIPApp.Modules.Chat.VoiceServiceReference;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat.Services
 {
     public class VoIPService : IVoIPService
     {
         private readonly AudioStreamingService audioStreamingService;
-        private readonly IVoiceService voiceServiceClient;
+        private readonly ServerServiceProxy serverServiceProxy;
 
-        public VoIPService(AudioStreamingService audioStreamingService)
+        public VoIPService(AudioStreamingService audioStreamingService, ServerServiceProxy serverServiceProxy)
         {
             if(audioStreamingService == null)
             {
@@ -22,37 +24,18 @@ namespace VoIPApp.Modules.Chat.Services
             }
 
             this.audioStreamingService = audioStreamingService;
-
-            BasicHttpBinding binding = new BasicHttpBinding();
-            EndpointAddress endpoint = new EndpointAddress("http://localhost/VoIPApp/VoiceService");
-            ChannelFactory<IVoiceService> channelFactory = new ChannelFactory<IVoiceService>(binding, endpoint);
-
-            try
-            {
-                voiceServiceClient = channelFactory.CreateChannel();
-            }
-            catch
-            {
-                if(voiceServiceClient != null)
-                {
-                    ((ICommunicationObject)voiceServiceClient).Abort();
-                }
-            }
+            this.serverServiceProxy = serverServiceProxy;
         }
 
-        public async void StartCall(string ip)
+        public async Task<bool> StartCall(Friend f)
         {
-            audioStreamingService.StartAsync(ip, 10000);
-            int i = await voiceServiceClient.CallAsync(1);
+            audioStreamingService.StartAsync(f.IP, 10000);
+            return await serverServiceProxy.ServerService.CallAsync(f._id);
         }
 
         public void StopCall()
         {
-            audioStreamingService.StopAsync();
-            if(voiceServiceClient != null)
-            {
-                ((ICommunicationObject)voiceServiceClient).Close();
-            }
+            audioStreamingService.StopAsync();          
         }
     }
 }

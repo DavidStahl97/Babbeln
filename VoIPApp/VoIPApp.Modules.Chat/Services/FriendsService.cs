@@ -10,32 +10,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedCode.Services;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat.Services
 {
     public class FriendsService : IFriendsService
     {
         private readonly IMongoCollection<BsonDocument> friendCollection;
+        private ObjectId userId;
 
         public FriendsService(IUnityContainer container)
         {
             DataBaseService dbService = container.Resolve<DataBaseService>();
             this.friendCollection = dbService.Database.GetCollection<BsonDocument>("users");
             Friends = new ObservableCollection<Friend>();
+
+            ServerServiceProxy serverService = container.Resolve<ServerServiceProxy>();
+            this.userId = serverService.UserId;
         }
 
         public ObservableCollection<Friend> Friends { get; set; }
 
         public async Task UpdateFriendsList()
         {
-            //remove
-            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Name", "david");
-            List<BsonDocument> result = await friendCollection.Find(filter).ToListAsync();
-            ObjectId userId = result[0]["_id"].AsObjectId;
-
             FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
 
-            filter = builder.Not(builder.Eq("_id", userId));
+            FilterDefinition<BsonDocument> filter = builder.Not(builder.Eq("_id", userId));
             foreach (Friend f in Friends)
             {
                 filter = filter & builder.Not(builder.Eq("_id", f._id));
@@ -52,12 +52,6 @@ namespace VoIPApp.Modules.Chat.Services
                     }
                 }
             }
-        }
-
-        public async void UpdateFriendById(ObjectId id)
-        {
-            FilterDefinitionBuilder<BsonDocument> builder = new FilterDefinitionBuilder<BsonDocument>();
-            FilterDefinition<BsonDocument> filter = builder.Eq("_id", id);
         }
 
     }

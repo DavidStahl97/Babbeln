@@ -1,9 +1,8 @@
-﻿<UserControl x:Class="VoIPApp.Views.LoginView"
+﻿<UserControl x:Class="VoIPApp.Views.RegisterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
-             xmlns:local="clr-namespace:VoIPApp"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              x:Name="This">
     <UserControl.Resources>
@@ -15,6 +14,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -45,18 +46,42 @@
             </PasswordBox>
         </StackPanel>
 
-        <TextBlock Grid.Row="2" 
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="2"
+                    Margin="20,0,20,20">
+            <TextBlock Text="Passwort bestätigen"
+                       Margin="0,0,0,5"
+                       FontSize="14"/>
+            <PasswordBox Name="ConfirmationPasswordBox">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PasswordChanged">
+                        <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </PasswordBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="3"
+                    Margin="20,0,20,15">
+            <TextBlock Text="E-Mail" 
+                       Margin="0,0,0,5"
+                       FontSize="14"/>
+            <TextBox Text="{Binding EMail, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="4" 
                    Text="{Binding Message}"
                    Margin="20,0,20,10"
                    Foreground="Red"/>
-        
+
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="3"
+                    Grid.Row="5"
                     HorizontalAlignment="Center">
-            <Button Command="{Binding LoginCommand}"
+            <Button Command="{Binding RegisterCommand}"
                     CommandParameter="{Binding ElementName=This}"
                     IsDefault="True"
-                    Content="Anmelden"
+                    Content="Registrieren"
                     Style="{StaticResource TextButtonStyle}"
                     Margin="0,0,5,0"/>
             <Button Command="{Binding CancelCommand}"
@@ -65,6 +90,5 @@
                     Margin="5,0,0,0"
                     Padding="10"/>
         </StackPanel>
-      
     </Grid>
 </UserControl>

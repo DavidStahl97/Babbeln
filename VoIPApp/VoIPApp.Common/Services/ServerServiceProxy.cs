@@ -74,6 +74,11 @@ namespace VoIPApp.Common.Services
             return true;
         }
 
+        public async Task<string> Register(string userName, string password, string email)
+        {
+            return await serverServiceClient.RegisterAsync(userName, password, email, ipAdress);
+        }
+
         public void OnCall(ObjectId id)
         {
             if(Call != null)

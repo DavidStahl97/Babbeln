@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     <!--style for menu buttons-->
-    <Style TargetType="Button" x:Key="ButtonStyle">
+    <Style TargetType="Button" x:Key="IconButtonStyle">
         <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="Foreground" Value="Gray"/>
@@ -25,6 +25,34 @@
             </Trigger>
             <Trigger Property="IsPressed" Value="true">
                 <Setter Property="Foreground" Value="LightGray"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="TextButtonStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="0,0,15,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" Padding="5">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Foreground" Value="DarkGray"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter Property="Foreground" Value="LightGray"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="Gray"/>
             </Trigger>
         </Style.Triggers>
     </Style>

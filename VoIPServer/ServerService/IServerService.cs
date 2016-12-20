@@ -24,6 +24,9 @@ namespace VoIPServer.ServerServiceLibrary
 
         [OperationContract(IsOneWay = true)]
         void Unsubscribe();
+
+        [OperationContract(IsOneWay = false)]
+        Task<string> Register(string userName, string password, string email, string ip);
     }
 
     public interface IServerCallBack

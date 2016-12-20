@@ -133,6 +133,12 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/Unsubscribe")]
         System.Threading.Tasks.Task UnsubscribeAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Register", ReplyAction="http://tempuri.org/IServerService/RegisterResponse")]
+        string Register(string userName, string password, string email, string ip);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Register", ReplyAction="http://tempuri.org/IServerService/RegisterResponse")]
+        System.Threading.Tasks.Task<string> RegisterAsync(string userName, string password, string email, string ip);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -203,6 +209,14 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         public System.Threading.Tasks.Task UnsubscribeAsync() {
             return base.Channel.UnsubscribeAsync();
+        }
+        
+        public string Register(string userName, string password, string email, string ip) {
+            return base.Channel.Register(userName, password, email, ip);
+        }
+        
+        public System.Threading.Tasks.Task<string> RegisterAsync(string userName, string password, string email, string ip) {
+            return base.Channel.RegisterAsync(userName, password, email, ip);
         }
     }
 }

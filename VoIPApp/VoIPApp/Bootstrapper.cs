@@ -8,6 +8,9 @@ using CPPWrapper;
 using SharedCode.Services;
 using VoIPApp.Common.Services;
 using VoIPApp.Services;
+using Prism.Interactivity.InteractionRequest;
+using VoIPApp.ViewModels;
+using Prism.Regions;
 
 namespace VoIPApp
 {
@@ -33,10 +36,19 @@ namespace VoIPApp
         /// <returns>returns the resolved shell object</returns>
         protected override DependencyObject CreateShell()
         {
-            LoginView loginView = new LoginView();
-            loginView.ShowDialog();
-
-            return Container.Resolve<Shell>();
+            StartDialogView startView = new StartDialogView();
+            RegionManager regionManager = Container.Resolve<RegionManager>();
+            regionManager.RegisterViewWithRegion("TabRegion", () => Container.Resolve<LoginView>());
+            regionManager.RegisterViewWithRegion("TabRegion", () => Container.Resolve<RegisterView>());
+            if (startView.ShowDialog() == true)
+            {
+                return Container.Resolve<Shell>();
+            } 
+            else
+            {
+                Environment.Exit(0);
+                return null;
+            }
         }
 
         /// <summary>
@@ -75,7 +87,8 @@ namespace VoIPApp
             Container.RegisterInstance(audioStreamingService);
             Container.RegisterInstance(dataBaseService);
             Container.RegisterInstance(serverServiceProxy);
-            Container.RegisterType<LoginService>();
+            Container.RegisterType<StartService>();
+
         }
     }
 }

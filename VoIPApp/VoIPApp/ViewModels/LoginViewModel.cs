@@ -1,5 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Prism.Events;
+using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -12,17 +14,28 @@ namespace VoIPApp.ViewModels
 {
     public class LoginViewModel : BindableBase
     {
-        private DelegateCommand<object> okCommand;
         private string userName;
-        private string password;
-        private IUnityContainer container;
+        private string message;
+        private readonly StartService loginService;
+        private readonly DelegateCommand<object> loginCommand;
+        private readonly DelegateCommand<object> passwordChangedCommand;
+        private readonly DelegateCommand<object> cancelCommand;
+        private readonly EventAggregator eventAggregator;
 
-        public LoginViewModel(IUnityContainer container)
+        public LoginViewModel(StartService loginService, EventAggregator eventAggregator)
         {
-            this.okCommand = DelegateCommand<object>.FromAsyncHandler(OnOk, CanOk);
+            this.loginCommand = DelegateCommand<object>.FromAsyncHandler(OnLogin, CanLogin);
+            this.passwordChangedCommand = new DelegateCommand<object>(OnPasswordChanged);
+            this.cancelCommand = new DelegateCommand<object>(OnCancel);
             this.userName = string.Empty;
-            this.password = string.Empty;
-            this.container = container;
+            this.message = string.Empty;
+            this.loginService = loginService;
+            this.eventAggregator = eventAggregator;
+        }
+
+        public string ViewName
+        {
+            get { return "Anmelden"; }
         }
 
         public string UserName
@@ -31,32 +44,66 @@ namespace VoIPApp.ViewModels
             set
             {
                 this.userName = value;
-                okCommand.RaiseCanExecuteChanged();
+                loginCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public string Password
+        public ICommand LoginCommand
         {
-            get { return this.password; }
-            set
+            get { return this.loginCommand; }
+        }
+
+        public ICommand PasswordChangedCommand
+        {
+            get { return this.passwordChangedCommand; }
+        }
+
+        public ICommand CancelCommand
+        {
+            get { return this.cancelCommand; }
+        }
+
+        public string Message
+        {
+            get { return this.message; }
+            set { SetProperty(ref this.message, value); }
+        }
+
+        private async Task OnLogin(object arg)
+        {
+            IHavePassword passwordContainer = arg as IHavePassword;
+            if(passwordContainer != null)
             {
-                this.password = value;
-                okCommand.RaiseCanExecuteChanged();
+                Message = "Anmelden...";
+                string errorMessage = await loginService.LogIn(userName, SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password));
+                if (errorMessage != null)
+                {
+                    Message = errorMessage;
+                    Console.WriteLine(errorMessage);
+                }
+                else
+                {
+                    eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(true);
+                }
             }
         }
 
-        public ICommand OkCommand
+        private bool CanLogin(object arg)
         {
-            get { return this.okCommand; }
-        }
-
-        public string Message { get; set; }
-
-        private bool CanOk(object arg)
-        {
-            if(!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password))
+            IHavePassword passwordContainer = arg as IHavePassword;
+            if (passwordContainer != null)
             {
-                return true;
+                string unsecureString = SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password);
+                if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(unsecureString))
+                {
+                    Message = string.Empty;
+                    return true;
+                }
+                else
+                {
+                    Message = "Füllen sie alle Felder aus";
+                    return false;
+                }
             }
             else
             {
@@ -64,16 +111,14 @@ namespace VoIPApp.ViewModels
             }
         }
 
-        private async Task OnOk(object arg)
+        private void OnCancel(object obj)
         {
-            LoginService loginService = container.Resolve<LoginService>();
-            string errorMessage = await loginService.LogIn(userName, password);
-            Message = "Connecting...";
-            if(errorMessage != null)
-            {
-                Message = errorMessage;
-                Console.WriteLine(errorMessage);
-            }
+            eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(false);
+        }
+
+        private void OnPasswordChanged(object obj)
+        {
+            loginCommand.RaiseCanExecuteChanged(); 
         }
     }
 }

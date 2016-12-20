@@ -1,0 +1,64 @@
+﻿<Window x:Class="VoIPApp.Views.StartDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"             
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:local="clr-namespace:VoIPApp"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             local:DialogCloser.DialogResult="{Binding DialogResult}"
+             SizeToContent="WidthAndHeight"
+             Title="Babbeln">
+    <Window.Resources>
+        <Style TargetType="{x:Type TabItem}"
+               x:Key="HeaderStyle">
+            <Setter Property="Header"
+                    Value="{Binding RelativeSource={RelativeSource Self}, Path=Content.DataContext.ViewName}"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border Background="White"
+                                Margin="10,0,10,0"
+                                Name="Border"
+                                BorderBrush="Black">
+                            <ContentPresenter ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderThickness" TargetName="Border" Value="0,0,0,2"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter Property="BorderThickness" TargetName="Border" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <Grid Margin="10">
+        <TabControl prism:RegionManager.RegionName="TabRegion"
+                    AutomationProperties.AutomationId="StartDialogTabControl"
+                    Width="Auto"
+                    Height="Auto"
+                    ItemContainerStyle="{StaticResource HeaderStyle}"
+                    BorderThickness="0"
+                    HorizontalAlignment="Center"/>
+    </Grid>
+</Window>

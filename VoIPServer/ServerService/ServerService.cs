@@ -61,8 +61,6 @@ namespace VoIPServer.ServerServiceLibrary
                 await userCollection.UpdateOneAsync(filter, update);
 
                 IServerCallBack callback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
-                Console.WriteLine(callback.GetHashCode());
-                callback.OnMessageReceived(null);
                 if (!subscribers.ContainsKey(callback))
                 {
                     subscribers.Add(callback, id);
@@ -113,6 +111,36 @@ namespace VoIPServer.ServerServiceLibrary
             }
 
             return ObjectId.Empty;
+        }
+
+        public async Task<string> Register(string userName, string password, string email, string ip)
+        {
+            IMongoCollection<BsonDocument> userCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
+            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+
+            FilterDefinition<BsonDocument> filter = builder.Eq("username", userName);
+            if(await userCollection.CountAsync(filter) > 0)
+            {
+                return "Benutzername schon vergeben";
+            }
+
+            filter = builder.Eq("email", email);
+            if(await userCollection.CountAsync(filter) > 0)
+            {
+                return "E-Mail schon vergeben";
+            }
+
+            BsonDocument doc = new BsonDocument
+            {
+                {"username", userName},
+                {"password", password },
+                {"email", email },
+                {"ip", ip }
+            };
+
+            await userCollection.InsertOneAsync(doc);
+
+            return string.Empty;
         }
     }
 }

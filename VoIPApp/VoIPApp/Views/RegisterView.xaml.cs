@@ -1,30 +1,29 @@
 ﻿using Prism.Regions;
 using System;
 using System.Security;
-using System.Windows;
 using System.Windows.Controls;
 using VoIPApp.ViewModels;
 
 namespace VoIPApp.Views
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for RegisterView
     /// </summary>
-    public partial class LoginView : UserControl, IHavePassword
+    public partial class RegisterView : UserControl, IHavePassword
     {
-        public LoginView()
+        public RegisterView()
         {
             InitializeComponent();
         }
 
         public SecureString ConfirmationPassword
         {
-            get { throw new NotImplementedException(); }
+            get { return this.PasswordBox.SecurePassword; }
         }
 
         public SecureString Password
         {
-            get { return PasswordBox.SecurePassword; }
+            get { return this.ConfirmationPasswordBox.SecurePassword; }
         }
     }
 }

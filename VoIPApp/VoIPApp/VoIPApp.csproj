@@ -120,8 +120,12 @@
     <Compile Include="CloseStartDialogEvent.cs" />
     <Compile Include="IHavePassword.cs" />
     <Compile Include="SecureStringConverter.cs" />
+    <Compile Include="ViewModels\LoginDialogViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\StartDialogViewModel.cs" />
+    <Compile Include="Views\LoginDialogView.xaml.cs">
+      <DependentUpon>LoginDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
     </Compile>
@@ -131,6 +135,10 @@
     <Page Include="Views\HamburgerMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>

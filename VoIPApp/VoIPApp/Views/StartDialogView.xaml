@@ -7,7 +7,8 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              local:DialogCloser.DialogResult="{Binding DialogResult}"
              SizeToContent="WidthAndHeight"
-             Title="Babbeln">
+             Title="Babbeln"
+             ResizeMode="NoResize">
     <Window.Resources>
         <Style TargetType="{x:Type TabItem}"
                x:Key="HeaderStyle">
@@ -46,12 +47,6 @@
         </Style>
     </Window.Resources>
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
-    
     <Grid Margin="10">
         <TabControl prism:RegionManager.RegionName="TabRegion"
                     AutomationProperties.AutomationId="StartDialogTabControl"

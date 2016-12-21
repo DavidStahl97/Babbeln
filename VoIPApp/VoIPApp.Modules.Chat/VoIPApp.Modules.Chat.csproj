@@ -160,10 +160,6 @@
       <Project>{df57a206-e5bd-4f8e-a93d-ef2beb6c37b3}</Project>
       <Name>AudioStreamingCLI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VoiceServiceLibrary\VoiceServiceLibrary.csproj">
-      <Project>{b567a563-9089-465b-81f2-28d5b67d3f2c}</Project>
-      <Name>VoiceServiceLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VoIPApp.Common\VoIPApp.Common.csproj">
       <Project>{4b42b02b-4187-4591-9376-09786dba1f75}</Project>
       <Name>VoIPApp.Common</Name>

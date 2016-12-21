@@ -16,21 +16,23 @@ namespace VoIPApp.ViewModels
     {
         private string userName;
         private string message;
-        private readonly StartService loginService;
         private readonly DelegateCommand<object> loginCommand;
         private readonly DelegateCommand<object> passwordChangedCommand;
         private readonly DelegateCommand<object> cancelCommand;
+        private readonly InteractionRequest<LoginDialogViewModel> showLoginDialogRequest;
         private readonly EventAggregator eventAggregator;
+        private readonly IUnityContainer container;
 
-        public LoginViewModel(StartService loginService, EventAggregator eventAggregator)
+        public LoginViewModel(EventAggregator eventAggregator, IUnityContainer container)
         {
-            this.loginCommand = DelegateCommand<object>.FromAsyncHandler(OnLogin, CanLogin);
+            this.loginCommand = new DelegateCommand<object>(OnLogin, CanLogin);
             this.passwordChangedCommand = new DelegateCommand<object>(OnPasswordChanged);
             this.cancelCommand = new DelegateCommand<object>(OnCancel);
             this.userName = string.Empty;
             this.message = string.Empty;
-            this.loginService = loginService;
+            this.showLoginDialogRequest = new InteractionRequest<LoginDialogViewModel>();
             this.eventAggregator = eventAggregator;
+            this.container = container;
         }
 
         public string ViewName
@@ -63,28 +65,45 @@ namespace VoIPApp.ViewModels
             get { return this.cancelCommand; }
         }
 
+        public IInteractionRequest ShowLoginDialogRequest
+        {
+            get { return this.showLoginDialogRequest; }
+        }
+
         public string Message
         {
             get { return this.message; }
             set { SetProperty(ref this.message, value); }
         }
 
-        private async Task OnLogin(object arg)
+        private void OnLogin(object arg)
         {
             IHavePassword passwordContainer = arg as IHavePassword;
             if(passwordContainer != null)
             {
-                Message = "Anmelden...";
-                string errorMessage = await loginService.LogIn(userName, SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password));
-                if (errorMessage != null)
-                {
-                    Message = errorMessage;
-                    Console.WriteLine(errorMessage);
-                }
-                else
-                {
-                    eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(true);
-                }
+                LoginDialogViewModel dialogViewModel = container.Resolve<LoginDialogViewModel>();
+                dialogViewModel.Title = "hallo";
+                dialogViewModel.Password = passwordContainer.Password;
+                dialogViewModel.UserName = userName;
+                dialogViewModel.EMail = null;
+
+                this.showLoginDialogRequest.Raise(
+                    dialogViewModel,
+                    finishCall =>
+                    {
+                        if(dialogViewModel.Result == null)
+                        {
+                            Message = string.Empty;
+                        }
+                        else if (dialogViewModel.Result.Equals(string.Empty))
+                        {
+                            eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(true);
+                        }
+                        else
+                        {
+                            Message = dialogViewModel.Result;
+                        }
+                    });
             }
         }
 

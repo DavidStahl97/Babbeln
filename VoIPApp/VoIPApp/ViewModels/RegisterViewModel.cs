@@ -1,5 +1,7 @@
-﻿using Prism.Commands;
+﻿using Microsoft.Practices.Unity;
+using Prism.Commands;
 using Prism.Events;
+using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -16,24 +18,26 @@ namespace VoIPApp.ViewModels
         private string message;
         private string email;
 
-        private readonly StartService loginService;
         private readonly DelegateCommand<object> registerCommand;
         private readonly DelegateCommand<object> passwordChangedCommand;
         private readonly DelegateCommand<object> cancelCommand;
         private readonly EventAggregator eventAggregator;
+        private readonly InteractionRequest<LoginDialogViewModel> showLoginDialogRequest;
+        private readonly IUnityContainer container;
 
-        public RegisterViewModel(StartService loginService, EventAggregator eventAggregator)
+        public RegisterViewModel(EventAggregator eventAggregator, IUnityContainer container)
         {
             this.userName = string.Empty;
             this.message = string.Empty;
             this.email = string.Empty;
 
-            this.loginService = loginService;
             this.eventAggregator = eventAggregator;
+            this.container = container;
 
-            this.registerCommand = DelegateCommand<object>.FromAsyncHandler(OnRegister, CanRegister);
+            this.registerCommand = new DelegateCommand<object>(OnRegister, CanRegister);
             this.passwordChangedCommand = new DelegateCommand<object>(OnPasswordChanged);
             this.cancelCommand = new DelegateCommand<object>(OnCancel);
+            this.showLoginDialogRequest = new InteractionRequest<LoginDialogViewModel>();
         }
 
         public string ViewName
@@ -82,6 +86,11 @@ namespace VoIPApp.ViewModels
             get { return this.cancelCommand; }
         }
 
+        public IInteractionRequest ShowLoginDialogRequest
+        {
+            get { return this.showLoginDialogRequest; }
+        }
+
         private void OnPasswordChanged(object obj)
         {
             registerCommand.RaiseCanExecuteChanged();
@@ -115,30 +124,34 @@ namespace VoIPApp.ViewModels
             return false;
         }
 
-        private async Task OnRegister(object obj)
+        private void OnRegister(object obj)
         {
             IHavePassword passwordContainer = obj as IHavePassword;
             if (passwordContainer != null)
             {
-                Message = "Registrieren...";
+                LoginDialogViewModel dialogViewModel = container.Resolve<LoginDialogViewModel>();
+                dialogViewModel.Title = "hallo";
+                dialogViewModel.Password = passwordContainer.Password;
+                dialogViewModel.UserName = userName;
+                dialogViewModel.EMail = email;
 
-                string unsecurePassword = SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password);
-                string result = await loginService.Register(userName, unsecurePassword, email);
-                Message = result;
-
-                if(result.Equals(string.Empty))
-                {
-                    Message = "Registrierung erfolgreich. Anmelden...";
-                    result = await loginService.LogIn(userName, unsecurePassword);
-                    if(result != null)
+                this.showLoginDialogRequest.Raise(
+                    dialogViewModel,
+                    finishCall =>
                     {
-                        Message = result;
-                    }
-                    else
-                    {
-                        eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(true);
-                    }
-                }
+                        if (dialogViewModel.Result == null)
+                        {
+                            Message = string.Empty;
+                        }
+                        else if (dialogViewModel.Result.Equals(string.Empty))
+                        {
+                            eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(true);
+                        }
+                        else
+                        {
+                            Message = dialogViewModel.Result;
+                        }
+                    });
             }
         }
 

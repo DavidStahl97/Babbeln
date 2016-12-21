@@ -88,7 +88,7 @@ namespace VoIPApp
             Container.RegisterInstance(dataBaseService);
             Container.RegisterInstance(serverServiceProxy);
             Container.RegisterType<StartService>();
-
+            Container.RegisterType<LoginDialogViewModel>();
         }
     }
 }

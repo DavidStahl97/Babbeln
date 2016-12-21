@@ -15,30 +15,18 @@ namespace VoIPApp.ViewModels
     {
         private bool? dialogResult;
         private readonly StartService loginService;
-        private readonly DelegateCommand<object> windowLoadedCommand;
 
         public StartDialogViewModel(StartService loginService, EventAggregator eventAggregator)
         {
             this.loginService = loginService;
-            this.windowLoadedCommand = DelegateCommand<object>.FromAsyncHandler(OnWindowLoaded);
 
             eventAggregator.GetEvent<CloseStartDialogEvent>().Subscribe(OnCloseDialog);
-        }
-
-        public ICommand WindowLoadedCommand
-        {
-            get { return this.windowLoadedCommand; }
         }
 
         public bool? DialogResult
         {
             get { return this.dialogResult; }
             set { SetProperty(ref this.dialogResult, value); }
-        }
-
-        private async Task OnWindowLoaded(object arg)
-        {
-            await loginService.Connect();
         }
 
         private void OnCloseDialog(bool obj)

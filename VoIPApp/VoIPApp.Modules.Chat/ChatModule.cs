@@ -10,7 +10,6 @@ using VoIPApp.Modules.Chat.ViewModels;
 using VoIPApp.Modules.Chat.Views;
 using System.ServiceModel;
 using System.ServiceModel.Description;
-using VoiceServiceLibrary;
 using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat
@@ -48,10 +47,6 @@ namespace VoIPApp.Modules.Chat
         /// service for voice chatting
         /// </summary>
         private readonly IVoIPService voIPService;
-        /// <summary>
-        /// wcf service for voice chatting
-        /// </summary>
-        private readonly VoiceService voiceService;
 
         /// <summary>
         /// creates a new instance of the <see cref="ChatModule"/> class
@@ -68,8 +63,6 @@ namespace VoIPApp.Modules.Chat
             this.messageService = new MessageService(container, moduleManager, serverServiceProxy);
             this.voIPService = new VoIPService(audioStreamer, serverServiceProxy);
             this.audioStreamer = audioStreamer;
-
-            this.voiceService = new VoiceService();
 
             this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
 
@@ -91,7 +84,6 @@ namespace VoIPApp.Modules.Chat
             this.container.RegisterInstance(friendsService);
             this.container.RegisterInstance(messageService);
             this.container.RegisterInstance(voIPService);
-            this.container.RegisterInstance(voiceService);
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
         }

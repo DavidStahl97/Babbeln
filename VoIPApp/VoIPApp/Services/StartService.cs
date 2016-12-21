@@ -20,19 +20,13 @@ namespace VoIPApp.Services
             this.serverService = serverService;
         }
 
-        public async Task<string> Connect()
+        public async Task Connect()
         {
-            return await Task.Run(() =>
+            await Task.Run(() =>
             {
-                bool connected = serverService.Connect();
-                if (!connected)
-                {
-                    return "Verbindung mit dem Server fehlgeschlagen";
-                }
+                Connected = serverService.Connect();
 
                 dataBaseService.Connect();
-
-                return null;
             });
         }
 
@@ -45,12 +39,14 @@ namespace VoIPApp.Services
                 return "Passwort oder Benutzername falsch";
             }
 
-            return null;
+            return string.Empty;
         }
 
         public async Task<string> Register(string userName, string password, string email)
         {
             return await serverService.Register(userName, password, email);
         }
+
+        public bool Connected { get; set; }
     }
 }

@@ -195,9 +195,9 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="{Binding Path=Friends.CurrentItem.Name}" VerticalAlignment="Center" Margin="20,0,0,0" Grid.Row="0" Foreground="Gray" FontSize="14"/>
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,15,0,15" Orientation="Horizontal" Grid.Row="1">
-                    <Button x:Name="CallButton" Content="&#xE13A;" Command="{Binding Path=CallCommand}" Style="{StaticResource ButtonStyle}" />
-                    <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource ButtonStyle}" />
-                    <Button x:Name="MenuButton" Content="&#xE10C;" Style="{StaticResource ButtonStyle}" />
+                    <Button x:Name="CallButton" Content="&#xE13A;" Command="{Binding Path=CallCommand}" Style="{StaticResource IconButtonStyle}" />
+                    <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource IconButtonStyle}" />
+                    <Button x:Name="MenuButton" Content="&#xE10C;" Style="{StaticResource IconButtonStyle}" />
                 </StackPanel>
             </Grid>
 
@@ -232,7 +232,7 @@
                 <Button Grid.Column="1" 
                     x:Name="SendButton" 
                     Content="&#xE102;" 
-                    Style="{StaticResource ButtonStyle}"  
+                    Style="{StaticResource IconButtonStyle}"  
                     Background="White" Margin="0" 
                     HorizontalAlignment="Left"                    
                     Command="{Binding Path=SendCommand}"

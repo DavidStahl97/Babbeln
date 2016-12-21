@@ -21,6 +21,7 @@ namespace VoIPApp
         {
             base.OnStartup(e);
 
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
             var bootstrapper = new Bootstrapper();
             try
             {
@@ -30,6 +31,8 @@ namespace VoIPApp
             {
                 Console.WriteLine("Failed running the bootstrapper: " + ex.Message);
             }
+
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
     }
 }

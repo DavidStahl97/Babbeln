@@ -58,7 +58,7 @@ namespace VoIPApp.ViewModels
                     await Register(UserName, SecureStringConverter.ConvertToUnsecureString(Password), EMail);
                 }
             }
-            catch (EndpointNotFoundException)
+            catch (Exception)
             {
                 Result = "Verbindung mit dem Server fehlgeschlagen";
                 this.FinishInteraction();

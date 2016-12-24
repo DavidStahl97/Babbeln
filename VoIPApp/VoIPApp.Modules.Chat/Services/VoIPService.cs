@@ -27,15 +27,21 @@ namespace VoIPApp.Modules.Chat.Services
             this.serverServiceProxy = serverServiceProxy;
         }
 
-        public async Task<bool> StartCall(Friend f)
+        public async Task<bool> StartCallSession(Friend f)
         {
-            audioStreamingService.StartAsync(f.IP, 10000);
             return await serverServiceProxy.ServerService.CallAsync(f._id);
         }
 
-        public void StopCall()
+        public async Task AcceptCall(Friend f)
         {
-            audioStreamingService.StopAsync();          
+            audioStreamingService.StartAsync(f.IP, 10000);
+            await serverServiceProxy.ServerService.AcceptCallAsync(f._id);
+        }
+
+        public async Task CancelCall(Friend f)
+        {
+            audioStreamingService.StopAsync();
+            await serverServiceProxy.ServerService.CancelCallAsync(f._id);
         }
     }
 }

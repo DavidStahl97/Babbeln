@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using MongoDB.Bson;
+using Prism.Events;
 using SharedCode.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,15 @@ namespace VoIPApp.Common
     {
     }
 
-    public class CallEvent : PubSubEvent<Friend>
+    public class CallEvent : PubSubEvent<ObjectId>
+    {
+    }
+
+    public class AcceptedCallEvent : PubSubEvent<ObjectId>
+    {
+    }
+
+    public class CanceledCallEvent : PubSubEvent<ObjectId>
     {
     }
 }

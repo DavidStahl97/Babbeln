@@ -10,6 +10,9 @@ using System.ComponentModel;
 using VoIPApp.Modules.Chat.Services;
 using SharedCode.Models;
 using System.Threading.Tasks;
+using Prism.Events;
+using VoIPApp.Common;
+using MongoDB.Bson;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
@@ -20,37 +23,50 @@ namespace VoIPApp.Modules.Chat.ViewModels
     {
         private readonly IVoIPService voIPService;
         private readonly DelegateCommand<object> cancelCallCommand;
+        private readonly DelegateCommand<object> acceptCallCommand;
+        private readonly DelegateCommand<object> windowLoadedCommand;
 
-        public VoiceChatViewModel(IVoIPService voIPService)
+        public VoiceChatViewModel(IVoIPService voIPService, EventAggregator eventAggregator)
         {
             this.voIPService = voIPService;
-            this.cancelCallCommand = new DelegateCommand<object>(this.OnCancelCall);
+            this.cancelCallCommand = DelegateCommand<object>.FromAsyncHandler(this.OnCancelCall);
+            this.acceptCallCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptCall);
+            this.windowLoadedCommand = new DelegateCommand<object>(this.OnWindowLoaded);
+
+            eventAggregator.GetEvent<AcceptedCallEvent>().Subscribe(OnCallAccepted, ThreadOption.BackgroundThread, true);
+            eventAggregator.GetEvent<CanceledCallEvent>().Subscribe(OnCallCanceled, ThreadOption.BackgroundThread, true);
         }
 
-        private void OnCancelCall(object obj)
+        private void OnCallCanceled(ObjectId obj)
         {
+            OnCancelCall(null);
+        }
+
+        private void OnCallAccepted(ObjectId obj)
+        {
+            OnAcceptCall(null);
+        }
+
+        private async Task OnAcceptCall(object arg)
+        {
+            await voIPService.AcceptCall(CallPartner);
+        }
+
+        private void OnWindowLoaded(object obj)
+        {
+            voIPService.StartCallSession(CallPartner);
+        }
+
+        private async Task OnCancelCall(object obj)
+        {
+            await voIPService.CancelCall(CallPartner);
             this.FinishInteraction();
-        }
-
-        public async Task StartCall(Friend f)
-        {
-            if (await voIPService.StartCall(f))
-            {
-                this.FinishInteraction();
-            }
-        }
-
-        public void StopCall()
-        {
-            voIPService.StopCall();
         }
 
         public ICommand CancelCallCommand
         {
             get { return this.cancelCallCommand; }
         }
-
-        public string ExampleText { get { return "Example text for popup window"; } }
 
         public bool Confirmed { get; set; }
 
@@ -61,5 +77,9 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public INotification Notification { get; set; }
 
         public Action FinishInteraction { get; set; }
+
+        public bool IncomingCall { get; set; }
+
+        public Friend CallPartner { get; set; }
     }
 }

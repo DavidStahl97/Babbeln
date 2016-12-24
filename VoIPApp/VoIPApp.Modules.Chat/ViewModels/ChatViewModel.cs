@@ -68,7 +68,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             messages = new ObservableCollection<Message>();
 
             this.sendCommand = DelegateCommand<object>.FromAsyncHandler(OnSend, CanSend);
-            this.callCommand = DelegateCommand<object>.FromAsyncHandler(this.OnCall, this.CanCall);
+            this.callCommand = new DelegateCommand<object>(this.OnCall, this.CanCall);
             this.windowLoadedCommand = DelegateCommand<object>.FromAsyncHandler(this.OnWindowLoaded);
             this.searchTextBoxChanged = new DelegateCommand<object>(this.OnSearchTextBoxChanged);
             this.messageTextBoxChanged = new DelegateCommand<object>(this.OnMessageTextBoxChanged);
@@ -79,7 +79,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             this.userId = container.Resolve<ServerServiceProxy>().UserId;
 
-            eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived);
+            eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived, ThreadOption.UIThread, true);
+            eventAggregator.GetEvent<CallEvent>().Subscribe(OnIncomingCall, ThreadOption.UIThread, true);
         }
 
         public ObjectId UserID
@@ -227,26 +228,43 @@ namespace VoIPApp.Modules.Chat.ViewModels
             return false;
         }
 
-        private async Task OnCall(object obj)
+        private void OnCall(object obj)
         {
-            Friend currentFriend = Friends.CurrentItem as Friend;
+            VoiceChatViewModel voiceChatViewModel = this.container.Resolve<VoiceChatViewModel>();
+            voiceChatViewModel.Title = (friends.CurrentItem as Friend).Name + " anrufen";
+            voiceChatViewModel.IncomingCall = false;
+            voiceChatViewModel.CallPartner = (friends.CurrentItem as Friend);
 
+            OpenCallDialog(voiceChatViewModel);
+        }
+
+
+        private void OnIncomingCall(ObjectId obj)
+        {
+            Friend caller = friendsService.GetFriendById(obj);
+            if(caller != null)
+            {
+                VoiceChatViewModel viewModel = this.container.Resolve<VoiceChatViewModel>();
+                viewModel.Title = "Anruf von " + caller.Name;
+                viewModel.IncomingCall = true;
+                viewModel.CallPartner = caller;
+
+                OpenCallDialog(viewModel); 
+            }
+        }
+
+        private void OpenCallDialog(VoiceChatViewModel viewModel)
+        {
             calling = true;
             callCommand.RaiseCanExecuteChanged();
 
-            VoiceChatViewModel voiceChatViewModel = this.container.Resolve<VoiceChatViewModel>();
-
-            voiceChatViewModel.Title = "Call " + (friends.CurrentItem as Friend).Name;
             this.showVoiceChatRequest.Raise(
-                voiceChatViewModel,
+                viewModel,
                 finishCall =>
                 {
-                    voiceChatViewModel.StopCall();
                     calling = false;
                     callCommand.RaiseCanExecuteChanged();
                 });
-
-            await voiceChatViewModel.StartCall(currentFriend);
         }
     }
 }

@@ -27,6 +27,18 @@ namespace VoIPApp.Common.ServerServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Call", ReplyAction="http://tempuri.org/IServerService/CallResponse")]
         System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver);
         
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/CancelCall")]
+        void CancelCall(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/CancelCall")]
+        System.Threading.Tasks.Task CancelCallAsync(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/AcceptCall")]
+        void AcceptCall(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/AcceptCall")]
+        System.Threading.Tasks.Task AcceptCallAsync(MongoDB.Bson.ObjectId friendId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
         SharedCode.Models.Friend AddFriendByName(string friendName);
         
@@ -58,8 +70,14 @@ namespace VoIPApp.Common.ServerServiceReference {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnMessageReceived")]
         void OnMessageReceived(SharedCode.Models.Message msg);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/OnCall", ReplyAction="http://tempuri.org/IServerService/OnCallResponse")]
-        void OnCall(SharedCode.Models.Friend id);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCall")]
+        void OnCall(MongoDB.Bson.ObjectId id);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCallAccepted")]
+        void OnCallAccepted(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCallCancelled")]
+        void OnCallCancelled(MongoDB.Bson.ObjectId friendId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -104,6 +122,22 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         public System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver) {
             return base.Channel.CallAsync(receiver);
+        }
+        
+        public void CancelCall(MongoDB.Bson.ObjectId friendId) {
+            base.Channel.CancelCall(friendId);
+        }
+        
+        public System.Threading.Tasks.Task CancelCallAsync(MongoDB.Bson.ObjectId friendId) {
+            return base.Channel.CancelCallAsync(friendId);
+        }
+        
+        public void AcceptCall(MongoDB.Bson.ObjectId friendId) {
+            base.Channel.AcceptCall(friendId);
+        }
+        
+        public System.Threading.Tasks.Task AcceptCallAsync(MongoDB.Bson.ObjectId friendId) {
+            return base.Channel.AcceptCallAsync(friendId);
         }
         
         public SharedCode.Models.Friend AddFriendByName(string friendName) {

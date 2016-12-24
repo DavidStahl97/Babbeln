@@ -19,6 +19,12 @@ namespace VoIPServer.ServerServiceLibrary
         [OperationContract(IsOneWay = false)]
         bool Call(ObjectId receiver);
 
+        [OperationContract(IsOneWay = true)]
+        void CancelCall(ObjectId friendId);
+
+        [OperationContract(IsOneWay = true)]
+        void AcceptCall(ObjectId friendId);
+
         [OperationContract(IsOneWay = false)]
         Task<Friend> AddFriendByName(string friendName);
 
@@ -37,7 +43,13 @@ namespace VoIPServer.ServerServiceLibrary
         [OperationContract(IsOneWay = true)]
         void OnMessageReceived(Message msg);
 
-        [OperationContract(IsOneWay = false)]
-        void OnCall(Friend id);
+        [OperationContract(IsOneWay = true)]
+        void OnCall(ObjectId id);
+
+        [OperationContract(IsOneWay = true)]
+        void OnCallAccepted(ObjectId friendId);
+
+        [OperationContract(IsOneWay = true)]
+        void OnCallCancelled(ObjectId friendId);
     }
 }

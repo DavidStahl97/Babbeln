@@ -1,4 +1,5 @@
-﻿using SharedCode.Models;
+﻿using MongoDB.Bson;
+using SharedCode.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ namespace VoIPApp.Modules.Chat.Services
     {
         ObservableCollection<Friend> Friends { get; set; }
         Task UpdateFriendsList();
-        Task AddFriendByName(string friendName); 
+        Task AddFriendByName(string friendName);
+        Friend GetFriendById(ObjectId id);
     }
 }

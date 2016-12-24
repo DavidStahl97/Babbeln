@@ -78,7 +78,7 @@ namespace VoIPApp.Common.Services
             return await serverServiceClient.RegisterAsync(userName, password, email, ipAdress);
         }
 
-        public void OnCall(Friend friend)
+        public void OnCall(ObjectId friend)
         {
             eventAggregator.GetEvent<CallEvent>().Publish(friend);
         }
@@ -86,6 +86,16 @@ namespace VoIPApp.Common.Services
         public void OnMessageReceived(Message msg)
         {
             eventAggregator.GetEvent<MessageEvent>().Publish(msg);
+        }
+
+        public void OnCallAccepted(ObjectId friendId)
+        {
+            eventAggregator.GetEvent<AcceptedCallEvent>().Publish(friendId);
+        }
+
+        public void OnCallCancelled(ObjectId friendId)
+        {
+            eventAggregator.GetEvent<CanceledCallEvent>().Publish(friendId);
         }
 
         public void Dispose()

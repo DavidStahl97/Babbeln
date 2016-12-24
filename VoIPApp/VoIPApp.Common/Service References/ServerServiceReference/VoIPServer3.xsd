@@ -23,6 +23,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CancelCall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q3:ObjectId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AcceptCall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q4:ObjectId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="AddFriendByName">
     <xs:complexType>
       <xs:sequence>
@@ -33,7 +47,7 @@
   <xs:element name="AddFriendByNameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="AddFriendByNameResult" nillable="true" type="q3:Friend" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="AddFriendByNameResult" nillable="true" type="q5:Friend" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -49,7 +63,7 @@
   <xs:element name="SubscribeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="SubscribeResult" type="q4:ObjectId" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="SubscribeResult" type="q6:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -78,20 +92,29 @@
   <xs:element name="OnMessageReceived">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q5:Message" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q7:Message" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCall">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="id" nillable="true" type="q6:Friend" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="id" type="q8:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="OnCallResponse">
+  <xs:element name="OnCallAccepted">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q9:ObjectId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnCallCancelled">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q10:ObjectId" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>

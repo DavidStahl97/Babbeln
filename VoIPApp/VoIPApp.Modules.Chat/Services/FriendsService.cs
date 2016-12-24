@@ -76,5 +76,17 @@ namespace VoIPApp.Modules.Chat.Services
             }
         }
 
+        public Friend GetFriendById(ObjectId id)
+        {
+            foreach(Friend f in Friends)
+            {
+                if(f._id.Equals(id))
+                {
+                    return f;
+                }
+            }
+
+            return null;
+        }
     }
 }

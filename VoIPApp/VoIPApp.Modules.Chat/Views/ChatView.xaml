@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:VoIPApp.Common.Controls;assembly=VoIPApp.Common"
              xmlns:common="clr-namespace:VoIPApp.Common;assembly=VoIPApp.Common"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:VoIPApp.Modules.Chat">
+             xmlns:local="clr-namespace:VoIPApp.Modules.Chat" >
 
     <UserControl.Resources>
         <ResourceDictionary>

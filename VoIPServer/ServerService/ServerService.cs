@@ -20,10 +20,21 @@ namespace VoIPServer.ServerServiceLibrary
     {
         private static readonly Dictionary<IServerCallBack, ObjectId> subscribers = new Dictionary<IServerCallBack, ObjectId>();
         private static readonly DataBaseService dataBaseService = new DataBaseService();
+        private static int connections = 0;
+
+        private IServerCallBack currentCallback;
+        private int connectionId;
 
         static ServerService()
         {
             dataBaseService.Connect();
+        }
+
+        public ServerService()
+        {
+            connectionId = connections;
+            connections++;
+            Console.WriteLine(connections);
         }
 
         public async void SendMessage(Message msg)
@@ -39,13 +50,10 @@ namespace VoIPServer.ServerServiceLibrary
             IMongoCollection<BsonDocument> messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messages");
             await messageCollection.InsertOneAsync(document);
 
-            foreach (KeyValuePair<IServerCallBack, ObjectId> pair in subscribers.AsEnumerable())
+            IServerCallBack receiverCallback = GetCallbackChannelById(msg.Receiver);
+            if(receiverCallback != null)
             {
-                if(pair.Value.Equals(msg.Receiver))
-                {
-                    pair.Key.OnMessageReceived(msg);
-                    break;
-                }
+                receiverCallback.OnMessageReceived(msg);
             }
         }
 
@@ -64,6 +72,7 @@ namespace VoIPServer.ServerServiceLibrary
                 if (!subscribers.ContainsKey(callback))
                 {
                     subscribers.Add(callback, id);
+                    currentCallback = callback;
                 }
 
                 ICommunicationObject obj = (ICommunicationObject)callback;
@@ -79,17 +88,24 @@ namespace VoIPServer.ServerServiceLibrary
         }
 
         public void Unsubscribe()
-        {
-            IServerCallBack callback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
-            if (subscribers.ContainsKey(callback))
+        {            
+            if (subscribers.ContainsKey(currentCallback))
             {
-                subscribers.Remove(callback);
+                subscribers.Remove(currentCallback);
+                Console.WriteLine(connectionId + "removed");
             }
         }
 
         public bool Call(ObjectId receiver)
         {
-            return true;
+            IServerCallBack receiverCallback = GetCallbackChannelById(receiver);
+            if(receiverCallback != null)
+            {
+                receiverCallback.OnCall(receiver);
+                return true;
+            }
+
+            return false;
         }
 
         private async Task<ObjectId> GetUserId(string userName, string password)
@@ -165,10 +181,8 @@ namespace VoIPServer.ServerServiceLibrary
 
             if(f != null)
             {
-                IServerCallBack callback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
                 ObjectId userId;
-                subscribers.TryGetValue(callback, out userId);
-                if(userId != null)
+                if(subscribers.TryGetValue(currentCallback, out userId))
                 {
                     BsonDocument document = new BsonDocument
                     {
@@ -188,6 +202,57 @@ namespace VoIPServer.ServerServiceLibrary
             }
 
             return f;
+        }
+
+        private IServerCallBack GetCallbackChannelById(ObjectId id)
+        {
+            foreach (KeyValuePair<IServerCallBack, ObjectId> pair in subscribers.AsEnumerable())
+            {
+                if (pair.Value.Equals(id))
+                {
+                    return pair.Key;
+                }
+            }
+
+            return null;
+        }
+
+        private ObjectId GetCurrentObjectId()
+        {
+            ObjectId userId;
+            if (subscribers.TryGetValue(currentCallback, out userId))
+            {
+                return userId;
+            }
+
+            return ObjectId.Empty;
+        }
+
+        public void CancelCall(ObjectId friendId)
+        {
+            ObjectId userId = GetCurrentObjectId();
+            if(!userId.Equals(ObjectId.Empty))
+            {
+                IServerCallBack friendCallback = GetCallbackChannelById(friendId);
+                if (friendId != null)
+                {
+                    friendCallback.OnCallCancelled(userId);
+                }
+            }
+        }
+            
+
+        public void AcceptCall(ObjectId friendId)
+        {
+            ObjectId userId = GetCurrentObjectId();
+            if (!userId.Equals(ObjectId.Empty))
+            {
+                IServerCallBack friendCallback = GetCallbackChannelById(friendId);
+                if (friendId != null)
+                {
+                    friendCallback.OnCallAccepted(userId);
+                }
+            }
         }
     }
 }

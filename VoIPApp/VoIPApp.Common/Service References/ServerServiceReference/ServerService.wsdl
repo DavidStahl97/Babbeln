@@ -30,6 +30,12 @@
   <wsdl:message name="IServerService_Call_OutputMessage">
     <wsdl:part name="parameters" element="tns:CallResponse" />
   </wsdl:message>
+  <wsdl:message name="IServerService_CancelCall_InputMessage">
+    <wsdl:part name="parameters" element="tns:CancelCall" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_AcceptCall_InputMessage">
+    <wsdl:part name="parameters" element="tns:AcceptCall" />
+  </wsdl:message>
   <wsdl:message name="IServerService_AddFriendByName_InputMessage">
     <wsdl:part name="parameters" element="tns:AddFriendByName" />
   </wsdl:message>
@@ -57,8 +63,11 @@
   <wsdl:message name="IServerService_OnCall_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnCall" />
   </wsdl:message>
-  <wsdl:message name="IServerService_OnCall_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:OnCallResponse" />
+  <wsdl:message name="IServerService_OnCallAccepted_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnCallAccepted" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_OnCallCancelled_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnCallCancelled" />
   </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IServerService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessage">
@@ -67,6 +76,12 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Call">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Call" message="tns:IServerService_Call_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/CallResponse" message="tns:IServerService_Call_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CancelCall">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/CancelCall" message="tns:IServerService_CancelCall_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AcceptCall">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/AcceptCall" message="tns:IServerService_AcceptCall_InputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddFriendByName">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/AddFriendByName" message="tns:IServerService_AddFriendByName_InputMessage" />
@@ -88,7 +103,12 @@
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnCall">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnCall" message="tns:IServerService_OnCall_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/OnCallResponse" message="tns:IServerService_OnCall_InputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnCallAccepted">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnCallAccepted" message="tns:IServerService_OnCallAccepted_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnCallCancelled">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnCallCancelled" message="tns:IServerService_OnCallCancelled_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSDualHttpBinding_IServerService" type="tns:IServerService">
@@ -108,6 +128,18 @@
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelCall">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/CancelCall" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="AcceptCall">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/AcceptCall" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
     </wsdl:operation>
     <wsdl:operation name="AddFriendByName">
       <soap12:operation soapAction="http://tempuri.org/IServerService/AddFriendByName" style="document" />
@@ -150,9 +182,18 @@
     </wsdl:operation>
     <wsdl:operation name="OnCall">
       <soap12:operation soapAction="http://tempuri.org/IServerService/OnCall" style="document" />
-      <wsdl:input>
+      <wsdl:output>
         <soap12:body use="literal" />
-      </wsdl:input>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnCallAccepted">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnCallAccepted" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnCallCancelled">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnCallCancelled" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

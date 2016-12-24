@@ -12,5 +12,6 @@ namespace VoIPApp.Modules.Chat.Services
     {
         ObservableCollection<Message> GetMessages(MongoDB.Bson.ObjectId _id);
         Task SendMessage(Message msg);
+        Task PopulateMessageDictionary();
     }
 }

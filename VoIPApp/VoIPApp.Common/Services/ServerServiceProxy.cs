@@ -13,23 +13,22 @@ using Microsoft.Practices.Unity;
 using System.Net.NetworkInformation;
 using System.Net;
 using System.Net.Sockets;
+using Prism.Events;
 
 namespace VoIPApp.Common.Services
 {
     public class ServerServiceProxy : IServerServiceCallback, IDisposable
     {
         private IServerService serverServiceClient;
+        private readonly EventAggregator eventAggregator;
         private ObjectId userId;
         private string ipAdress;
 
-        public delegate void ProxyEventDelegate();
-        public event ProxyEventDelegate MessageReceived;
-        public event ProxyEventDelegate Call;
-
-        public ServerServiceProxy()
+        public ServerServiceProxy(EventAggregator eventAggregator)
         {
             this.userId = ObjectId.Empty;
             this.ipAdress = string.Empty;
+            this.eventAggregator = eventAggregator;
         }
 
         public ObjectId UserId
@@ -79,20 +78,14 @@ namespace VoIPApp.Common.Services
             return await serverServiceClient.RegisterAsync(userName, password, email, ipAdress);
         }
 
-        public void OnCall(ObjectId id)
+        public void OnCall(ServerServiceReference.Friend friend)
         {
-            if(Call != null)
-            {
-                Call();
-            }
+            eventAggregator.GetEvent<CallEvent>().Publish(friend);
         }
 
         public void OnMessageReceived(ServerServiceReference.Message msg)
         {
-            if (MessageReceived != null)
-            {
-                MessageReceived();
-            }
+            eventAggregator.GetEvent<MessageEvent>().Publish(msg);
         }
 
         public void Dispose()

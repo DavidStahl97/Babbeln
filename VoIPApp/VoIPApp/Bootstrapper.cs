@@ -11,6 +11,7 @@ using VoIPApp.Services;
 using Prism.Interactivity.InteractionRequest;
 using VoIPApp.ViewModels;
 using Prism.Regions;
+using Prism.Events;
 
 namespace VoIPApp
 {
@@ -28,7 +29,7 @@ namespace VoIPApp
         /// </summary>
         private readonly DataBaseService dataBaseService = new DataBaseService();
 
-        private ServerServiceProxy serverServiceProxy = new ServerServiceProxy();
+        private ServerServiceProxy serverServiceProxy;
 
         /// <summary>
         /// creates shell
@@ -83,6 +84,8 @@ namespace VoIPApp
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
+
+            serverServiceProxy = new ServerServiceProxy(Container.Resolve<EventAggregator>());
 
             Container.RegisterInstance(audioStreamingService);
             Container.RegisterInstance(dataBaseService);

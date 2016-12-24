@@ -36,14 +36,6 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         private readonly BackgroundWorker audioInitWorker;
         /// <summary>
-        /// service for managing the friend list
-        /// </summary>
-        private readonly IFriendsService friendsService;
-        /// <summary>
-        /// service for managing messaging
-        /// </summary>
-        private readonly IMessageService messageService;
-        /// <summary>
         /// service for voice chatting
         /// </summary>
         private readonly IVoIPService voIPService;
@@ -59,8 +51,6 @@ namespace VoIPApp.Modules.Chat
             this.regionManager = regionManager;
             this.container = container;
 
-            this.friendsService = new FriendsService(container);
-            this.messageService = new MessageService(container, moduleManager, serverServiceProxy);
             this.voIPService = new VoIPService(audioStreamer, serverServiceProxy);
             this.audioStreamer = audioStreamer;
 
@@ -81,9 +71,9 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         public void Initialize()
         {          
-            this.container.RegisterInstance(friendsService);
-            this.container.RegisterInstance(messageService);
             this.container.RegisterInstance(voIPService);
+            this.container.RegisterType<FriendsService>();
+            this.container.RegisterType<MessageService>();
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
         }

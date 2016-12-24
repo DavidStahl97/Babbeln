@@ -106,6 +106,131 @@ namespace VoIPApp.Common.ServerServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Friend", Namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models")]
+    [System.SerializableAttribute()]
+    public partial class Friend : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IPField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IconField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfileNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StatusField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private MongoDB.Bson.ObjectId _idField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string IP {
+            get {
+                return this.IPField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IPField, value) != true)) {
+                    this.IPField = value;
+                    this.RaisePropertyChanged("IP");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Icon {
+            get {
+                return this.IconField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IconField, value) != true)) {
+                    this.IconField = value;
+                    this.RaisePropertyChanged("Icon");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfileName {
+            get {
+                return this.ProfileNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfileNameField, value) != true)) {
+                    this.ProfileNameField = value;
+                    this.RaisePropertyChanged("ProfileName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Status {
+            get {
+                return this.StatusField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public MongoDB.Bson.ObjectId _id {
+            get {
+                return this._idField;
+            }
+            set {
+                if ((this._idField.Equals(value) != true)) {
+                    this._idField = value;
+                    this.RaisePropertyChanged("_id");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServerServiceReference.IServerService", CallbackContract=typeof(VoIPApp.Common.ServerServiceReference.IServerServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IServerService {
@@ -121,6 +246,12 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Call", ReplyAction="http://tempuri.org/IServerService/CallResponse")]
         System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
+        VoIPApp.Common.ServerServiceReference.Friend AddFriendByName(string friendName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
+        System.Threading.Tasks.Task<VoIPApp.Common.ServerServiceReference.Friend> AddFriendByNameAsync(string friendName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Subscribe", ReplyAction="http://tempuri.org/IServerService/SubscribeResponse")]
         MongoDB.Bson.ObjectId Subscribe(string userName, string password, string ip);
@@ -148,7 +279,7 @@ namespace VoIPApp.Common.ServerServiceReference {
         void OnMessageReceived(VoIPApp.Common.ServerServiceReference.Message msg);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/OnCall", ReplyAction="http://tempuri.org/IServerService/OnCallResponse")]
-        void OnCall(MongoDB.Bson.ObjectId id);
+        void OnCall(VoIPApp.Common.ServerServiceReference.Friend id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -193,6 +324,14 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         public System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver) {
             return base.Channel.CallAsync(receiver);
+        }
+        
+        public VoIPApp.Common.ServerServiceReference.Friend AddFriendByName(string friendName) {
+            return base.Channel.AddFriendByName(friendName);
+        }
+        
+        public System.Threading.Tasks.Task<VoIPApp.Common.ServerServiceReference.Friend> AddFriendByNameAsync(string friendName) {
+            return base.Channel.AddFriendByNameAsync(friendName);
         }
         
         public MongoDB.Bson.ObjectId Subscribe(string userName, string password, string ip) {

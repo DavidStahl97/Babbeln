@@ -1,4 +1,5 @@
 ﻿using Prism.Regions;
+using System;
 using System.Windows.Controls;
 
 namespace VoIPApp.Modules.Chat.Views
@@ -10,7 +11,14 @@ namespace VoIPApp.Modules.Chat.Views
     {
         public ChatView()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();  
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         private void SendButton_Click(object sender, System.Windows.RoutedEventArgs e)

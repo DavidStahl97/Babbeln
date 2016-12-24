@@ -12,5 +12,6 @@ namespace VoIPApp.Modules.Chat.Services
     {
         ObservableCollection<Friend> Friends { get; set; }
         Task UpdateFriendsList();
+        Task AddFriendByName(string friendName); 
     }
 }

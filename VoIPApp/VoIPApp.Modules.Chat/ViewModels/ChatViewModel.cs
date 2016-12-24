@@ -2,7 +2,9 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
+using Prism.Modularity;
 using Prism.Mvvm;
 using SharedCode.Models;
 using SharedCode.Services;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using VoIPApp.Common;
 using VoIPApp.Common.Services;
 using VoIPApp.Modules.Chat.Services;
 
@@ -32,13 +35,15 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private readonly DelegateCommand<object> callCommand;
         private readonly DelegateCommand<object> searchTextBoxChanged;
         private readonly DelegateCommand<object> messageTextBoxChanged;
+        private readonly DelegateCommand<object> addFriendCommand;
+        private readonly DelegateCommand<object> windowLoadedCommand;
         private readonly InteractionRequest<VoiceChatViewModel> showVoiceChatRequest;
         private readonly IUnityContainer container;
         private ObjectId currentFriendID;
         private ObjectId userId;
         private bool calling;
 
-        public ChatViewModel(IFriendsService friendsService, IMessageService messageService, IUnityContainer container)
+        public ChatViewModel(FriendsService friendsService, MessageService messageService, IUnityContainer container, EventAggregator eventAggregator)
         {
             if(friendsService == null)
             {
@@ -64,15 +69,17 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             this.sendCommand = DelegateCommand<object>.FromAsyncHandler(OnSend, CanSend);
             this.callCommand = DelegateCommand<object>.FromAsyncHandler(this.OnCall, this.CanCall);
+            this.windowLoadedCommand = DelegateCommand<object>.FromAsyncHandler(this.OnWindowLoaded);
             this.searchTextBoxChanged = new DelegateCommand<object>(this.OnSearchTextBoxChanged);
             this.messageTextBoxChanged = new DelegateCommand<object>(this.OnMessageTextBoxChanged);
+            this.addFriendCommand = new DelegateCommand<object>(this.OnAddFriend);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
 
             Friends.CurrentChanged += SelectedFriendChanged;
 
-            friendsService.UpdateFriendsList();
-
             this.userId = container.Resolve<ServerServiceProxy>().UserId;
+
+            eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived);
         }
 
         public ObjectId UserID
@@ -110,6 +117,16 @@ namespace VoIPApp.Modules.Chat.ViewModels
             get { return this.messageTextBoxChanged; }
         }
 
+        public ICommand AddFriendCommand
+        {
+            get { return this.addFriendCommand; }
+        }
+
+        public ICommand WindowLoadedCommand
+        {
+            get { return this.windowLoadedCommand; }
+        }
+
         public IInteractionRequest ShowVoiceChatRequest
         {
             get { return this.showVoiceChatRequest; }
@@ -118,6 +135,27 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private void OnMessageTextBoxChanged(object obj)
         {
             sendCommand.RaiseCanExecuteChanged();
+        }
+
+        private async Task OnWindowLoaded(object arg)
+        {
+            await friendsService.UpdateFriendsList();
+            await messageService.PopulateMessageDictionary();
+        }
+
+        private void OnAddFriend(object obj)
+        {
+            string friendName = obj as string;
+            friendsService.AddFriendByName(friendName);
+        }
+
+
+        private void OnMessageReceived(Message obj)
+        {
+            if(currentFriendID.Equals(obj.Sender))
+            {
+                Messages.Add(obj);
+            }
         }
 
         private void OnSearchTextBoxChanged(object obj)

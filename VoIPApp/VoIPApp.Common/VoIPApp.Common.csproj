@@ -99,6 +99,7 @@
     <Compile Include="Controls\HamburgerMenuItem.xaml.cs">
       <DependentUpon>HamburgerMenuItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalEvents.cs" />
     <Compile Include="InteractiveCommand.cs" />
     <Compile Include="ModuleNames.cs" />
     <Compile Include="NavigationURIs.cs" />
@@ -116,6 +117,9 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MongoDB.Bson.ObjectId.datasource" />
     <None Include="Service References\ServerServiceReference\ServerService1.wsdl" />
+    <None Include="Service References\ServerServiceReference\VoIPApp.Common.ServerServiceReference.Friend.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServerServiceReference\VoIPServer4.xsd">
       <SubType>Designer</SubType>
     </None>

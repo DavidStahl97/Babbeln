@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Prism.Events;
 using Prism.Modularity;
 using SharedCode.Models;
 using SharedCode.Services;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using VoIPApp.Common;
 using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat.Services
@@ -21,13 +23,24 @@ namespace VoIPApp.Modules.Chat.Services
         private readonly IMongoCollection<BsonDocument> messageCollection;
         private readonly Dictionary<ObjectId, ObservableCollection<Message>> messages;
 
-        public MessageService(IUnityContainer container, IModuleManager moduleManager, ServerServiceProxy serverServiceProxy)
+        public MessageService(IUnityContainer container, IModuleManager moduleManager, ServerServiceProxy serverServiceProxy, EventAggregator eventAggregator)
         {
             DataBaseService dataBaseService = container.Resolve<DataBaseService>();
             this.messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messages");
 
             this.messages = new Dictionary<ObjectId, ObservableCollection<Message>>();
             this.serverServiceProxy = serverServiceProxy;
+
+            eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived);
+        }
+
+        private void OnMessageReceived(Message obj)
+        {
+            ObservableCollection<Message> msgList;
+            if(messages.TryGetValue(obj.Sender, out msgList))
+            {
+                msgList.Add(obj);
+            }
         }
 
         public async Task SendMessage(Message msg)
@@ -64,12 +77,12 @@ namespace VoIPApp.Modules.Chat.Services
                     foreach (BsonDocument document in batch)
                     {
                         ObjectId _id = document["sender"].AsObjectId;
-                        if (_id.CompareTo(userId) == 0)
+                        if (userId.Equals(_id))
                         {
                             _id = document["receiver"].AsObjectId;
                         }
 
-                        Message msg = new Message { Sender = userId, Receiver = _id, Date = document["date"].ToUniversalTime(), Text = document["text"].AsString };
+                        Message msg = new Message { Sender = document["sender"].AsObjectId, Receiver = document["receiver"].AsObjectId, Date = document["date"].ToUniversalTime(), Text = document["text"].AsString };
 
                         ObservableCollection<Message> msgList;
                         if (messages.TryGetValue(_id, out msgList))

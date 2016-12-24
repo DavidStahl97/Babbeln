@@ -142,5 +142,52 @@ namespace VoIPServer.ServerServiceLibrary
 
             return string.Empty;
         }
+
+        public async Task<Friend> AddFriendByName(string friendName)
+        {
+
+            IMongoCollection<BsonDocument> userCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
+            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+            FilterDefinition<BsonDocument> filter = builder.Eq("username", friendName);
+
+            Friend f = null;
+
+            using (IAsyncCursor<BsonDocument> cursor = await userCollection.FindAsync(filter))
+            {
+                cursor.MoveNext();
+                if(cursor.Current != null)
+                {
+                    IEnumerable<BsonDocument> batch = cursor.Current;
+                    BsonDocument doc = batch.First();
+                    f = new Friend { Name = doc["username"].AsString, IP = doc["ip"].AsString, _id = doc["_id"].AsObjectId };
+                }
+            }
+
+            if(f != null)
+            {
+                IServerCallBack callback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
+                ObjectId userId;
+                subscribers.TryGetValue(callback, out userId);
+                if(userId != null)
+                {
+                    BsonDocument document = new BsonDocument
+                    {
+                        { "requester", userId },
+                        { "receiver", f._id },
+                        { "date", DateTime.Now },
+                        { "accepted", true }
+                    };
+
+                    IMongoCollection<BsonDocument> friendCollection = dataBaseService.Database.GetCollection<BsonDocument>("friends");
+                    await friendCollection.InsertOneAsync(document);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return f;
+        }
     }
 }

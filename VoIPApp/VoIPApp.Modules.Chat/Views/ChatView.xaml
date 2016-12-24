@@ -115,6 +115,9 @@
                     </prism:PopupWindowAction.WindowContent>
                 </prism:PopupWindowAction>
             </prism:InteractionRequestTrigger>
+            <i:EventTrigger EventName="Loaded">
+                <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
+            </i:EventTrigger>
         </i:Interaction.Triggers>
 
         <Border BorderBrush="Gray" BorderThickness="0">
@@ -133,10 +136,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Column="0"
-                               
                            Content="&#xE11A;" 
                            FontFamily="Segoe MDL2 Assets"
                            VerticalAlignment="Bottom"
@@ -154,6 +157,14 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </controls:DefaultTextBox>
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                Content="&#xE8FA;"
+                                FontSize="24"
+                                Grid.Column="2"
+                                Margin="0"
+                                Background="White"
+                                Command="{Binding AddFriendCommand}"
+                                CommandParameter="{Binding InputText, ElementName=SearchTextBox}"/>
                     </Grid>
                 </Border>
 

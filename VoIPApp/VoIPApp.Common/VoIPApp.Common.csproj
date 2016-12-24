@@ -75,6 +75,9 @@
       <HintPath>..\packages\Prism.Wpf.6.2.0\lib\net45\Prism.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SharedCode">
+      <HintPath>..\..\SharedCode\SharedCode\bin\Debug\SharedCode.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -116,20 +119,18 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MongoDB.Bson.ObjectId.datasource" />
-    <None Include="Service References\ServerServiceReference\ServerService1.wsdl" />
-    <None Include="Service References\ServerServiceReference\VoIPApp.Common.ServerServiceReference.Friend.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer4.xsd">
+    <None Include="Properties\DataSources\SharedCode.Models.Friend.datasource" />
+    <None Include="Service References\ServerServiceReference\ServerService.wsdl" />
+    <None Include="Service References\ServerServiceReference\VoIPServer.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer41.xsd">
+    <None Include="Service References\ServerServiceReference\VoIPServer1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer42.xsd">
+    <None Include="Service References\ServerServiceReference\VoIPServer2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer43.xsd">
+    <None Include="Service References\ServerServiceReference\VoIPServer3.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -157,6 +158,9 @@
     <WCFMetadataStorage Include="Service References\ServerServiceReference\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\ServerServiceReference\VoIPServer.disco" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Service References\ServerServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -168,10 +172,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\VoIPServer1.disco" />
-  </ItemGroup>
-  <Import Project="..\..\SharedCode\SharedCode\SharedCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

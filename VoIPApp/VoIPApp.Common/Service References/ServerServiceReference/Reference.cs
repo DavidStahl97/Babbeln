@@ -9,237 +9,17 @@
 //------------------------------------------------------------------------------
 
 namespace VoIPApp.Common.ServerServiceReference {
-    using System.Runtime.Serialization;
-    using System;
     
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Message", Namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models")]
-    [System.SerializableAttribute()]
-    public partial class Message : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime DateField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MongoDB.Bson.ObjectId ReceiverField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MongoDB.Bson.ObjectId SenderField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TextField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime Date {
-            get {
-                return this.DateField;
-            }
-            set {
-                if ((this.DateField.Equals(value) != true)) {
-                    this.DateField = value;
-                    this.RaisePropertyChanged("Date");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MongoDB.Bson.ObjectId Receiver {
-            get {
-                return this.ReceiverField;
-            }
-            set {
-                if ((this.ReceiverField.Equals(value) != true)) {
-                    this.ReceiverField = value;
-                    this.RaisePropertyChanged("Receiver");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MongoDB.Bson.ObjectId Sender {
-            get {
-                return this.SenderField;
-            }
-            set {
-                if ((this.SenderField.Equals(value) != true)) {
-                    this.SenderField = value;
-                    this.RaisePropertyChanged("Sender");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Text {
-            get {
-                return this.TextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TextField, value) != true)) {
-                    this.TextField = value;
-                    this.RaisePropertyChanged("Text");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Friend", Namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models")]
-    [System.SerializableAttribute()]
-    public partial class Friend : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string IPField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string IconField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ProfileNameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string StatusField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MongoDB.Bson.ObjectId _idField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string IP {
-            get {
-                return this.IPField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IPField, value) != true)) {
-                    this.IPField = value;
-                    this.RaisePropertyChanged("IP");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Icon {
-            get {
-                return this.IconField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IconField, value) != true)) {
-                    this.IconField = value;
-                    this.RaisePropertyChanged("Icon");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ProfileName {
-            get {
-                return this.ProfileNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ProfileNameField, value) != true)) {
-                    this.ProfileNameField = value;
-                    this.RaisePropertyChanged("ProfileName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Status {
-            get {
-                return this.StatusField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MongoDB.Bson.ObjectId _id {
-            get {
-                return this._idField;
-            }
-            set {
-                if ((this._idField.Equals(value) != true)) {
-                    this._idField = value;
-                    this.RaisePropertyChanged("_id");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServerServiceReference.IServerService", CallbackContract=typeof(VoIPApp.Common.ServerServiceReference.IServerServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IServerService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/SendMessage")]
-        void SendMessage(VoIPApp.Common.ServerServiceReference.Message msg);
+        void SendMessage(SharedCode.Models.Message msg);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/SendMessage")]
-        System.Threading.Tasks.Task SendMessageAsync(VoIPApp.Common.ServerServiceReference.Message msg);
+        System.Threading.Tasks.Task SendMessageAsync(SharedCode.Models.Message msg);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Call", ReplyAction="http://tempuri.org/IServerService/CallResponse")]
         bool Call(MongoDB.Bson.ObjectId receiver);
@@ -248,10 +28,10 @@ namespace VoIPApp.Common.ServerServiceReference {
         System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
-        VoIPApp.Common.ServerServiceReference.Friend AddFriendByName(string friendName);
+        SharedCode.Models.Friend AddFriendByName(string friendName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
-        System.Threading.Tasks.Task<VoIPApp.Common.ServerServiceReference.Friend> AddFriendByNameAsync(string friendName);
+        System.Threading.Tasks.Task<SharedCode.Models.Friend> AddFriendByNameAsync(string friendName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Subscribe", ReplyAction="http://tempuri.org/IServerService/SubscribeResponse")]
         MongoDB.Bson.ObjectId Subscribe(string userName, string password, string ip);
@@ -276,10 +56,10 @@ namespace VoIPApp.Common.ServerServiceReference {
     public interface IServerServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnMessageReceived")]
-        void OnMessageReceived(VoIPApp.Common.ServerServiceReference.Message msg);
+        void OnMessageReceived(SharedCode.Models.Message msg);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/OnCall", ReplyAction="http://tempuri.org/IServerService/OnCallResponse")]
-        void OnCall(VoIPApp.Common.ServerServiceReference.Friend id);
+        void OnCall(SharedCode.Models.Friend id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -310,11 +90,11 @@ namespace VoIPApp.Common.ServerServiceReference {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public void SendMessage(VoIPApp.Common.ServerServiceReference.Message msg) {
+        public void SendMessage(SharedCode.Models.Message msg) {
             base.Channel.SendMessage(msg);
         }
         
-        public System.Threading.Tasks.Task SendMessageAsync(VoIPApp.Common.ServerServiceReference.Message msg) {
+        public System.Threading.Tasks.Task SendMessageAsync(SharedCode.Models.Message msg) {
             return base.Channel.SendMessageAsync(msg);
         }
         
@@ -326,11 +106,11 @@ namespace VoIPApp.Common.ServerServiceReference {
             return base.Channel.CallAsync(receiver);
         }
         
-        public VoIPApp.Common.ServerServiceReference.Friend AddFriendByName(string friendName) {
+        public SharedCode.Models.Friend AddFriendByName(string friendName) {
             return base.Channel.AddFriendByName(friendName);
         }
         
-        public System.Threading.Tasks.Task<VoIPApp.Common.ServerServiceReference.Friend> AddFriendByNameAsync(string friendName) {
+        public System.Threading.Tasks.Task<SharedCode.Models.Friend> AddFriendByNameAsync(string friendName) {
             return base.Channel.AddFriendByNameAsync(friendName);
         }
         

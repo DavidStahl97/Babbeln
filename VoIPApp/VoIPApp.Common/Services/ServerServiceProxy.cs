@@ -78,12 +78,12 @@ namespace VoIPApp.Common.Services
             return await serverServiceClient.RegisterAsync(userName, password, email, ipAdress);
         }
 
-        public void OnCall(ServerServiceReference.Friend friend)
+        public void OnCall(Friend friend)
         {
             eventAggregator.GetEvent<CallEvent>().Publish(friend);
         }
 
-        public void OnMessageReceived(ServerServiceReference.Message msg)
+        public void OnMessageReceived(Message msg)
         {
             eventAggregator.GetEvent<MessageEvent>().Publish(msg);
         }

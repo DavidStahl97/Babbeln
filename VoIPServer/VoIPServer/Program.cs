@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary;
 using System.ServiceModel.Description;
-using SharedCode.Services;
 
 namespace VoIPServer
 {

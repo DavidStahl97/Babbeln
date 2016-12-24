@@ -45,8 +45,7 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task SendMessage(Message msg)
         {
-            VoIPApp.Common.ServerServiceReference.Message wcfMessage = new VoIPApp.Common.ServerServiceReference.Message { Date = msg.Date, Receiver = msg.Receiver, Sender = msg.Sender, Text = msg.Text };
-            await serverServiceProxy.ServerService.SendMessageAsync(wcfMessage);
+            await serverServiceProxy.ServerService.SendMessageAsync(msg);
         }
 
         public ObservableCollection<Message> GetMessages(ObjectId _id)

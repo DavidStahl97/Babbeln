@@ -50,10 +50,10 @@ namespace SharedCode.Models
         [DataMember]
         public string IP { get; set; }
 
-        public static implicit operator Friend(VoIPApp.Common.ServerServiceReference.Friend v)
+        /*public static implicit operator Friend(VoIPApp.Common.ServerServiceReference.Friend v)
         {
             return new Friend { Name = v.Name, ProfileName = v.ProfileName, Icon = v.Icon, IP = v.IP, Status = v.Status, _id = v._id };
-        }
+        }*/
     }
 
     /// <summary>

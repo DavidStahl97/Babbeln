@@ -27,9 +27,6 @@
   <wsdl:message name="IServerService_Call_InputMessage">
     <wsdl:part name="parameters" element="tns:Call" />
   </wsdl:message>
-  <wsdl:message name="IServerService_Call_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CallResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerService_CancelCall_InputMessage">
     <wsdl:part name="parameters" element="tns:CancelCall" />
   </wsdl:message>
@@ -75,7 +72,6 @@
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Call">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Call" message="tns:IServerService_Call_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/CallResponse" message="tns:IServerService_Call_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="CancelCall">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/CancelCall" message="tns:IServerService_CancelCall_InputMessage" />
@@ -125,9 +121,6 @@
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="CancelCall">
       <soap12:operation soapAction="http://tempuri.org/IServerService/CancelCall" style="document" />

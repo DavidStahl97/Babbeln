@@ -96,16 +96,13 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        public bool Call(ObjectId receiver)
+        public void Call(ObjectId receiver)
         {
             IServerCallBack receiverCallback = GetCallbackChannelById(receiver);
             if(receiverCallback != null)
             {
-                receiverCallback.OnCall(receiver);
-                return true;
+                receiverCallback.OnCall(GetCurrentObjectId());
             }
-
-            return false;
         }
 
         private async Task<ObjectId> GetUserId(string userName, string password)

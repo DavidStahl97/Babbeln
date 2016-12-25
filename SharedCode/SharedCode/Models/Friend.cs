@@ -19,7 +19,7 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// profile name of the friend
         /// </summary>
@@ -42,18 +42,16 @@ namespace SharedCode.Models
         /// represents the current status of the friend for example Online or Offline
         /// </summary>
         [DataMember]
-        public string Status { get; set; }
+        public string Status {
+            get { return SharedCode.Models.Status.Online.ToString(); }
+            set { Status = value; }
+        }
 
         /// <summary>
         /// ip of the friend
         /// </summary>
         [DataMember]
         public string IP { get; set; }
-
-        /*public static implicit operator Friend(VoIPApp.Common.ServerServiceReference.Friend v)
-        {
-            return new Friend { Name = v.Name, ProfileName = v.ProfileName, Icon = v.Icon, IP = v.IP, Status = v.Status, _id = v._id };
-        }*/
     }
 
     /// <summary>

@@ -33,8 +33,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.acceptCallCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptCall);
             this.windowLoadedCommand = new DelegateCommand<object>(this.OnWindowLoaded);
 
-            eventAggregator.GetEvent<AcceptedCallEvent>().Subscribe(OnCallAccepted, ThreadOption.BackgroundThread, true);
-            eventAggregator.GetEvent<CanceledCallEvent>().Subscribe(OnCallCanceled, ThreadOption.BackgroundThread, true);
+            eventAggregator.GetEvent<AcceptedCallEvent>().Subscribe(OnCallAccepted, ThreadOption.UIThread, true);
+            eventAggregator.GetEvent<CanceledCallEvent>().Subscribe(OnCallCanceled, ThreadOption.UIThread, true);
         }
 
         private void OnCallCanceled(ObjectId obj)
@@ -66,6 +66,16 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public ICommand CancelCallCommand
         {
             get { return this.cancelCallCommand; }
+        }
+
+        public ICommand WindowLoadedCommand
+        {
+            get { return this.windowLoadedCommand; }
+        }
+
+        public ICommand AcceptCallCommand
+        {
+            get { return this.acceptCallCommand; }
         }
 
         public bool Confirmed { get; set; }

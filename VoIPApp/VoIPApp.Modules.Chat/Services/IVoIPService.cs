@@ -10,7 +10,7 @@ namespace VoIPApp.Modules.Chat.Services
 {
     public interface IVoIPService
     {
-        Task<bool> StartCallSession(Friend f);
+        Task StartCallSession(Friend f);
         Task AcceptCall(Friend f);
         Task CancelCall(Friend f);
     }

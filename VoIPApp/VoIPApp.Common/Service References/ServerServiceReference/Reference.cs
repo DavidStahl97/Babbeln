@@ -21,11 +21,11 @@ namespace VoIPApp.Common.ServerServiceReference {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/SendMessage")]
         System.Threading.Tasks.Task SendMessageAsync(SharedCode.Models.Message msg);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Call", ReplyAction="http://tempuri.org/IServerService/CallResponse")]
-        bool Call(MongoDB.Bson.ObjectId receiver);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/Call")]
+        void Call(MongoDB.Bson.ObjectId receiver);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Call", ReplyAction="http://tempuri.org/IServerService/CallResponse")]
-        System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/Call")]
+        System.Threading.Tasks.Task CallAsync(MongoDB.Bson.ObjectId receiver);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/CancelCall")]
         void CancelCall(MongoDB.Bson.ObjectId friendId);
@@ -71,7 +71,7 @@ namespace VoIPApp.Common.ServerServiceReference {
         void OnMessageReceived(SharedCode.Models.Message msg);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCall")]
-        void OnCall(MongoDB.Bson.ObjectId id);
+        void OnCall(MongoDB.Bson.ObjectId friendId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCallAccepted")]
         void OnCallAccepted(MongoDB.Bson.ObjectId friendId);
@@ -116,11 +116,11 @@ namespace VoIPApp.Common.ServerServiceReference {
             return base.Channel.SendMessageAsync(msg);
         }
         
-        public bool Call(MongoDB.Bson.ObjectId receiver) {
-            return base.Channel.Call(receiver);
+        public void Call(MongoDB.Bson.ObjectId receiver) {
+            base.Channel.Call(receiver);
         }
         
-        public System.Threading.Tasks.Task<bool> CallAsync(MongoDB.Bson.ObjectId receiver) {
+        public System.Threading.Tasks.Task CallAsync(MongoDB.Bson.ObjectId receiver) {
             return base.Channel.CallAsync(receiver);
         }
         

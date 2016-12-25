@@ -16,8 +16,8 @@ namespace VoIPServer.ServerServiceLibrary
         [OperationContract(IsOneWay = true)]
         void SendMessage(Message msg);
 
-        [OperationContract(IsOneWay = false)]
-        bool Call(ObjectId receiver);
+        [OperationContract(IsOneWay = true)]
+        void Call(ObjectId receiver);
 
         [OperationContract(IsOneWay = true)]
         void CancelCall(ObjectId friendId);
@@ -44,7 +44,7 @@ namespace VoIPServer.ServerServiceLibrary
         void OnMessageReceived(Message msg);
 
         [OperationContract(IsOneWay = true)]
-        void OnCall(ObjectId id);
+        void OnCall(ObjectId friendId);
 
         [OperationContract(IsOneWay = true)]
         void OnCallAccepted(ObjectId friendId);

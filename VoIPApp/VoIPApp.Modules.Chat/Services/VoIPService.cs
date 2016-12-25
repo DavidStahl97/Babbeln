@@ -15,6 +15,7 @@ namespace VoIPApp.Modules.Chat.Services
     {
         private readonly AudioStreamingService audioStreamingService;
         private readonly ServerServiceProxy serverServiceProxy;
+        private bool startedAudioStreaming;
 
         public VoIPService(AudioStreamingService audioStreamingService, ServerServiceProxy serverServiceProxy)
         {
@@ -27,20 +28,25 @@ namespace VoIPApp.Modules.Chat.Services
             this.serverServiceProxy = serverServiceProxy;
         }
 
-        public async Task<bool> StartCallSession(Friend f)
+        public async Task StartCallSession(Friend f)
         {
-            return await serverServiceProxy.ServerService.CallAsync(f._id);
+            await serverServiceProxy.ServerService.CallAsync(f._id);
         }
 
         public async Task AcceptCall(Friend f)
         {
+            startedAudioStreaming = true;
             audioStreamingService.StartAsync(f.IP, 10000);
             await serverServiceProxy.ServerService.AcceptCallAsync(f._id);
         }
 
         public async Task CancelCall(Friend f)
         {
-            audioStreamingService.StopAsync();
+            if(startedAudioStreaming)
+            {
+                audioStreamingService.StopAsync();
+                startedAudioStreaming = false;
+            }
             await serverServiceProxy.ServerService.CancelCallAsync(f._id);
         }
     }

@@ -34,10 +34,5 @@ namespace SharedCode.Models
 
         [DataMember]
         public ObjectId Sender { get; set; }
-
-        /*public static implicit operator Message(VoIPApp.Common.ServerServiceReference.Message v)
-        {
-            return new Message { Text = v.Text, Receiver= v.Receiver, Date = v.Date, Sender = v.Sender };
-        }*/
     }
 }

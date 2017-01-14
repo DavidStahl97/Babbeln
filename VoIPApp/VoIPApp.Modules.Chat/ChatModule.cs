@@ -35,10 +35,6 @@ namespace VoIPApp.Modules.Chat
         /// <see cref="BackgroundWorker"/> for initializing the <see cref="audioStreamer"/> asynchronously
         /// </summary>
         private readonly BackgroundWorker audioInitWorker;
-        /// <summary>
-        /// service for voice chatting
-        /// </summary>
-        private readonly IVoIPService voIPService;
 
         /// <summary>
         /// creates a new instance of the <see cref="ChatModule"/> class
@@ -51,7 +47,6 @@ namespace VoIPApp.Modules.Chat
             this.regionManager = regionManager;
             this.container = container;
 
-            this.voIPService = new VoIPService(audioStreamer, serverServiceProxy);
             this.audioStreamer = audioStreamer;
 
             this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
@@ -71,7 +66,6 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         public void Initialize()
         {          
-            this.container.RegisterInstance(voIPService);
             this.container.RegisterType<FriendsService>();
             this.container.RegisterType<MessageService>();
             this.container.RegisterType<VoiceChatViewModel>();

@@ -56,4 +56,22 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Storyboard x:Key="StringAnimationStoryboard">
+        <StringAnimationUsingKeyFrames AutoReverse="True" Storyboard.TargetProperty="Text" RepeatBehavior="Forever">
+            <DiscreteStringKeyFrame Value="&#160;&#160;&#160;&#160;&#160;" KeyTime="0:0:0.1" />
+            <DiscreteStringKeyFrame Value=" .&#160;&#160;&#160;&#160;" KeyTime="0:0:0.2" />
+            <DiscreteStringKeyFrame Value=" ..&#160;&#160;&#160;" KeyTime="0:0:0.3" />
+            <DiscreteStringKeyFrame Value=" ...&#160;&#160;" KeyTime="0:0:0.4" />
+            <DiscreteStringKeyFrame Value=" ....&#160;" KeyTime="0:0:0.5" />
+            <DiscreteStringKeyFrame Value=" ....." KeyTime="0:0:0.6" />
+        </StringAnimationUsingKeyFrames>
+    </Storyboard>
+    <Style TargetType="TextBlock" x:Key="StringAnimationStyle">
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="TextBlock.Loaded">
+                <BeginStoryboard Storyboard="{StaticResource StringAnimationStoryboard}" />
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

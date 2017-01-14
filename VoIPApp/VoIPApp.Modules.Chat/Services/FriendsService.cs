@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedCode.Services;
 using VoIPApp.Common.Services;
+using System.IO;
 
 namespace VoIPApp.Modules.Chat.Services
 {
@@ -59,10 +60,26 @@ namespace VoIPApp.Modules.Chat.Services
                             if(userCursor.Current != null)
                             {
                                 BsonDocument userDocument = userCursor.Current.First();
-                                Friends.Add(new Friend { Name = userDocument["username"].AsString, IP = userDocument["ip"].AsString, _id = userDocument["_id"].AsObjectId });
+                                Friends.Add(new Friend { Name = userDocument["username"].AsString, IP = userDocument["ip"].AsString, _id = userDocument["_id"].AsObjectId});
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public void UpdateProfilePictures()
+        {
+            foreach(Friend friend in Friends)
+            {
+                string profilePicturePath = string.Format("pack://application:,,,/Images/{0}.jpg", friend._id.ToString());
+                if (File.Exists(profilePicturePath))
+                {
+                    friend.Icon = profilePicturePath;
+                }
+                else
+                {
+                    friend.Icon = "pack://application:,,,/Assets/profile_high.jpg";
                 }
             }
         }

@@ -17,7 +17,8 @@
 
             <!--multi converter to compare to ObjectIds-->
             <local:ObjectIdMultiConverter x:Key="ObjectIdConverter"/>
-            
+            <common:NullImageConverter x:Key="NullImageConverter"/>
+
             <!--style for message list-->
             <Style x:Key="ListViewItemTemplate" TargetType="ListViewItem">
                 <Setter Property="Template">
@@ -178,7 +179,7 @@
                         <DataTemplate>
                             <Border BorderBrush="#c6c6c6" BorderThickness="0">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{Binding Path=Icon}" Width="50" Height="50" Margin="10"/>
+                                    <Image Source="{Binding Path=Icon, Converter={StaticResource NullImageConverter}}" Width="50" Height="50" Margin="10"/>
                                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
                                         <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Foreground="Gray"/>
                                         <TextBlock Text="{Binding Path=ProfileName}" Margin="5,0,0,0" Foreground="Gray"/>

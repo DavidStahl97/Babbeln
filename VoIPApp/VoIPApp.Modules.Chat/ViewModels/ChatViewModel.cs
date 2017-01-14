@@ -142,6 +142,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             await friendsService.UpdateFriendsList();
             await messageService.PopulateMessageDictionary();
+            friendsService.UpdateProfilePictures();
         }
 
         private void OnAddFriend(object obj)
@@ -183,12 +184,12 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             Messages.Clear();
 
-            try
+            Friend currentFriend = (Friends.CurrentItem as Friend);
+            if(currentFriend != null)
             {
-                currentFriendID = (Friends.CurrentItem as Friend)._id;
+                currentFriendID = currentFriend._id;
                 Messages.AddRange(messageService.GetMessages(currentFriendID));
             }
-            catch(NullReferenceException) { }
 
             callCommand.RaiseCanExecuteChanged();
         }
@@ -215,16 +216,14 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private bool CanCall(object arg)
         {
-            try
+            Friend currentFriend = Friends.CurrentItem as Friend;
+            if(currentFriend != null)
             {
-                Friend currentFriend = Friends.CurrentItem as Friend;
                 if (currentFriend.Status == Status.Online.ToString() && !calling)
                 {
                     return true;
                 }
             }
-            catch (NullReferenceException) { }
-
             return false;
         }
 
@@ -234,6 +233,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             voiceChatViewModel.Title = (friends.CurrentItem as Friend).Name + " anrufen";
             voiceChatViewModel.IncomingCall = false;
             voiceChatViewModel.CallPartner = (friends.CurrentItem as Friend);
+            voiceChatViewModel.CanAccept = false;
+            voiceChatViewModel.CallAccepted = false;
 
             OpenCallDialog(voiceChatViewModel);
         }
@@ -248,6 +249,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
                 viewModel.Title = "Anruf von " + caller.Name;
                 viewModel.IncomingCall = true;
                 viewModel.CallPartner = caller;
+                viewModel.CanAccept = true;
+                viewModel.CallAccepted = true;
 
                 OpenCallDialog(viewModel); 
             }

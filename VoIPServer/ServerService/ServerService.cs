@@ -78,7 +78,7 @@ namespace VoIPServer.ServerServiceLibrary
                 ICommunicationObject obj = (ICommunicationObject)callback;
                 obj.Closed += (s, e) =>
                 {
-                    subscribers.Remove(callback);
+                    Unsubscribe();
                 };
 
                 return id;
@@ -231,13 +231,12 @@ namespace VoIPServer.ServerServiceLibrary
             if(!userId.Equals(ObjectId.Empty))
             {
                 IServerCallBack friendCallback = GetCallbackChannelById(friendId);
-                if (friendId != null)
+                if (friendCallback != null)
                 {
                     friendCallback.OnCallCancelled(userId);
                 }
             }
         }
-            
 
         public void AcceptCall(ObjectId friendId)
         {
@@ -245,11 +244,29 @@ namespace VoIPServer.ServerServiceLibrary
             if (!userId.Equals(ObjectId.Empty))
             {
                 IServerCallBack friendCallback = GetCallbackChannelById(friendId);
-                if (friendId != null)
+                if (friendCallback != null)
                 {
                     friendCallback.OnCallAccepted(userId);
                 }
             }
+        }
+
+        public async Task<string> GetProfilePictureHash(ObjectId friendId)
+        {
+            IMongoCollection<BsonDocument> userCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
+            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", friendId);
+            using (IAsyncCursor<BsonDocument> cursor = await userCollection.FindAsync(filter))
+            {
+                cursor.MoveNext();
+                if (cursor.Current != null)
+                {
+                    IEnumerable<BsonDocument> batch = cursor.Current;
+                    BsonDocument doc = batch.First();
+                    return doc["picturehash"].AsString;
+                }
+            }
+
+            return string.Empty;
         }
     }
 }

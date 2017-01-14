@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using Prism.Mvvm;
+using System.ComponentModel;
+using System.Windows.Media;
 
 namespace SharedCode.Models
 {
@@ -12,25 +15,66 @@ namespace SharedCode.Models
     /// represents a friend of the user
     /// </summary>
     [DataContract]
-    public class Friend
+    public class Friend : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         /// name of the friend
         /// </summary>
+        private string name;
+
         [DataMember]
-        public string Name { get; set; }
+        public string Name
+        {
+            get { return this.name; }
+            set
+            {
+                if (this.name != value)
+                {
+                    this.name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
+        }
 
         /// <summary>
         /// profile name of the friend
         /// </summary>
+        private string profileName; 
+
         [DataMember]
-        public string ProfileName { get; set; }
+        public string ProfileName
+        {
+            get { return this.name; }
+            set
+            {
+                if(this.profileName != value)
+                {
+                    this.profileName = value;
+                    OnPropertyChanged("ProfileName");
+                }
+            }
+        }
 
         /// <summary>
         /// profile picture of the friend
         /// </summary>
+        private string icon;
+
         [DataMember]
-        public string Icon { get; set; }
+        public string Icon
+        {
+            get { return this.icon; }
+            set
+            {
+                if(icon != value)
+                {
+                    this.icon = value;
+                    OnPropertyChanged("Icon");
+                }
+            }
+        }
 
         /// <summary>
         /// id of the friend
@@ -52,6 +96,14 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         public string IP { get; set; }
+
+        public void OnPropertyChanged(string name)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
     }
 
     /// <summary>

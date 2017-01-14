@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Prism.Events;
 using VoIPApp.Common;
 using MongoDB.Bson;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp.Modules.Chat.ViewModels
 {
@@ -21,17 +22,21 @@ namespace VoIPApp.Modules.Chat.ViewModels
     /// </summary>
     public class VoiceChatViewModel : BindableBase, IConfirmation, IInteractionRequestAware
     {
-        private readonly IVoIPService voIPService;
+        private readonly AudioStreamingService audioStreamingService;
+        private readonly ServerServiceProxy serverServiceProxy;
         private readonly DelegateCommand<object> cancelCallCommand;
         private readonly DelegateCommand<object> acceptCallCommand;
         private readonly DelegateCommand<object> windowLoadedCommand;
 
-        public VoiceChatViewModel(IVoIPService voIPService, EventAggregator eventAggregator)
+        private bool startedAudioStreaming;
+
+        public VoiceChatViewModel(AudioStreamingService audioStreamingService, EventAggregator eventAggregator, ServerServiceProxy serverServiceProxy)
         {
-            this.voIPService = voIPService;
+            this.audioStreamingService = audioStreamingService;
+            this.serverServiceProxy = serverServiceProxy;
             this.cancelCallCommand = DelegateCommand<object>.FromAsyncHandler(this.OnCancelCall);
             this.acceptCallCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptCall);
-            this.windowLoadedCommand = new DelegateCommand<object>(this.OnWindowLoaded);
+            this.windowLoadedCommand = DelegateCommand<object>.FromAsyncHandler(this.OnWindowLoaded);
 
             eventAggregator.GetEvent<AcceptedCallEvent>().Subscribe(OnCallAccepted, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<CanceledCallEvent>().Subscribe(OnCallCanceled, ThreadOption.UIThread, true);
@@ -39,27 +44,51 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private void OnCallCanceled(ObjectId obj)
         {
-            OnCancelCall(null);
+            if(startedAudioStreaming)
+            {
+                audioStreamingService.StopAsync();
+            }
+            this.FinishInteraction();
         }
 
         private void OnCallAccepted(ObjectId obj)
         {
-            OnAcceptCall(null);
+            CallAccepted = true;
+            if(!startedAudioStreaming)
+            {
+                startedAudioStreaming = true;
+                audioStreamingService.StartAsync(CallPartner.IP, 10000);
+            }
         }
 
         private async Task OnAcceptCall(object arg)
         {
-            await voIPService.AcceptCall(CallPartner);
+            CanAccept = false;
+            if(!startedAudioStreaming)
+            {
+                startedAudioStreaming = true;
+                audioStreamingService.StartAsync(CallPartner.IP, 10000);
+                await serverServiceProxy.ServerService.AcceptCallAsync(CallPartner._id);
+            }
         }
 
-        private void OnWindowLoaded(object obj)
+        private async Task OnWindowLoaded(object obj)
         {
-            voIPService.StartCallSession(CallPartner);
+            if (!canAccept)
+            {
+                await serverServiceProxy.ServerService.CallAsync(CallPartner._id);
+            }
         }
 
         private async Task OnCancelCall(object obj)
         {
-            await voIPService.CancelCall(CallPartner);
+            if (startedAudioStreaming)
+            {
+                audioStreamingService.StopAsync();
+                startedAudioStreaming = false;
+            }
+            await serverServiceProxy.ServerService.CancelCallAsync(CallPartner._id);
+
             this.FinishInteraction();
         }
 
@@ -76,6 +105,20 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public ICommand AcceptCallCommand
         {
             get { return this.acceptCallCommand; }
+        }
+
+        private bool canAccept;
+        public bool CanAccept
+        {
+            get { return this.canAccept; }
+            set { SetProperty(ref this.canAccept, value); }
+        }
+
+        private bool callAccepted;
+        public bool CallAccepted
+        {
+            get { return this.callAccepted; }
+            set { SetProperty(ref this.callAccepted, value); }
         }
 
         public bool Confirmed { get; set; }

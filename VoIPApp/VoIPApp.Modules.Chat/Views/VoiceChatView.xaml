@@ -3,13 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             MinHeight="100" MinWidth="300">
+             MinHeight="300" MinWidth="300" MaxHeight="600" MaxWidth="800" >
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/VoIPApp.Common;component/Themes/generic.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="StackPanel" x:Key="AcceptStackPanelStyle">
+                <Setter Property="Visibility" Value="Visible"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CanAccept}" Value="false">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding CanAccept}" Value="true">
+                        <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+                <Setter Property="Foreground" Value="Gray"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding CallAccepted}" Value="true">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -18,9 +39,41 @@
             <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    
-    <StackPanel Orientation="Horizontal">
-        <Button Content="&#xE137;" Style="{StaticResource IconButtonStyle}" Command="{Binding CancelCallCommand}"/>
-        <Button Content="&#xE13A;" Style="{StaticResource IconButtonStyle}" Command="{Binding AcceptCallCommand}"/>
-    </StackPanel>
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Image Source="{Binding CallPartner.Icon}"
+                   Grid.Row="0"
+                   Margin="25"/>
+            <TextBlock Grid.Row="1"
+                       Text="{Binding CallPartner.Name}"
+                       HorizontalAlignment="Center"
+                       FontSize="24"
+                       Style="{StaticResource TextBlockStyle}"/>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="25">
+            <Button Content="&#xE137;" 
+                        Style="{StaticResource IconButtonStyle}" 
+                        Command="{Binding CancelCallCommand}"
+                        FontSize="32"
+                        Background="White"/>
+            <StackPanel Style="{StaticResource AcceptStackPanelStyle}">
+                <Button Content="&#xE13A;" 
+                        Style="{StaticResource IconButtonStyle}" 
+                        Command="{Binding AcceptCallCommand}"
+                        FontSize="32"
+                        Background="White"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>

@@ -118,9 +118,7 @@
     <Compile Include="Services\FriendsService.cs" />
     <Compile Include="Services\IFriendsService.cs" />
     <Compile Include="Services\IMessageService.cs" />
-    <Compile Include="Services\IVoIPService.cs" />
     <Compile Include="Services\MessageService.cs" />
-    <Compile Include="Services\VoIPService.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\VoiceChatViewModel.cs" />
     <Compile Include="Views\ChatNavigationItemView.xaml.cs">

@@ -54,12 +54,6 @@
   <wsdl:message name="IServerService_Register_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterResponse" />
   </wsdl:message>
-  <wsdl:message name="IServerService_GetProfilePictureHash_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetProfilePictureHash" />
-  </wsdl:message>
-  <wsdl:message name="IServerService_GetProfilePictureHash_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetProfilePictureHashResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerService_OnMessageReceived_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnMessageReceived" />
   </wsdl:message>
@@ -99,10 +93,6 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Register">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Register" message="tns:IServerService_Register_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/RegisterResponse" message="tns:IServerService_Register_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="GetProfilePictureHash">
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/GetProfilePictureHash" message="tns:IServerService_GetProfilePictureHash_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/GetProfilePictureHashResponse" message="tns:IServerService_GetProfilePictureHash_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnMessageReceived">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnMessageReceived" message="tns:IServerService_OnMessageReceived_OutputCallbackMessage" />
@@ -170,15 +160,6 @@
     </wsdl:operation>
     <wsdl:operation name="Register">
       <soap12:operation soapAction="http://tempuri.org/IServerService/Register" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetProfilePictureHash">
-      <soap12:operation soapAction="http://tempuri.org/IServerService/GetProfilePictureHash" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

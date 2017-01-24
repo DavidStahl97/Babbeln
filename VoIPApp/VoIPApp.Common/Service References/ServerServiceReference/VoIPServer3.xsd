@@ -82,45 +82,31 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetProfilePictureHash">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q7:ObjectId" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetProfilePictureHashResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="GetProfilePictureHashResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="OnMessageReceived">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q8:Message" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q7:Message" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCall">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q9:ObjectId" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q8:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCallAccepted">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q10:ObjectId" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q9:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCallCancelled">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q11:ObjectId" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q10:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

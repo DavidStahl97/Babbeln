@@ -20,13 +20,12 @@ namespace VoIPApp.Modules.Chat.Services
     public class MessageService : IMessageService
     {
         private readonly ServerServiceProxy serverServiceProxy;
-        private readonly IMongoCollection<BsonDocument> messageCollection;
         private readonly Dictionary<ObjectId, ObservableCollection<Message>> messages;
+        private readonly DataBaseService dataBaseService;
 
-        public MessageService(IUnityContainer container, IModuleManager moduleManager, ServerServiceProxy serverServiceProxy, EventAggregator eventAggregator)
+        public MessageService(IUnityContainer container, IModuleManager moduleManager, ServerServiceProxy serverServiceProxy, EventAggregator eventAggregator, DataBaseService dataBaseService)
         {
-            DataBaseService dataBaseService = container.Resolve<DataBaseService>();
-            this.messageCollection = dataBaseService.Database.GetCollection<BsonDocument>("messages");
+            this.dataBaseService = dataBaseService;
 
             this.messages = new Dictionary<ObjectId, ObservableCollection<Message>>();
             this.serverServiceProxy = serverServiceProxy;
@@ -68,7 +67,7 @@ namespace VoIPApp.Modules.Chat.Services
 
             FilterDefinition<BsonDocument> filter = builder.Eq("sender", userId) | builder.Eq("receiver", userId);
 
-            using (IAsyncCursor<BsonDocument> cursor = await messageCollection.FindAsync(filter))
+            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.MessageCollection.FindAsync(filter))
             {
                 while (await cursor.MoveNextAsync())
                 {

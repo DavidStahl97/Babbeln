@@ -62,12 +62,6 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Register", ReplyAction="http://tempuri.org/IServerService/RegisterResponse")]
         System.Threading.Tasks.Task<string> RegisterAsync(string userName, string password, string email, string ip);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/GetProfilePictureHash", ReplyAction="http://tempuri.org/IServerService/GetProfilePictureHashResponse")]
-        string GetProfilePictureHash(MongoDB.Bson.ObjectId friendId);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/GetProfilePictureHash", ReplyAction="http://tempuri.org/IServerService/GetProfilePictureHashResponse")]
-        System.Threading.Tasks.Task<string> GetProfilePictureHashAsync(MongoDB.Bson.ObjectId friendId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -176,14 +170,6 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         public System.Threading.Tasks.Task<string> RegisterAsync(string userName, string password, string email, string ip) {
             return base.Channel.RegisterAsync(userName, password, email, ip);
-        }
-        
-        public string GetProfilePictureHash(MongoDB.Bson.ObjectId friendId) {
-            return base.Channel.GetProfilePictureHash(friendId);
-        }
-        
-        public System.Threading.Tasks.Task<string> GetProfilePictureHashAsync(MongoDB.Bson.ObjectId friendId) {
-            return base.Channel.GetProfilePictureHashAsync(friendId);
         }
     }
 }

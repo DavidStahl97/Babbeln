@@ -39,10 +39,10 @@ namespace VoIPApp.ViewModels
             {
                 UserMessage = (EMail == null) ? "Anmelden" : "Registrieren";
 
-                if(!startService.Connected)
+                if(!StartService.Connected)
                 {
                     await startService.Connect();
-                    if(!startService.Connected)
+                    if(!StartService.Connected)
                     {
                         Result = "Verbindung mit dem Server fehlgeschlagen";
                         this.FinishInteraction();

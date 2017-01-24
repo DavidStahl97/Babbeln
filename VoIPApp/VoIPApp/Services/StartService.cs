@@ -32,7 +32,6 @@ namespace VoIPApp.Services
 
         public async Task<string> LogIn(string userName, string password)
         {
-
             bool loggedIn = await serverService.LogIn(userName, password);
             if(!loggedIn)
             {
@@ -47,6 +46,6 @@ namespace VoIPApp.Services
             return await serverService.Register(userName, password, email);
         }
 
-        public bool Connected { get; set; }
+        public static bool Connected { get; set; }
     }
 }

@@ -17,19 +17,16 @@ namespace VoIPApp.Modules.Chat.Services
 {
     public class FriendsService : IFriendsService
     {
-        private readonly IMongoCollection<BsonDocument> friendCollection;
-        private readonly IMongoCollection<BsonDocument> userCollection;
         private readonly ServerServiceProxy serverService;
-        private ObjectId userId;
+        private readonly ObjectId userId;
+        private readonly DataBaseService dataBaseService;
 
-        public FriendsService(IUnityContainer container)
+        public FriendsService(IUnityContainer container, DataBaseService dataBaseService, ServerServiceProxy serverService)
         {
-            DataBaseService dbService = container.Resolve<DataBaseService>();
-            this.friendCollection = dbService.Database.GetCollection<BsonDocument>("friends");
-            this.userCollection = dbService.Database.GetCollection<BsonDocument>("users");
+            this.dataBaseService = dataBaseService;
             Friends = new ObservableCollection<Friend>();
 
-            this.serverService = container.Resolve<ServerServiceProxy>();
+            this.serverService = serverService;
             this.userId = serverService.UserId;
         }
 
@@ -45,7 +42,7 @@ namespace VoIPApp.Modules.Chat.Services
                 filter = filter & builder.Not(builder.Eq("requester", f._id)) | builder.Not(builder.Eq("receiver", f._id));
             }
 
-            using (IAsyncCursor<BsonDocument> cursor = await friendCollection.FindAsync(filter))
+            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.FriendCollection.FindAsync(filter))
             {
                 while (await cursor.MoveNextAsync())
                 {
@@ -54,7 +51,7 @@ namespace VoIPApp.Modules.Chat.Services
                     {
                         ObjectId friendId = (document["requester"].AsObjectId.Equals(userId)) ? document["receiver"].AsObjectId : document["requester"].AsObjectId;
                         FilterDefinition<BsonDocument> userFilter = builder.Eq("_id", friendId);
-                        using (IAsyncCursor<BsonDocument> userCursor = await userCollection.FindAsync(userFilter))
+                        using (IAsyncCursor<BsonDocument> userCursor = await dataBaseService.UserCollection.FindAsync(userFilter))
                         {
                             await userCursor.MoveNextAsync();
                             if(userCursor.Current != null)

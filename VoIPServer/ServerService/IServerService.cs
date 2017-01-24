@@ -14,7 +14,7 @@ namespace VoIPServer.ServerServiceLibrary
     public interface IServerService
     {
         [OperationContract(IsOneWay = true)]
-        void SendMessage(Message msg);
+        Task SendMessage(Message msg);
 
         [OperationContract(IsOneWay = true)]
         void Call(ObjectId receiver);
@@ -36,9 +36,6 @@ namespace VoIPServer.ServerServiceLibrary
 
         [OperationContract(IsOneWay = false)]
         Task<string> Register(string userName, string password, string email, string ip);
-
-        [OperationContract(IsOneWay = false)]
-        Task<string> GetProfilePictureHash(ObjectId friendId);
     }
 
     public interface IServerCallBack

@@ -22,12 +22,12 @@
     <MetadataSource Address="http://localhost:10000/VoIPServer" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="VoIPServer.disco" MetadataType="Disco" ID="c0c674fb-2e59-4677-9405-42a93c6afcfc" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?disco" />
-    <MetadataFile FileName="ServerService.wsdl" MetadataType="Wsdl" ID="7e032464-5ba9-4642-80e6-962a4bf3be1a" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?wsdl" />
-    <MetadataFile FileName="VoIPServer.xsd" MetadataType="Schema" ID="914e497c-4b98-408b-baa2-0129fe32f7df" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd3" />
-    <MetadataFile FileName="VoIPServer1.xsd" MetadataType="Schema" ID="784486e0-ea9e-4191-9058-ba32c0135640" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd2" />
-    <MetadataFile FileName="VoIPServer2.xsd" MetadataType="Schema" ID="3f2c93a9-3d40-45ee-b0c2-e9692f2ca41a" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd1" />
-    <MetadataFile FileName="VoIPServer3.xsd" MetadataType="Schema" ID="e604aefb-e704-4c72-adf5-20c5aa6278f0" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd0" />
+    <MetadataFile FileName="VoIPServer.disco" MetadataType="Disco" ID="2e314450-9c09-4277-b0b6-9a580f36e7ef" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?disco" />
+    <MetadataFile FileName="ServerService.wsdl" MetadataType="Wsdl" ID="e03cefcc-ae59-4c5b-93df-696612600cb8" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?wsdl" />
+    <MetadataFile FileName="VoIPServer.xsd" MetadataType="Schema" ID="cff6fc7f-5ea3-41e5-b5e0-61f65d4a0de2" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd3" />
+    <MetadataFile FileName="VoIPServer1.xsd" MetadataType="Schema" ID="26c8526e-1bff-45d8-829f-5469e1dff538" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd2" />
+    <MetadataFile FileName="VoIPServer2.xsd" MetadataType="Schema" ID="ba5c32be-9d9a-4e29-b7de-cfcd008038f4" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd1" />
+    <MetadataFile FileName="VoIPServer3.xsd" MetadataType="Schema" ID="0264b1bb-0c62-4bfb-a8cc-3a085707a1c7" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

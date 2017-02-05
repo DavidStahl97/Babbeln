@@ -115,23 +115,24 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\ServerServiceProxy.cs" />
+    <Compile Include="StatusConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MongoDB.Bson.ObjectId.datasource" />
     <None Include="Properties\DataSources\SharedCode.Models.Friend.datasource" />
-    <None Include="Service References\ServerServiceReference\ServerService.wsdl" />
-    <None Include="Service References\ServerServiceReference\VoIPServer.xsd">
+    <None Include="Service References\ServerServiceReference\MongoDB.Bson1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer1.xsd">
+    <None Include="Service References\ServerServiceReference\service1.wsdl" />
+    <None Include="Service References\ServerServiceReference\service2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer2.xsd">
+    <None Include="Service References\ServerServiceReference\service21.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\VoIPServer3.xsd">
+    <None Include="Service References\ServerServiceReference\SharedCode.Models1.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -169,9 +170,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServerServiceReference\VoIPServer.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

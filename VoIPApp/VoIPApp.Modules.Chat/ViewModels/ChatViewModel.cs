@@ -42,6 +42,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private ObjectId currentFriendID;
         private ObjectId userId;
         private bool calling;
+        private bool populatedChatView;
 
         public ChatViewModel(FriendsService friendsService, MessageService messageService, IUnityContainer container, EventAggregator eventAggregator)
         {
@@ -140,9 +141,14 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private async Task OnWindowLoaded(object arg)
         {
-            await friendsService.UpdateFriendsList();
-            await messageService.PopulateMessageDictionary();
-            friendsService.UpdateProfilePictures();
+            if(!populatedChatView)
+            {
+                await friendsService.PopulateFriendList();
+                await messageService.PopulateMessageDictionary();
+                friendsService.UpdateProfilePictures();
+
+                populatedChatView = true;
+            }
         }
 
         private void OnAddFriend(object obj)
@@ -219,7 +225,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             Friend currentFriend = Friends.CurrentItem as Friend;
             if(currentFriend != null)
             {
-                if (currentFriend.Status == Status.Online.ToString() && !calling)
+                if (currentFriend.FriendStatus == Status.Online && !calling)
                 {
                     return true;
                 }

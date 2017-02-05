@@ -51,5 +51,8 @@ namespace VoIPServer.ServerServiceLibrary
 
         [OperationContract(IsOneWay = true)]
         void OnCallCancelled(ObjectId friendId);
+
+        [OperationContract(IsOneWay = true)]
+        void OnFriendStatusChanged(ObjectId friendId, Status status);
     }
 }

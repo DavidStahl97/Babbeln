@@ -86,7 +86,6 @@ namespace VoIPApp
             base.ConfigureContainer();
 
             serverServiceProxy = new ServerServiceProxy(Container.Resolve<EventAggregator>());
-
             Container.RegisterInstance(audioStreamingService);
             Container.RegisterInstance(dataBaseService);
             Container.RegisterInstance(serverServiceProxy);

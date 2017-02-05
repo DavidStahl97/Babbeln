@@ -78,6 +78,9 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnCallCancelled")]
         void OnCallCancelled(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnFriendStatusChanged")]
+        void OnFriendStatusChanged(MongoDB.Bson.ObjectId friendId, SharedCode.Models.Status status);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

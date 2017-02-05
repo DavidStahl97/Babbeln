@@ -33,7 +33,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 if (subscribers.ContainsKey(userId))
                 {
                     Console.WriteLine(userName + " is already connected");
-                    userId = ObjectId.Empty;
+                    return userId;
                 }
                 else
                 {
@@ -58,6 +58,10 @@ namespace VoIPServer.ServerServiceLibrary.Services
             {
                 subscribers.Remove(userId);
                 Console.WriteLine(userId + " removed");
+            }
+            else
+            {
+                Console.WriteLine(userId + " could not be unsubscribed.");
             }
         }
 

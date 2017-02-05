@@ -1,7 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using SharedCode.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +17,9 @@ namespace SharedCode.Services
 
         public DataBaseService()
         {
-            //string connectionString = "mongodb://192.168.1.80:27017";
-            //MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-           client = new MongoClient();
+            string connectionString = "mongodb://babbeln.ddns.net:27017";
+            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
+            client = new MongoClient(settings);
         }
 
         public void Connect()
@@ -46,6 +48,37 @@ namespace SharedCode.Services
             }
 
             return ObjectId.Empty;
+        }
+
+        public async Task<List<Friend>> GetFriendList(ObjectId userId, FilterDefinition<BsonDocument> filter)
+        {
+            List<Friend> friends = new List<Friend>();
+            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+            filter = filter & (builder.Eq("requester", userId) | builder.Eq("receiver", userId));
+
+            using (IAsyncCursor<BsonDocument> cursor = await FriendCollection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    IEnumerable<BsonDocument> batch = cursor.Current;
+                    foreach (BsonDocument document in batch)
+                    {
+                        ObjectId friendId = (document["requester"].AsObjectId.Equals(userId)) ? document["receiver"].AsObjectId : document["requester"].AsObjectId;
+                        FilterDefinition<BsonDocument> userFilter = builder.Eq("_id", friendId);
+                        using (IAsyncCursor<BsonDocument> userCursor = await UserCollection.FindAsync(userFilter))
+                        {
+                            await userCursor.MoveNextAsync();
+                            if (userCursor.Current != null)
+                            {
+                                BsonDocument userDocument = userCursor.Current.First();
+                                friends.Add(new Friend { Name = userDocument["username"].AsString, IP = userDocument["ip"].AsString, _id = userDocument["_id"].AsObjectId });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return friends;
         }
 
         public IMongoCollection<BsonDocument> MessageCollection { get; private set; }

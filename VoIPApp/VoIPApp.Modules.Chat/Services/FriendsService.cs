@@ -32,36 +32,12 @@ namespace VoIPApp.Modules.Chat.Services
 
         public ObservableCollection<Friend> Friends { get; set; }
 
-        public async Task UpdateFriendsList()
+        public async Task PopulateFriendList()
         {
-            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
-
-            FilterDefinition<BsonDocument> filter = builder.Eq("requester", userId) | builder.Eq("receiver", userId);
-            foreach (Friend f in Friends)
+            List<Friend> friends = await dataBaseService.GetFriendList(userId, Builders<BsonDocument>.Filter.Empty);
+            foreach(Friend f in friends)
             {
-                filter = filter & builder.Not(builder.Eq("requester", f._id)) | builder.Not(builder.Eq("receiver", f._id));
-            }
-
-            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.FriendCollection.FindAsync(filter))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-                    foreach(BsonDocument document in batch)
-                    {
-                        ObjectId friendId = (document["requester"].AsObjectId.Equals(userId)) ? document["receiver"].AsObjectId : document["requester"].AsObjectId;
-                        FilterDefinition<BsonDocument> userFilter = builder.Eq("_id", friendId);
-                        using (IAsyncCursor<BsonDocument> userCursor = await dataBaseService.UserCollection.FindAsync(userFilter))
-                        {
-                            await userCursor.MoveNextAsync();
-                            if(userCursor.Current != null)
-                            {
-                                BsonDocument userDocument = userCursor.Current.First();
-                                Friends.Add(new Friend { Name = userDocument["username"].AsString, IP = userDocument["ip"].AsString, _id = userDocument["_id"].AsObjectId});
-                            }
-                        }
-                    }
-                }
+                Friends.Add(f);
             }
         }
 

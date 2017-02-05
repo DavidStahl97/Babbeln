@@ -21,6 +21,8 @@ namespace VoIPServer.ServerServiceLibrary
     {
         private static readonly DataBaseService dataBaseService = new DataBaseService();
         private readonly LoginService loginService;
+        private readonly FriendService friendService;
+        private readonly ChatService chatService;
         private static int instanceCount = 0;
 
         private readonly IServerCallBack currentCallback;
@@ -39,6 +41,8 @@ namespace VoIPServer.ServerServiceLibrary
 
             currentCallback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
             loginService = new LoginService(dataBaseService, currentCallback);
+            chatService = new ChatService(loginService, dataBaseService);
+            friendService = new FriendService(dataBaseService, loginService);
         }
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip)
@@ -66,21 +70,7 @@ namespace VoIPServer.ServerServiceLibrary
         {
             if(loginService.LoggedIn)
             {
-                BsonDocument document = new BsonDocument
-                {
-                    {"sender", msg.Sender},
-                    {"receiver", msg.Receiver},
-                    {"date", msg.Date },
-                    {"text", msg.Text }
-                };
-
-                await dataBaseService.MessageCollection.InsertOneAsync(document);
-
-                IServerCallBack receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
-                if(receiverCallback != null)
-                {
-                    receiverCallback.OnMessageReceived(msg);
-                }
+                await chatService.SendMessage(msg);
             }
         }
 
@@ -88,61 +78,15 @@ namespace VoIPServer.ServerServiceLibrary
         {
             if(loginService.LoggedIn)
             {
-                IServerCallBack receiverCallback = loginService.GetCallbackChannelByID(receiver);
-                if(receiver != null)
-                {
-                    receiverCallback.OnCall(loginService.UserId);
-                }
+                chatService.Call(receiver);
             }
-        }
-
-        public async Task<Friend> AddFriendByName(string friendName)
-        {
-            Friend f = null;
-
-            if(loginService.LoggedIn)
-            {
-                FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
-                FilterDefinition<BsonDocument> filter = builder.Eq("username", friendName);
-
-                using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.UserCollection.FindAsync(filter))
-                {
-                    cursor.MoveNext();
-                    if (cursor.Current != null)
-                    {
-                        IEnumerable<BsonDocument> batch = cursor.Current;
-                        BsonDocument doc = batch.First();
-                        f = new Friend { Name = doc["username"].AsString, IP = doc["ip"].AsString, _id = doc["_id"].AsObjectId };
-                    }
-                }
-
-                if (f != null)
-                {
-                    BsonDocument document = new BsonDocument
-                    {
-                        { "requester", loginService.UserId },
-                        { "receiver", f._id },
-                        { "date", DateTime.Now },
-                        { "accepted", true }
-                    };
-
-                        await dataBaseService.FriendCollection.InsertOneAsync(document);
-                }
-            }
-
-            return f;
         }
 
         public void CancelCall(ObjectId friendId)
         {
             if(loginService.LoggedIn)
             {
-                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
-                if(friendCallback != null)
-                {
-                    friendCallback.OnCallCancelled(loginService.UserId);
-                }
-
+                chatService.CancelCall(friendId);
             }
         }
 
@@ -150,11 +94,19 @@ namespace VoIPServer.ServerServiceLibrary
         {
             if (loginService.LoggedIn)
             {
-                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
-                if (friendCallback != null)
-                {
-                    friendCallback.OnCallAccepted(loginService.UserId);
-                }
+                chatService.AcceptCall(friendId);
+            }
+        }
+
+        public async Task<Friend> AddFriendByName(string friendName)
+        {
+           if(loginService.LoggedIn)
+            {
+                return await friendService.AddFriendByName(friendName);
+            }
+           else
+            {
+                return null;
             }
         }
 

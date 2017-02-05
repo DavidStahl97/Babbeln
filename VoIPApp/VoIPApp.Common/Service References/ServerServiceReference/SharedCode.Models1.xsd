@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SharedCode.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SharedCode.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
+  <xs:import schemaLocation="" namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
   <xs:complexType name="Message">
     <xs:sequence>
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
@@ -12,13 +12,20 @@
   <xs:element name="Message" nillable="true" type="tns:Message" />
   <xs:complexType name="Friend">
     <xs:sequence>
+      <xs:element minOccurs="0" name="FriendStatus" type="tns:Status" />
       <xs:element minOccurs="0" name="IP" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Icon" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProfileName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="_id" type="q3:ObjectId" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Friend" nillable="true" type="tns:Friend" />
+  <xs:simpleType name="Status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Offline" />
+      <xs:enumeration value="Online" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Status" nillable="true" type="tns:Status" />
 </xs:schema>

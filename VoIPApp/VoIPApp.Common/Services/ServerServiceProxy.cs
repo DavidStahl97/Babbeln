@@ -116,5 +116,10 @@ namespace VoIPApp.Common.Services
 
             return localIP;
         }
+
+        public void OnFriendStatusChanged(ObjectId friendId, Status status)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

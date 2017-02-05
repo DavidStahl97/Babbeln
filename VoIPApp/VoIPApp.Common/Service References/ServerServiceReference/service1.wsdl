@@ -1,24 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ServerService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IServerService_policy">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ServerService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IServerService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
-        <wsrm:RMAssertion xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy">
-          <wsrm:InactivityTimeout Milliseconds="600000" />
-          <wsrm:AcknowledgementInterval Milliseconds="200" />
-        </wsrm:RMAssertion>
-        <cdp:CompositeDuplex xmlns:cdp="http://schemas.microsoft.com/net/2006/06/duplex" />
-        <ow:OneWay xmlns:ow="http://schemas.microsoft.com/ws/2005/05/routing/policy" />
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
         <wsaw:UsingAddressing />
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd0" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models" />
-      <xsd:import schemaLocation="http://localhost:10000/VoIPServer?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServerService_SendMessage_InputMessage">
@@ -66,6 +61,9 @@
   <wsdl:message name="IServerService_OnCallCancelled_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnCallCancelled" />
   </wsdl:message>
+  <wsdl:message name="IServerService_OnFriendStatusChanged_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnFriendStatusChanged" />
+  </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IServerService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/SendMessage" message="tns:IServerService_SendMessage_InputMessage" />
@@ -106,10 +104,13 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnCallCancelled">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnCallCancelled" message="tns:IServerService_OnCallCancelled_OutputCallbackMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendStatusChanged">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendStatusChanged" message="tns:IServerService_OnFriendStatusChanged_OutputCallbackMessage" />
+    </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="WSDualHttpBinding_IServerService" type="tns:IServerService">
-    <wsp:PolicyReference URI="#WSDualHttpBinding_IServerService_policy" />
-    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+  <wsdl:binding name="NetTcpBinding_IServerService" type="tns:IServerService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IServerService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
     <wsdl:operation name="SendMessage">
       <soap12:operation soapAction="http://tempuri.org/IServerService/SendMessage" style="document" />
       <wsdl:input>
@@ -191,12 +192,18 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="OnFriendStatusChanged">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendStatusChanged" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ServerService">
-    <wsdl:port name="WSDualHttpBinding_IServerService" binding="tns:WSDualHttpBinding_IServerService">
-      <soap12:address location="http://localhost:10000/VoIPServer/ServerService" />
+    <wsdl:port name="NetTcpBinding_IServerService" binding="tns:NetTcpBinding_IServerService">
+      <soap12:address location="net.tcp://78.31.66.62/VoIPServer/ServerService" />
       <wsa10:EndpointReference>
-        <wsa10:Address>http://localhost:10000/VoIPServer/ServerService</wsa10:Address>
+        <wsa10:Address>net.tcp://78.31.66.62/VoIPServer/ServerService</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

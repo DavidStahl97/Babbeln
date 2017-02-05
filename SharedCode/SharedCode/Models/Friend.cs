@@ -85,10 +85,12 @@ namespace SharedCode.Models
         /// <summary>
         /// represents the current status of the friend for example Online or Offline
         /// </summary>
+        private Status status; 
+
         [DataMember]
-        public string Status {
-            get { return SharedCode.Models.Status.Online.ToString(); }
-            set { Status = value; }
+        public Status FriendStatus {
+            get { return this.status; }
+            set { status = value; }
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace SharedCode.Models
     /// </summary>
     public enum Status
     {
-        Online,
-        Offline
+        Offline,
+        Online
     }
 }

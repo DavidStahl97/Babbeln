@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using VoIPApp.Common.Services;
 
 namespace VoIPApp
 {
@@ -13,6 +15,8 @@ namespace VoIPApp
     /// </summary>
     public partial class App : Application
     {
+        private Bootstrapper bootstrapper;
+
         /// <summary>
         /// creates and runs the bootstrapper
         /// </summary>
@@ -22,7 +26,7 @@ namespace VoIPApp
             base.OnStartup(e);
 
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            var bootstrapper = new Bootstrapper();
+            bootstrapper = new Bootstrapper();
             try
             {
                 bootstrapper.Run();
@@ -33,6 +37,17 @@ namespace VoIPApp
             }
 
             Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+
+            ServerServiceProxy serverServiceProxy = bootstrapper.Container.Resolve<ServerServiceProxy>();
+            if(serverServiceProxy != null)
+            {
+                serverServiceProxy.ServerService.Unsubscribe();
+            }
         }
     }
 }

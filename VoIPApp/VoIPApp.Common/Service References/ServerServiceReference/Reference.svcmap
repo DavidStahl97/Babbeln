@@ -19,15 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:10000/VoIPServer" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://78.31.66.62/VoIPServer/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="VoIPServer.disco" MetadataType="Disco" ID="2e314450-9c09-4277-b0b6-9a580f36e7ef" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?disco" />
-    <MetadataFile FileName="ServerService.wsdl" MetadataType="Wsdl" ID="e03cefcc-ae59-4c5b-93df-696612600cb8" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?wsdl" />
-    <MetadataFile FileName="VoIPServer.xsd" MetadataType="Schema" ID="cff6fc7f-5ea3-41e5-b5e0-61f65d4a0de2" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd3" />
-    <MetadataFile FileName="VoIPServer1.xsd" MetadataType="Schema" ID="26c8526e-1bff-45d8-829f-5469e1dff538" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd2" />
-    <MetadataFile FileName="VoIPServer2.xsd" MetadataType="Schema" ID="ba5c32be-9d9a-4e29-b7de-cfcd008038f4" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd1" />
-    <MetadataFile FileName="VoIPServer3.xsd" MetadataType="Schema" ID="0264b1bb-0c62-4bfb-a8cc-3a085707a1c7" SourceId="1" SourceUrl="http://localhost:10000/VoIPServer?xsd=xsd0" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="2472d425-068d-4c10-9f03-8ccb08a5952f" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="694b3005-7a00-4142-91d9-b31241fd5b61" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
+    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="0a8c5fb2-fa59-4076-88ab-893d65b65e29" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
+    <MetadataFile FileName="SharedCode.Models1.xsd" MetadataType="Schema" ID="7683f9ba-0a9a-44c8-ba0f-92cc9fcba626" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
+    <MetadataFile FileName="MongoDB.Bson1.xsd" MetadataType="Schema" ID="73700466-5b8e-4566-88f6-7ea44b359143" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

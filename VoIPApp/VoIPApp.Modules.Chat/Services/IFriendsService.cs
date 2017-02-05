@@ -12,7 +12,7 @@ namespace VoIPApp.Modules.Chat.Services
     public interface IFriendsService
     {
         ObservableCollection<Friend> Friends { get; set; }
-        Task UpdateFriendsList();
+        Task PopulateFriendList();
         void UpdateProfilePictures();
         Task AddFriendByName(string friendName);
         Friend GetFriendById(ObjectId id);

@@ -122,17 +122,18 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MongoDB.Bson.ObjectId.datasource" />
     <None Include="Properties\DataSources\SharedCode.Models.Friend.datasource" />
-    <None Include="Service References\ServerServiceReference\MongoDB.Bson1.xsd">
+    <None Include="Properties\DataSources\SharedCode.Models.User.datasource" />
+    <None Include="Service References\ServerServiceReference\MongoDB.Bson.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\service1.wsdl" />
-    <None Include="Service References\ServerServiceReference\service2.xsd">
+    <None Include="Service References\ServerServiceReference\service.wsdl" />
+    <None Include="Service References\ServerServiceReference\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\service21.xsd">
+    <None Include="Service References\ServerServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServerServiceReference\SharedCode.Models1.xsd">
+    <None Include="Service References\ServerServiceReference\SharedCode.Models.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

@@ -26,13 +26,13 @@ namespace VoIPServer.ServerServiceLibrary
         void AcceptCall(ObjectId friendId);
 
         [OperationContract(IsOneWay = false)]
-        Task<Friend> AddFriendByName(string friendName);
+        Task<User> AddFriendByName(string friendName);
 
         [OperationContract(IsOneWay = false)]
         Task<ObjectId> Subscribe(string userName, string password, string ip);
 
         [OperationContract(IsOneWay = true)]
-        void Unsubscribe();
+        Task Unsubscribe();
 
         [OperationContract(IsOneWay = false)]
         Task<string> Register(string userName, string password, string email, string ip);

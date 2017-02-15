@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://78.31.66.62/VoIPServer/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://localhost:7998/VoIPServer/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="2472d425-068d-4c10-9f03-8ccb08a5952f" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
-    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="694b3005-7a00-4142-91d9-b31241fd5b61" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
-    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="0a8c5fb2-fa59-4076-88ab-893d65b65e29" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
-    <MetadataFile FileName="SharedCode.Models1.xsd" MetadataType="Schema" ID="7683f9ba-0a9a-44c8-ba0f-92cc9fcba626" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
-    <MetadataFile FileName="MongoDB.Bson1.xsd" MetadataType="Schema" ID="73700466-5b8e-4566-88f6-7ea44b359143" SourceId="1" SourceUrl="http://78.31.66.62/VoIPServer/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="0bf42bfa-6abd-4dc3-9068-9fa4b00cd858" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="03124d8d-9d3b-421c-8d58-8d937e6d1bb6" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="80061eef-7dfe-43fa-89b3-0351408db45a" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
+    <MetadataFile FileName="SharedCode.Models.xsd" MetadataType="Schema" ID="a8a216d3-f65c-4be7-969f-76dc9835c45f" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
+    <MetadataFile FileName="MongoDB.Bson.xsd" MetadataType="Schema" ID="7f498193-00b1-4c66-8c17-9d7ee7f3a727" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -25,15 +25,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                BsonDocument document = new BsonDocument
-                {
-                    {"sender", msg.Sender},
-                    {"receiver", msg.Receiver},
-                    {"date", msg.Date },
-                    {"text", msg.Text }
-                };
-
-                await dataBaseService.MessageCollection.InsertOneAsync(document);
+                await dataBaseService.MessageCollection.InsertOneAsync(msg);
 
                 IServerCallBack receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
                 if (receiverCallback != null)

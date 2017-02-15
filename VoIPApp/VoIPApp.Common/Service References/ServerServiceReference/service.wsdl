@@ -201,9 +201,9 @@
   </wsdl:binding>
   <wsdl:service name="ServerService">
     <wsdl:port name="NetTcpBinding_IServerService" binding="tns:NetTcpBinding_IServerService">
-      <soap12:address location="net.tcp://78.31.66.62/VoIPServer/ServerService" />
+      <soap12:address location="net.tcp://localhost:7999/VoIPServer/ServerService" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.tcp://78.31.66.62/VoIPServer/ServerService</wsa10:Address>
+        <wsa10:Address>net.tcp://localhost:7999/VoIPServer/ServerService</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

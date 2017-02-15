@@ -2,6 +2,7 @@
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using ServerServiceLibrary;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -17,6 +18,7 @@ using VoIPServer.ServerServiceLibrary.Services;
 namespace VoIPServer.ServerServiceLibrary
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, UseSynchronizationContext = true)]
+    [ErrorHandlerExtension]
     public class ServerService : IServerService
     {
         private static readonly DataBaseService dataBaseService = new DataBaseService();
@@ -40,7 +42,7 @@ namespace VoIPServer.ServerServiceLibrary
             Console.WriteLine("New Server Instance was Created with id: " + instanceCount);
 
             currentCallback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
-            loginService = new LoginService(dataBaseService, currentCallback);
+            loginService = new LoginService(dataBaseService);
             chatService = new ChatService(loginService, dataBaseService);
             friendService = new FriendService(dataBaseService, loginService);
         }
@@ -48,17 +50,17 @@ namespace VoIPServer.ServerServiceLibrary
         public async Task<ObjectId> Subscribe(string userName, string password, string ip)
         {
             ICommunicationObject obj = (ICommunicationObject)currentCallback;
-            obj.Closed += (s, e) =>
+            obj.Closed += async (s, e) =>
             {
-                loginService.Unsubscribe();
+                await loginService.Unsubscribe();
             };
 
             return await loginService.Subscribe(userName, password, ip, currentCallback);
         } 
 
-        public void Unsubscribe()
+        public async Task Unsubscribe()
         {
-            loginService.Unsubscribe();
+            await loginService.Unsubscribe();
         }
 
         public async Task<string> Register(string userName, string password, string email, string ip)
@@ -98,7 +100,7 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        public async Task<Friend> AddFriendByName(string friendName)
+        public async Task<User> AddFriendByName(string friendName)
         {
            if(loginService.LoggedIn)
             {

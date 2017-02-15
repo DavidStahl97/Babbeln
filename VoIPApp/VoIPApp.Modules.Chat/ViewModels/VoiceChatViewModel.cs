@@ -133,6 +133,6 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         public bool IncomingCall { get; set; }
 
-        public Friend CallPartner { get; set; }
+        public User CallPartner { get; set; }
     }
 }

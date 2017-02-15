@@ -174,7 +174,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             this.Friends.Filter = item =>
             {
-                Friend friend = item as Friend;
+                User friend = item as User;
                 if (friend == null) return false;
 
                 CultureInfo culture = new CultureInfo("en-US");
@@ -190,7 +190,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             Messages.Clear();
 
-            Friend currentFriend = (Friends.CurrentItem as Friend);
+            User currentFriend = (Friends.CurrentItem as User);
             if(currentFriend != null)
             {
                 currentFriendID = currentFriend._id;
@@ -222,7 +222,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private bool CanCall(object arg)
         {
-            Friend currentFriend = Friends.CurrentItem as Friend;
+            User currentFriend = Friends.CurrentItem as User;
             if(currentFriend != null)
             {
                 if (currentFriend.FriendStatus == Status.Online && !calling)
@@ -236,9 +236,9 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private void OnCall(object obj)
         {
             VoiceChatViewModel voiceChatViewModel = this.container.Resolve<VoiceChatViewModel>();
-            voiceChatViewModel.Title = (friends.CurrentItem as Friend).Name + " anrufen";
+            voiceChatViewModel.Title = (friends.CurrentItem as User).Name + " anrufen";
             voiceChatViewModel.IncomingCall = false;
-            voiceChatViewModel.CallPartner = (friends.CurrentItem as Friend);
+            voiceChatViewModel.CallPartner = (friends.CurrentItem as User);
             voiceChatViewModel.CanAccept = false;
             voiceChatViewModel.CallAccepted = false;
 
@@ -248,7 +248,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private void OnIncomingCall(ObjectId obj)
         {
-            Friend caller = friendsService.GetFriendById(obj);
+            User caller = friendsService.GetFriendById(obj);
             if(caller != null)
             {
                 VoiceChatViewModel viewModel = this.container.Resolve<VoiceChatViewModel>();

@@ -18,14 +18,6 @@ namespace VoIPServer
             try
             {
                 serviceHost.Open();
-                serviceHost.Opened += (s,e) =>
-                {
-                    Console.WriteLine("opened connection");
-                };
-                serviceHost.Opening += (s, e) =>
-                {
-                    Console.WriteLine("opening connection");
-                };
                 Console.WriteLine("The service is ready.");
                 Console.WriteLine("Press <ENTER> to terminate the service.");
                 foreach(var end in serviceHost.Description.Endpoints)

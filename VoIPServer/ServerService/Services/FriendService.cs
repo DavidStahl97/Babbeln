@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -22,9 +23,9 @@ namespace VoIPServer.ServerServiceLibrary.Services
         }
 
 
-        public async Task<Friend> AddFriendByName(string friendName)
+        public async Task<User> AddFriendByName(string friendName)
         {
-            Friend f = null;
+            /*User f = null;
 
             FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
             FilterDefinition<BsonDocument> filter = builder.Eq("username", friendName);
@@ -36,29 +37,33 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 {
                     IEnumerable<BsonDocument> batch = cursor.Current;
                     BsonDocument doc = batch.First();
-                    f = new Friend
+                    f = new User
                     {
                         Name = doc["username"].AsString,
                         IP = doc["ip"].AsString,
                         _id = doc["_id"].AsObjectId
                     };
                 }
-            }
+            }*/
 
-            if (f != null)
+            User friend = await (from user in dataBaseService.UserCollection.AsQueryable()
+                                           where user.Name.Equals(friendName)
+                                           select user).FirstAsync();
+
+            if (friend != null)
             {
-                BsonDocument document = new BsonDocument
-                {
-                    { "requester", loginService.UserId },
-                    { "receiver", f._id },
-                    { "date", DateTime.Now },
-                    { "accepted", true }
-                };
-
-                await dataBaseService.FriendCollection.InsertOneAsync(document);
+                await dataBaseService.FriendshipCollection.InsertOneAsync(
+                    new Friendship
+                    {
+                        Receiver = friend._id,
+                        Requester = loginService.UserId,
+                        Date = DateTime.Now,
+                        Accepted = true
+                    }
+                );
             }
 
-        return f;
+            return friend;
         }
     }
 }

@@ -8,14 +8,13 @@ using System.Runtime.Serialization;
 using Prism.Mvvm;
 using System.ComponentModel;
 using System.Windows.Media;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace SharedCode.Models
 {
-    /// <summary>
-    /// represents a friend of the user
-    /// </summary>
     [DataContract]
-    public class Friend : INotifyPropertyChanged
+    [BsonIgnoreExtraElements]
+    public class User : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -24,6 +23,7 @@ namespace SharedCode.Models
         /// </summary>
         private string name;
 
+        [BsonElement("username")]
         [DataMember]
         public string Name
         {
@@ -79,6 +79,7 @@ namespace SharedCode.Models
         /// <summary>
         /// id of the friend
         /// </summary>
+        [BsonElement("_id")]
         [DataMember]
         public ObjectId _id { get; set; }
 
@@ -89,13 +90,14 @@ namespace SharedCode.Models
 
         [DataMember]
         public Status FriendStatus {
-            get { return this.status; }
+            get { return status; }
             set { status = value; }
         }
 
         /// <summary>
         /// ip of the friend
         /// </summary>
+        [BsonElement("ip")]
         [DataMember]
         public string IP { get; set; }
 

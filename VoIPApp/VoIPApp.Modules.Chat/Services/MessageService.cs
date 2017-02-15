@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.Unity;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Prism.Events;
 using Prism.Modularity;
 using SharedCode.Models;
@@ -62,40 +63,25 @@ namespace VoIPApp.Modules.Chat.Services
         {
             ObjectId userId = serverServiceProxy.UserId;
 
-            FilterDefinitionBuilder<BsonDocument>
-                builder = Builders<BsonDocument>.Filter;
+            IMongoQueryable<Message> query = from message in dataBaseService.MessageCollection.AsQueryable()
+                    where message.Sender.Equals(userId) || message.Receiver.Equals(userId)
+                    select message;
 
-            FilterDefinition<BsonDocument> filter = builder.Eq("sender", userId) | builder.Eq("receiver", userId);
-
-            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.MessageCollection.FindAsync(filter))
+            await query.ForEachAsync((m) =>
             {
-                while (await cursor.MoveNextAsync())
-                {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-                    foreach (BsonDocument document in batch)
-                    {
-                        ObjectId _id = document["sender"].AsObjectId;
-                        if (userId.Equals(_id))
-                        {
-                            _id = document["receiver"].AsObjectId;
-                        }
-
-                        Message msg = new Message { Sender = document["sender"].AsObjectId, Receiver = document["receiver"].AsObjectId, Date = document["date"].ToUniversalTime(), Text = document["text"].AsString };
-
-                        ObservableCollection<Message> msgList;
-                        if (messages.TryGetValue(_id, out msgList))
-                        {
-                            msgList.Add(msg);
-                        }
-                        else
-                        {
-                            msgList = new ObservableCollection<Message>();
-                            msgList.Add(msg);
-                            messages.Add(_id, msgList);
-                        }
-                    }
-                }
-            }
+                 ObjectId friendId = (m.Sender.Equals(userId)) ? m.Receiver : m.Sender;
+                 ObservableCollection<Message> msgList;
+                 if (messages.TryGetValue(friendId, out msgList))
+                 {
+                     msgList.Add(m);
+                 }
+                 else
+                 {
+                     msgList = new ObservableCollection<Message>();
+                     msgList.Add(m);
+                     messages.Add(friendId, msgList);
+                 }
+             });
         }
         
     }

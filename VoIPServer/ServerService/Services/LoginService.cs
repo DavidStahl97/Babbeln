@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using SharedCode.Models;
 using SharedCode.Services;
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         private ObjectId userId;
 
-        public LoginService(DataBaseService dataBaseService, IServerCallBack currentCallback)
+        public LoginService(DataBaseService dataBaseService)
         {
             this.userId = ObjectId.Empty;
             this.dataBaseService = dataBaseService;
@@ -27,7 +29,9 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip, IServerCallBack callbackChannel)
         {
+            userId = await dataBaseService.GetUserId(userName);
             userId = await dataBaseService.GetUserId(userName, password);
+
             if (!userId.Equals(ObjectId.Empty))
             {
                 if (subscribers.ContainsKey(userId))
@@ -39,9 +43,11 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 {
                     FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", userId);
                     UpdateDefinition<BsonDocument> update = Builders<BsonDocument>.Update.Set("ip", ip);
-                    await dataBaseService.UserCollection.UpdateOneAsync(filter, update);
+                    await dataBaseService.UserBsonCollection.UpdateOneAsync(filter, update);
 
                     subscribers.Add(userId, callbackChannel);
+
+                    await NotifyFriendsAboutStatusChange(Status.Online);
 
                     Console.WriteLine(userName + " successfully connected with id: " + userId.ToString());
 
@@ -52,12 +58,14 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return ObjectId.Empty;
         }
 
-        public void Unsubscribe()
+        public async Task Unsubscribe()
         {
             if (!userId.Equals(ObjectId.Empty) && subscribers.ContainsKey(userId))
             {
                 subscribers.Remove(userId);
                 Console.WriteLine(userId + " removed");
+
+                await NotifyFriendsAboutStatusChange(Status.Offline);
             }
             else
             {
@@ -67,7 +75,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task<string> Register(string userName, string password, string email, string ip)
         {
-            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+            /*FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
 
             FilterDefinition<BsonDocument> filter = builder.Eq("username", userName);
             if (await dataBaseService.UserCollection.CountAsync(filter) > 0)
@@ -79,6 +87,22 @@ namespace VoIPServer.ServerServiceLibrary.Services
             if (await dataBaseService.UserCollection.CountAsync(filter) > 0)
             {
                 return "E-Mail schon vergeben";
+            }*/
+
+            int result = await (from user in dataBaseService.UserCollection.AsQueryable()
+                          select user).CountAsync(user => user.Name.Equals(userName));
+
+            if(result > 0)
+            {
+                return "Benutzername schon vergeben";
+            }
+
+            result = await (from user in dataBaseService.UserBsonCollection.AsQueryable()
+                            select user).CountAsync(user => user["email"].ToString().Equals(email));
+
+            if(result > 0)
+            {
+                return "E-Mail schonn vergeben";
             }
 
             BsonDocument doc = new BsonDocument
@@ -89,7 +113,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 {"ip", ip }
             };
 
-            await dataBaseService.UserCollection.InsertOneAsync(doc);
+            await dataBaseService.UserBsonCollection.InsertOneAsync(doc);
 
             return string.Empty;
         }
@@ -99,6 +123,19 @@ namespace VoIPServer.ServerServiceLibrary.Services
             IServerCallBack callbackChannel = null;
             subscribers.TryGetValue(id, out callbackChannel);
             return callbackChannel;
+        }
+
+        private async Task NotifyFriendsAboutStatusChange(Status status)
+        {
+            List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
+            foreach (ObjectId friendId in friendIds)
+            {
+                IServerCallBack callback = GetCallbackChannelByID(friendId);
+                if (callback != null)
+                {
+                    callback.OnFriendStatusChanged(friendId, status);
+                }
+            }
         }
 
         public bool LoggedIn

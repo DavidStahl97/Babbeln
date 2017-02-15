@@ -35,8 +35,8 @@ namespace VoIPApp.Modules.Chat
         /// <returns></returns>
         public int Compare(object x, object y)
         {
-            Friend a = x as Friend;
-            Friend b = y as Friend;
+            User a = x as User;
+            User b = y as User;
 
             int ai = a.Name.IndexOf(filter);
             int bi = b.Name.IndexOf(filter);

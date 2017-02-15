@@ -91,7 +91,14 @@ namespace SharedCode.Models
         [DataMember]
         public Status FriendStatus {
             get { return status; }
-            set { status = value; }
+            set
+            {
+                if(status != value)
+                {
+                    this.status = value;
+                    OnPropertyChanged("FriendStatus");
+                }
+            }
         }
 
         /// <summary>

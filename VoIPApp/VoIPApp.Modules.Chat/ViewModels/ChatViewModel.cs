@@ -82,6 +82,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<CallEvent>().Subscribe(OnIncomingCall, ThreadOption.UIThread, true);
+            eventAggregator.GetEvent<FriendStatusChangedEvent>().Subscribe(OnFriendStatusChanged, ThreadOption.UIThread, true);
         }
 
         public ObjectId UserID
@@ -274,6 +275,17 @@ namespace VoIPApp.Modules.Chat.ViewModels
                     calling = false;
                     callCommand.RaiseCanExecuteChanged();
                 });
+        }
+
+        private void OnFriendStatusChanged(FriendStatusChangedEventArgs obj)
+        {
+            User f = friendsService.GetFriendById(obj.FriendId);
+            f.FriendStatus = obj.Status;
+
+            if(f._id.Equals(currentFriendID))
+            {
+                callCommand.RaiseCanExecuteChanged();
+            }
         }
     }
 }

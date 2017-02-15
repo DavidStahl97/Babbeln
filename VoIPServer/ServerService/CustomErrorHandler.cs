@@ -23,7 +23,7 @@ namespace ServerServiceLibrary
             string fileName = frame.GetFileName();
 
             Console.WriteLine("caught exception in file {0} at line {1} : \n{2}", line, fileName, error.Message);
-            Console.WriteLine(error.ToString());
+            //Console.WriteLine(error.ToString());
 
             return false;
         }

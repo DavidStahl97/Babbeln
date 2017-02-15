@@ -98,6 +98,11 @@ namespace VoIPApp.Common.Services
             eventAggregator.GetEvent<CanceledCallEvent>().Publish(friendId);
         }
 
+        public void OnFriendStatusChanged(ObjectId friendId, Status status)
+        {
+            eventAggregator.GetEvent<FriendStatusChangedEvent>().Publish(new FriendStatusChangedEventArgs { FriendId = friendId, Status = status });
+        }
+
         public void Dispose()
         {
             serverServiceClient.UnsubscribeAsync();
@@ -117,9 +122,5 @@ namespace VoIPApp.Common.Services
             return localIP;
         }
 
-        public void OnFriendStatusChanged(ObjectId friendId, Status status)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

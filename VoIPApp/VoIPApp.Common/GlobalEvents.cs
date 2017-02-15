@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace VoIPApp.Common
 {
+    public class FriendStatusChangedEventArgs
+    {
+        public ObjectId FriendId { get; set; }
+        public Status Status { get; set; }
+    }
+
     public class MessageEvent : PubSubEvent<Message>
     {
     }
@@ -22,6 +28,10 @@ namespace VoIPApp.Common
     }
 
     public class CanceledCallEvent : PubSubEvent<ObjectId>
+    {
+    }
+
+    public class FriendStatusChangedEvent : PubSubEvent<FriendStatusChangedEventArgs>
     {
     }
 }

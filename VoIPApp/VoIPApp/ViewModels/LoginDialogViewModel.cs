@@ -45,6 +45,7 @@ namespace VoIPApp.ViewModels
                     if(!StartService.Connected)
                     {
                         Result = "Verbindung mit dem Server fehlgeschlagen";
+                        StartService.Connected = true;
                         this.FinishInteraction();
                         return;
                     }

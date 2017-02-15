@@ -29,7 +29,6 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip, IServerCallBack callbackChannel)
         {
-            userId = await dataBaseService.GetUserId(userName);
             userId = await dataBaseService.GetUserId(userName, password);
 
             if (!userId.Equals(ObjectId.Empty))
@@ -133,7 +132,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 IServerCallBack callback = GetCallbackChannelByID(friendId);
                 if (callback != null)
                 {
-                    callback.OnFriendStatusChanged(friendId, status);
+                    callback.OnFriendStatusChanged(userId, status);
                 }
             }
         }

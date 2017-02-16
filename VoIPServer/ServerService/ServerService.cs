@@ -100,7 +100,7 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        public async Task<User> AddFriendByName(string friendName)
+        public async Task<User> SendFriendRequest(string friendName)
         {
            if(loginService.LoggedIn)
             {
@@ -112,22 +112,12 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        /*public async Task<string> GetProfilePictureHash(ObjectId friendId)
+        public async Task ReplyToFriendRequest(ObjectId friendId, bool accept)
         {
-            IMongoCollection<BsonDocument> userCollection = dataBaseService.Database.GetCollection<BsonDocument>("users");
-            FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("_id", friendId);
-            using (IAsyncCursor<BsonDocument> cursor = await userCollection.FindAsync(filter))
+            if(loginService.LoggedIn)
             {
-                cursor.MoveNext();
-                if (cursor.Current != null)
-                {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-                    BsonDocument doc = batch.First();
-                    return doc["picturehash"].AsString;
-                }
+                await friendService.ReplyToFriendRequest(friendId, accept);
             }
-
-            return string.Empty;
-        }*/
+        }
     }
 }

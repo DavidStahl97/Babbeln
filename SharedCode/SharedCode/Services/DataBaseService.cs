@@ -32,6 +32,11 @@ namespace SharedCode.Services
             UserBsonCollection = database.GetCollection<BsonDocument>("users");
         }
 
+        public async Task<User> GetUser(ObjectId userId)
+        {
+
+        }
+
         public async Task<ObjectId> GetUserId(string userName)
         {
             IMongoQueryable<ObjectId> query = from user in UserCollection.AsQueryable()
@@ -71,34 +76,6 @@ namespace SharedCode.Services
                                               select user;
 
             return await userQuery.ToListAsync();
-
-            /*List<User> friends = new List<User>();
-            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
-            filter = filter & (builder.Eq("requester", userId) | builder.Eq("receiver", userId));
-
-            using (IAsyncCursor<BsonDocument> cursor = await FriendCollection.FindAsync(filter))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-                    foreach (BsonDocument document in batch)
-                    {
-                        ObjectId friendId = (document["requester"].AsObjectId.Equals(userId)) ? document["receiver"].AsObjectId : document["requester"].AsObjectId;
-                        FilterDefinition<BsonDocument> userFilter = builder.Eq("_id", friendId);
-                        using (IAsyncCursor<BsonDocument> userCursor = await UserCollection.FindAsync(userFilter))
-                        {
-                            await userCursor.MoveNextAsync();
-                            if (userCursor.Current != null)
-                            {
-                                BsonDocument userDocument = userCursor.Current.First();
-                                friends.Add(new User { Name = userDocument["username"].AsString, IP = userDocument["ip"].AsString, _id = userDocument["_id"].AsObjectId });
-                            }
-                        }
-                    }
-                }
-            }
-
-            return friends;*/
         }
 
         public async Task<List<ObjectId>> GetFriendIdList(ObjectId userId)
@@ -106,7 +83,7 @@ namespace SharedCode.Services
             List<ObjectId> friendIds = new List<ObjectId>();
 
             var friendshipQuery = from friendship in FriendshipCollection.AsQueryable()
-                                  where friendship.Receiver.Equals(userId) | friendship.Requester.Equals(userId)
+                                  where friendship.Receiver.Equals(userId) || friendship.Requester.Equals(userId)
                                   select new { friendship.Receiver, friendship.Requester };
 
             await friendshipQuery.ForEachAsync((friendship) =>

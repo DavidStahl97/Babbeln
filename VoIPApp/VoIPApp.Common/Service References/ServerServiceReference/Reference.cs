@@ -39,17 +39,23 @@ namespace VoIPApp.Common.ServerServiceReference {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/AcceptCall")]
         System.Threading.Tasks.Task AcceptCallAsync(MongoDB.Bson.ObjectId friendId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
-        SharedCode.Models.User AddFriendByName(string friendName);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/SendFriendRequest", ReplyAction="http://tempuri.org/IServerService/SendFriendRequestResponse")]
+        SharedCode.Models.User SendFriendRequest(string friendName);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/AddFriendByName", ReplyAction="http://tempuri.org/IServerService/AddFriendByNameResponse")]
-        System.Threading.Tasks.Task<SharedCode.Models.User> AddFriendByNameAsync(string friendName);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/SendFriendRequest", ReplyAction="http://tempuri.org/IServerService/SendFriendRequestResponse")]
+        System.Threading.Tasks.Task<SharedCode.Models.User> SendFriendRequestAsync(string friendName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Subscribe", ReplyAction="http://tempuri.org/IServerService/SubscribeResponse")]
         MongoDB.Bson.ObjectId Subscribe(string userName, string password, string ip);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServerService/Subscribe", ReplyAction="http://tempuri.org/IServerService/SubscribeResponse")]
         System.Threading.Tasks.Task<MongoDB.Bson.ObjectId> SubscribeAsync(string userName, string password, string ip);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/ReplyToFriendRequest")]
+        void ReplyToFriendRequest(MongoDB.Bson.ObjectId friendId, bool accept);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/ReplyToFriendRequest")]
+        System.Threading.Tasks.Task ReplyToFriendRequestAsync(MongoDB.Bson.ObjectId friendId, bool accept);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/Unsubscribe")]
         void Unsubscribe();
@@ -81,6 +87,12 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnFriendStatusChanged")]
         void OnFriendStatusChanged(MongoDB.Bson.ObjectId friendId, SharedCode.Models.Status status);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnFriendshipRequested")]
+        void OnFriendshipRequested(MongoDB.Bson.ObjectId friendId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IServerService/OnFriendshipRequestAnswered")]
+        void OnFriendshipRequestAnswered(MongoDB.Bson.ObjectId friendId, bool accept);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -143,12 +155,12 @@ namespace VoIPApp.Common.ServerServiceReference {
             return base.Channel.AcceptCallAsync(friendId);
         }
         
-        public SharedCode.Models.User AddFriendByName(string friendName) {
-            return base.Channel.AddFriendByName(friendName);
+        public SharedCode.Models.User SendFriendRequest(string friendName) {
+            return base.Channel.SendFriendRequest(friendName);
         }
         
-        public System.Threading.Tasks.Task<SharedCode.Models.User> AddFriendByNameAsync(string friendName) {
-            return base.Channel.AddFriendByNameAsync(friendName);
+        public System.Threading.Tasks.Task<SharedCode.Models.User> SendFriendRequestAsync(string friendName) {
+            return base.Channel.SendFriendRequestAsync(friendName);
         }
         
         public MongoDB.Bson.ObjectId Subscribe(string userName, string password, string ip) {
@@ -157,6 +169,14 @@ namespace VoIPApp.Common.ServerServiceReference {
         
         public System.Threading.Tasks.Task<MongoDB.Bson.ObjectId> SubscribeAsync(string userName, string password, string ip) {
             return base.Channel.SubscribeAsync(userName, password, ip);
+        }
+        
+        public void ReplyToFriendRequest(MongoDB.Bson.ObjectId friendId, bool accept) {
+            base.Channel.ReplyToFriendRequest(friendId, accept);
+        }
+        
+        public System.Threading.Tasks.Task ReplyToFriendRequestAsync(MongoDB.Bson.ObjectId friendId, bool accept) {
+            return base.Channel.ReplyToFriendRequestAsync(friendId, accept);
         }
         
         public void Unsubscribe() {

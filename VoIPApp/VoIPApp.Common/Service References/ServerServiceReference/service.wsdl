@@ -28,17 +28,20 @@
   <wsdl:message name="IServerService_AcceptCall_InputMessage">
     <wsdl:part name="parameters" element="tns:AcceptCall" />
   </wsdl:message>
-  <wsdl:message name="IServerService_AddFriendByName_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddFriendByName" />
+  <wsdl:message name="IServerService_SendFriendRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendFriendRequest" />
   </wsdl:message>
-  <wsdl:message name="IServerService_AddFriendByName_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddFriendByNameResponse" />
+  <wsdl:message name="IServerService_SendFriendRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendFriendRequestResponse" />
   </wsdl:message>
   <wsdl:message name="IServerService_Subscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Subscribe" />
   </wsdl:message>
   <wsdl:message name="IServerService_Subscribe_OutputMessage">
     <wsdl:part name="parameters" element="tns:SubscribeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_ReplyToFriendRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReplyToFriendRequest" />
   </wsdl:message>
   <wsdl:message name="IServerService_Unsubscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Unsubscribe" />
@@ -64,6 +67,12 @@
   <wsdl:message name="IServerService_OnFriendStatusChanged_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnFriendStatusChanged" />
   </wsdl:message>
+  <wsdl:message name="IServerService_OnFriendshipRequested_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnFriendshipRequested" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_OnFriendshipRequestAnswered_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnFriendshipRequestAnswered" />
+  </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IServerService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/SendMessage" message="tns:IServerService_SendMessage_InputMessage" />
@@ -77,13 +86,16 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AcceptCall">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/AcceptCall" message="tns:IServerService_AcceptCall_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AddFriendByName">
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/AddFriendByName" message="tns:IServerService_AddFriendByName_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/AddFriendByNameResponse" message="tns:IServerService_AddFriendByName_OutputMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendFriendRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/SendFriendRequest" message="tns:IServerService_SendFriendRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/SendFriendRequestResponse" message="tns:IServerService_SendFriendRequest_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Subscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Subscribe" message="tns:IServerService_Subscribe_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/SubscribeResponse" message="tns:IServerService_Subscribe_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ReplyToFriendRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ReplyToFriendRequest" message="tns:IServerService_ReplyToFriendRequest_InputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Unsubscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Unsubscribe" message="tns:IServerService_Unsubscribe_InputMessage" />
@@ -106,6 +118,12 @@
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendStatusChanged">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendStatusChanged" message="tns:IServerService_OnFriendStatusChanged_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendshipRequested">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendshipRequested" message="tns:IServerService_OnFriendshipRequested_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendshipRequestAnswered">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendshipRequestAnswered" message="tns:IServerService_OnFriendshipRequestAnswered_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IServerService" type="tns:IServerService">
@@ -135,8 +153,8 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="AddFriendByName">
-      <soap12:operation soapAction="http://tempuri.org/IServerService/AddFriendByName" style="document" />
+    <wsdl:operation name="SendFriendRequest">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/SendFriendRequest" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -152,6 +170,12 @@
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplyToFriendRequest">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/ReplyToFriendRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
     </wsdl:operation>
     <wsdl:operation name="Unsubscribe">
       <soap12:operation soapAction="http://tempuri.org/IServerService/Unsubscribe" style="document" />
@@ -194,6 +218,18 @@
     </wsdl:operation>
     <wsdl:operation name="OnFriendStatusChanged">
       <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendStatusChanged" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnFriendshipRequested">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendshipRequested" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnFriendshipRequestAnswered">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendshipRequestAnswered" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

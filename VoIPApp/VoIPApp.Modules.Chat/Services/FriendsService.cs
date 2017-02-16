@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using SharedCode.Services;
 using VoIPApp.Common.Services;
 using System.IO;
+using MongoDB.Driver.Linq;
+using Prism.Events;
+using VoIPApp.Common;
 
 namespace VoIPApp.Modules.Chat.Services
 {
@@ -20,14 +23,19 @@ namespace VoIPApp.Modules.Chat.Services
         private readonly ServerServiceProxy serverService;
         private readonly ObjectId userId;
         private readonly DataBaseService dataBaseService;
+        private readonly EventAggregator eventAggregator;
 
-        public FriendsService(IUnityContainer container, DataBaseService dataBaseService, ServerServiceProxy serverService)
+        public FriendsService(IUnityContainer container, DataBaseService dataBaseService, ServerServiceProxy serverService, EventAggregator eventAggregator)
         {
             this.dataBaseService = dataBaseService;
+            this.eventAggregator = eventAggregator;
             Friends = new ObservableCollection<User>();
 
             this.serverService = serverService;
             this.userId = serverService.UserId;
+
+            eventAggregator.GetEvent<FriendshipRequestedEvent>().Subscribe(this.OnFriendshipRequested, ThreadOption.BackgroundThread);
+            eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Subscribe(this.OnFriendshipAnswered);
         }
 
         public ObservableCollection<User> Friends { get; set; }
@@ -35,10 +43,17 @@ namespace VoIPApp.Modules.Chat.Services
         public async Task PopulateFriendList()
         {
             List<User> friends = await dataBaseService.GetFriendList(userId);
-            foreach(User f in friends)
+            Friends.AddRange(friends);
+
+            IMongoQueryable<Friendship> query = from Friendship in dataBaseService.FriendshipCollection.AsQueryable()
+                                     where Friendship.Receiver.Equals(userId) || Friendship.Requester.Equals(userId)
+                                     select Friendship;
+
+            await query.ForEachAsync(friendship =>
             {
-                Friends.Add(f);
-            }
+                ObjectId friendId = (friendship.Receiver.Equals(userId)) ? friendship.Requester : friendship.Receiver;
+                GetFriendById(friendId).Friendship = friendship;
+            });
         }
 
         public void UpdateProfilePictures()
@@ -57,13 +72,38 @@ namespace VoIPApp.Modules.Chat.Services
             }
         }
 
-        public async Task AddFriendByName(string friendName)
+        private void OnFriendshipRequested(ObjectId friendId)
         {
-            User f = await serverService.ServerService.AddFriendByNameAsync(friendName);
+            User friend = (from user in dataBaseService.UserCollection.AsQueryable()
+                          where user._id.Equals(friendId)
+                          select user).First();
+
+            if (friend != null)
+            {
+                friend.Friendship = (from friendship in dataBaseService.FriendshipCollection.AsQueryable()
+                                     where friendship.Receiver.Equals(userId) && friendship.Requester.Equals(friendId)
+                                     select friendship).First();
+
+                Friends.Add(friend);
+            }
+        }
+
+        private void OnFriendshipAnswered(FriendshipRequestAnsweredEventArgs args)
+        {
+            User friend = GetFriendById(args.FriendId);
+            friend.Friendship.Accepted = args.Accepted;
+        }
+
+        public async Task<bool> SendFriendRequest(string friendName)
+        {
+            User f = await serverService.ServerService.SendFriendRequestAsync(friendName);
             if(f != null)
             {
                 Friends.Add(f);
+                return true;
             }
+
+            return false;
         }
 
         public User GetFriendById(ObjectId id)

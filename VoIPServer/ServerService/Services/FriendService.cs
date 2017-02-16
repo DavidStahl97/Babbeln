@@ -22,48 +22,59 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.loginService = loginService;
         }
 
-
         public async Task<User> AddFriendByName(string friendName)
         {
-            /*User f = null;
+            IMongoQueryable<User> query = from user in dataBaseService.UserCollection.AsQueryable()
+                          where user.Name.Equals(friendName)
+                          select user;
 
-            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
-            FilterDefinition<BsonDocument> filter = builder.Eq("username", friendName);
-
-            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.UserCollection.FindAsync(filter))
+            if (await query.AnyAsync())
             {
-                cursor.MoveNext();
-                if (cursor.Current != null)
+                User friend = await query.FirstAsync();
+                Friendship friendship = new Friendship
                 {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-                    BsonDocument doc = batch.First();
-                    f = new User
-                    {
-                        Name = doc["username"].AsString,
-                        IP = doc["ip"].AsString,
-                        _id = doc["_id"].AsObjectId
-                    };
+                    Receiver = friend._id,
+                    Requester = loginService.UserId,
+                    Date = DateTime.Now,
+                    Accepted = false
+                };
+        
+                await dataBaseService.FriendshipCollection.InsertOneAsync(friendship);
+
+                friend.Friendship = friendship;
+
+                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friend._id);
+                if (friendCallback != null)
+                {
+                    friendCallback.OnFriendshipRequested(loginService.UserId);
                 }
-            }*/
 
-            User friend = await (from user in dataBaseService.UserCollection.AsQueryable()
-                                           where user.Name.Equals(friendName)
-                                           select user).FirstAsync();
-
-            if (friend != null)
-            {
-                await dataBaseService.FriendshipCollection.InsertOneAsync(
-                    new Friendship
-                    {
-                        Receiver = friend._id,
-                        Requester = loginService.UserId,
-                        Date = DateTime.Now,
-                        Accepted = true
-                    }
-                );
+                return friend;
             }
 
-            return friend;
+            return null;
+        }
+
+        public async Task ReplyToFriendRequest(ObjectId friendId, bool accept)
+        {
+            FilterDefinitionBuilder<Friendship> builder = Builders<Friendship>.Filter;
+            FilterDefinition<Friendship> filter = builder.Eq(f => f.Receiver, loginService.UserId) & builder.Eq(f => f.Requester, friendId);
+
+            if(accept)
+            {
+                UpdateDefinition<Friendship> update = Builders<Friendship>.Update.Set(f => f.Accepted, accept);
+                await dataBaseService.FriendshipCollection.UpdateOneAsync(filter, update);
+            }
+            else
+            {
+                await dataBaseService.FriendshipCollection.DeleteOneAsync(filter);
+            }
+
+            IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
+            if(friendCallback != null)
+            {
+                friendCallback.OnFriendshipRequestAnswered(loginService.UserId, accept);
+            }
         }
     }
 }

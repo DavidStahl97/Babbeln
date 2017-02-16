@@ -118,6 +118,9 @@ namespace SharedCode.Models
 
         [BsonElement("email")]
         public string EMail { get; set; }
+
+        [DataMember]
+        public Friendship Friendship { get; set; }
     }
 
     /// <summary>

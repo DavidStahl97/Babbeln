@@ -15,6 +15,12 @@ namespace VoIPApp.Common
         public Status Status { get; set; }
     }
 
+    public class FriendshipRequestAnsweredEventArgs
+    {
+        public ObjectId FriendId { get; set; }
+        public bool Accepted { get; set; }
+    }
+
     public class MessageEvent : PubSubEvent<Message>
     {
     }
@@ -32,6 +38,14 @@ namespace VoIPApp.Common
     }
 
     public class FriendStatusChangedEvent : PubSubEvent<FriendStatusChangedEventArgs>
+    {
+    }
+
+    public class FriendshipRequestedEvent : PubSubEvent<ObjectId>
+    {
+    }
+
+    public class FriendshipRequestAnswerdEvent : PubSubEvent<FriendshipRequestAnsweredEventArgs>
     {
     }
 }

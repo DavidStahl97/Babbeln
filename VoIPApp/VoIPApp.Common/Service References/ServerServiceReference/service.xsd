@@ -30,17 +30,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="AddFriendByName">
+  <xs:element name="SendFriendRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="friendName" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="AddFriendByNameResponse">
+  <xs:element name="SendFriendRequestResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="AddFriendByNameResult" nillable="true" type="q5:User" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="SendFriendRequestResult" nillable="true" type="q5:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -57,6 +57,14 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="SubscribeResult" type="q6:ObjectId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReplyToFriendRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q7:ObjectId" />
+        <xs:element minOccurs="0" name="accept" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -85,36 +93,51 @@
   <xs:element name="OnMessageReceived">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q7:Message" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="msg" nillable="true" type="q8:Message" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCall">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q8:ObjectId" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q9:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCallAccepted">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q9:ObjectId" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q10:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnCallCancelled">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q10:ObjectId" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q11:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnFriendStatusChanged">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q11:ObjectId" />
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="status" type="q12:Status" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q12:ObjectId" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="status" type="q13:Status" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnFriendshipRequested">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q14:ObjectId" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnFriendshipRequestAnswered">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q15:ObjectId" />
+        <xs:element minOccurs="0" name="accept" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

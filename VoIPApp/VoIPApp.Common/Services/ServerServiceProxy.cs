@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace VoIPApp.Common.Services
 {
-    public class ServerServiceProxy : IServerServiceCallback, IDisposable
+    public class ServerServiceProxy : IServerServiceCallback
     {
         private IServerService serverServiceClient;
         private readonly EventAggregator eventAggregator;
@@ -103,10 +103,14 @@ namespace VoIPApp.Common.Services
             eventAggregator.GetEvent<FriendStatusChangedEvent>().Publish(new FriendStatusChangedEventArgs { FriendId = friendId, Status = status });
         }
 
-        public void Dispose()
+        public void OnFriendshipRequested(ObjectId friendId)
         {
-            serverServiceClient.UnsubscribeAsync();
-            ((ICommunicationObject)serverServiceClient).Close();
+            eventAggregator.GetEvent<FriendshipRequestedEvent>().Publish(friendId);
+        }
+
+        public void OnFriendshipRequestAnswered(ObjectId friendId, bool accept)
+        {
+            eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Publish(new FriendshipRequestAnsweredEventArgs { FriendId = friendId, Accepted = accept });
         }
 
         private string GetLocalIPAdress()
@@ -121,6 +125,5 @@ namespace VoIPApp.Common.Services
 
             return localIP;
         }
-
     }
 }

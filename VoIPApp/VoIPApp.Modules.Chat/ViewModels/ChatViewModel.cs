@@ -43,6 +43,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private ObjectId userId;
         private bool calling;
         private bool populatedChatView;
+        private bool showFriendshipInfo;
+        private bool showFriendshipRequest;
 
         public ChatViewModel(FriendsService friendsService, MessageService messageService, IUnityContainer container, EventAggregator eventAggregator)
         {
@@ -83,11 +85,26 @@ namespace VoIPApp.Modules.Chat.ViewModels
             eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<CallEvent>().Subscribe(OnIncomingCall, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<FriendStatusChangedEvent>().Subscribe(OnFriendStatusChanged, ThreadOption.UIThread, true);
+
+            showFriendshipInfo = false;
+            showFriendshipRequest = false;
         }
 
         public ObjectId UserID
         {
             get { return this.userId; }
+        }
+
+        public bool ShowFriendshipInfo
+        {
+            get { return this.showFriendshipInfo; }
+            set { SetProperty(ref this.showFriendshipInfo, value); }
+        }
+
+        public bool ShowFriendshipRequest
+        {
+            get { return this.showFriendshipRequest; }
+            set { SetProperty(ref this.showFriendshipRequest, value); }
         }
 
         public ICollectionView Friends
@@ -155,7 +172,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private void OnAddFriend(object obj)
         {
             string friendName = obj as string;
-            friendsService.AddFriendByName(friendName);
+            friendsService.SendFriendRequest(friendName);
         }
 
 
@@ -196,6 +213,25 @@ namespace VoIPApp.Modules.Chat.ViewModels
             {
                 currentFriendID = currentFriend._id;
                 Messages.AddRange(messageService.GetMessages(currentFriendID));
+
+                if(!currentFriend.Friendship.Accepted)
+                {
+                    if(currentFriend.Friendship.Receiver.Equals(userId))
+                    {
+                        ShowFriendshipRequest = true;
+                        ShowFriendshipInfo = false;
+                    }
+                    else
+                    {
+                        ShowFriendshipInfo = true;
+                        ShowFriendshipRequest = false;
+                    }
+                }
+                else
+                {
+                    ShowFriendshipRequest = false;
+                    ShowFriendshipInfo = false;
+                }
             }
 
             callCommand.RaiseCanExecuteChanged();

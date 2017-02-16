@@ -14,7 +14,7 @@ namespace VoIPApp.Modules.Chat.Services
         ObservableCollection<User> Friends { get; set; }
         Task PopulateFriendList();
         void UpdateProfilePictures();
-        Task AddFriendByName(string friendName);
+        Task<bool> SendFriendRequest(string friendName);
         User GetFriendById(ObjectId id);
     }
 }

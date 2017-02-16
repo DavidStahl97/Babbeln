@@ -74,32 +74,20 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task<string> Register(string userName, string password, string email, string ip)
         {
-            /*FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+            bool result = await (from user in dataBaseService.UserCollection.AsQueryable()
+                                where user.Name.Equals(userName)
+                                select user).AnyAsync();
 
-            FilterDefinition<BsonDocument> filter = builder.Eq("username", userName);
-            if (await dataBaseService.UserCollection.CountAsync(filter) > 0)
+            if(result)
             {
                 return "Benutzername schon vergeben";
             }
 
-            filter = builder.Eq("email", email);
-            if (await dataBaseService.UserCollection.CountAsync(filter) > 0)
-            {
-                return "E-Mail schon vergeben";
-            }*/
+            result = await (from user in dataBaseService.UserCollection.AsQueryable()
+                            where user.EMail.Equals(email)
+                            select user).AnyAsync();
 
-            int result = await (from user in dataBaseService.UserCollection.AsQueryable()
-                          select user).CountAsync(user => user.Name.Equals(userName));
-
-            if(result > 0)
-            {
-                return "Benutzername schon vergeben";
-            }
-
-            result = await (from user in dataBaseService.UserBsonCollection.AsQueryable()
-                            select user).CountAsync(user => user["email"].ToString().Equals(email));
-
-            if(result > 0)
+            if(result)
             {
                 return "E-Mail schonn vergeben";
             }

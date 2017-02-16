@@ -115,6 +115,9 @@ namespace SharedCode.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
+
+        [BsonElement("email")]
+        public string EMail { get; set; }
     }
 
     /// <summary>

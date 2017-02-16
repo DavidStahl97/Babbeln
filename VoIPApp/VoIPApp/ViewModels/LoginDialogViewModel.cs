@@ -78,12 +78,12 @@ namespace VoIPApp.ViewModels
             Result = await startService.Register(userName, password, email);
             if(Result.Equals(string.Empty))
             {
-                this.FinishInteraction();
+                UserMessage = "Anmelden";
+                await Login(userName, password);
             }
             else
             {
-                UserMessage = "Anmelden";
-                await Login(userName, password);
+                this.FinishInteraction();
             }
         }
 

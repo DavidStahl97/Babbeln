@@ -15,15 +15,19 @@ namespace ServerServiceLibrary
 {
     public class CustomErrorHandler : IErrorHandler
     {
+        private const int SOCKET_CLOSE_EXCEPTION = -2146233087;
+
         public bool HandleError(Exception error)
         {
-            StackTrace st = new StackTrace(error, true);
-            StackFrame frame = st.GetFrame(0);
-            int line = frame.GetFileLineNumber();
-            string fileName = frame.GetFileName();
+            if(error.HResult != SOCKET_CLOSE_EXCEPTION)
+            {
+                StackTrace trace = new StackTrace(error, true);
+                StackFrame stackFrame = trace.GetFrame(trace.FrameCount - 1);
+                int lineNumber = stackFrame.GetFileLineNumber();
+                string fileName = stackFrame.GetFileName();
 
-            Console.WriteLine("caught exception in file {0} at line {1} : \n{2}", line, fileName, error.Message);
-            //Console.WriteLine(error.ToString());
+                Console.WriteLine("caught exception in file {0} at line {1} : \n{2}", lineNumber, fileName, error.Message);
+            }
 
             return false;
         }

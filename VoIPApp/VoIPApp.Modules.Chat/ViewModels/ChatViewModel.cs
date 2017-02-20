@@ -37,10 +37,12 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private readonly DelegateCommand<object> messageTextBoxChanged;
         private readonly DelegateCommand<object> addFriendCommand;
         private readonly DelegateCommand<object> windowLoadedCommand;
+        private readonly DelegateCommand<object> acceptFriendshipCommand;
+        private readonly DelegateCommand<object> declineFriendshipCommand;
         private readonly InteractionRequest<VoiceChatViewModel> showVoiceChatRequest;
         private readonly IUnityContainer container;
-        private ObjectId currentFriendID;
         private ObjectId userId;
+        private User currentFriend;
         private bool calling;
         private bool populatedChatView;
         private bool showFriendshipInfo;
@@ -76,6 +78,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.searchTextBoxChanged = new DelegateCommand<object>(this.OnSearchTextBoxChanged);
             this.messageTextBoxChanged = new DelegateCommand<object>(this.OnMessageTextBoxChanged);
             this.addFriendCommand = new DelegateCommand<object>(this.OnAddFriend);
+            this.acceptFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptFriendship);
+            this.declineFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnDeclineFriendship);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
 
             Friends.CurrentChanged += SelectedFriendChanged;
@@ -85,6 +89,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<CallEvent>().Subscribe(OnIncomingCall, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<FriendStatusChangedEvent>().Subscribe(OnFriendStatusChanged, ThreadOption.UIThread, true);
+            eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Subscribe(OnFriendshipRequestAnswered, ThreadOption.UIThread, true);
 
             showFriendshipInfo = false;
             showFriendshipRequest = false;
@@ -147,6 +152,16 @@ namespace VoIPApp.Modules.Chat.ViewModels
             get { return this.windowLoadedCommand; }
         }
 
+        public ICommand AcceptFriendshipCommand
+        {
+            get { return this.acceptFriendshipCommand; }
+        }
+
+        public ICommand DeclineFriendshipCommand
+        {
+            get { return this.declineFriendshipCommand; }
+        }
+
         public IInteractionRequest ShowVoiceChatRequest
         {
             get { return this.showVoiceChatRequest; }
@@ -177,8 +192,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
 
         private void OnMessageReceived(Message obj)
-        {
-            if(currentFriendID.Equals(obj.Sender))
+        {            
+            if(currentFriend != null && currentFriend._id.Equals(obj.Sender))
             {
                 Messages.Add(obj);
             }
@@ -208,11 +223,10 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             Messages.Clear();
 
-            User currentFriend = (Friends.CurrentItem as User);
+            currentFriend = (Friends.CurrentItem as User);
             if(currentFriend != null)
             {
-                currentFriendID = currentFriend._id;
-                Messages.AddRange(messageService.GetMessages(currentFriendID));
+                Messages.AddRange(messageService.GetMessages(currentFriend._id));
 
                 if(!currentFriend.Friendship.Accepted)
                 {
@@ -235,12 +249,13 @@ namespace VoIPApp.Modules.Chat.ViewModels
             }
 
             callCommand.RaiseCanExecuteChanged();
+            sendCommand.RaiseCanExecuteChanged();
         }
 
         private async Task OnSend(object arg)
         {
             string userMessage = arg as string;
-            Message message = new Message { Text = userMessage, Receiver = currentFriendID, Date = DateTime.Now, Sender = userId };
+            Message message = new Message { Text = userMessage, Receiver = currentFriend._id, Date = DateTime.Now, Sender = userId };
             await messageService.SendMessage(message);
             Messages.Add(message);
         }
@@ -251,7 +266,13 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             if (!string.IsNullOrEmpty(userMessage))
             {
-                return true;
+                if(currentFriend != null)
+                {
+                    if(currentFriend.Friendship.Accepted)
+                    {
+                        return true;
+                    }
+                }
             }
 
             return false;
@@ -318,10 +339,44 @@ namespace VoIPApp.Modules.Chat.ViewModels
             User f = friendsService.GetFriendById(obj.FriendId);
             f.FriendStatus = obj.Status;
 
-            if(f._id.Equals(currentFriendID))
+            if(currentFriend != null && f._id.Equals(currentFriend._id))
             {
                 callCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        private async Task OnDeclineFriendship(object obj)
+        {
+            if(currentFriend != null)
+            {
+                await friendsService.AnswerFriendshipRequest(currentFriend._id, false);
+            }
+        }
+
+        private async Task OnAcceptFriendship(object obj)
+        {
+            if (currentFriend != null)
+            {
+                await friendsService.AnswerFriendshipRequest(currentFriend._id, true);
+                ShowFriendshipRequest = false;
+                currentFriend.Friendship.Accepted = true;
+                sendCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void OnFriendshipRequestAnswered(FriendshipRequestAnsweredEventArgs obj)
+        {
+            if(obj.Accepted)
+            {
+                if(currentFriend != null)
+                {
+                    if(currentFriend._id.Equals(obj.FriendId))
+                    {
+                        ShowFriendshipInfo = false;
+                        sendCommand.RaiseCanExecuteChanged();
+                    }
+                }
+            } 
         }
     }
 }

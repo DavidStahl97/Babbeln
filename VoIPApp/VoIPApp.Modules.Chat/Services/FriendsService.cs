@@ -15,6 +15,8 @@ using System.IO;
 using MongoDB.Driver.Linq;
 using Prism.Events;
 using VoIPApp.Common;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace VoIPApp.Modules.Chat.Services
 {
@@ -84,14 +86,24 @@ namespace VoIPApp.Modules.Chat.Services
                                      where friendship.Receiver.Equals(userId) && friendship.Requester.Equals(friendId)
                                      select friendship).First();
 
-                Friends.Add(friend);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Friends.Add(friend);
+                });
             }
         }
 
         private void OnFriendshipAnswered(FriendshipRequestAnsweredEventArgs args)
         {
             User friend = GetFriendById(args.FriendId);
-            friend.Friendship.Accepted = args.Accepted;
+            if(args.Accepted)
+            {
+                friend.Friendship.Accepted = args.Accepted;
+            }
+            else
+            {
+                Friends.Remove(friend);
+            }
         }
 
         public async Task<bool> SendFriendRequest(string friendName)
@@ -117,6 +129,15 @@ namespace VoIPApp.Modules.Chat.Services
             }
 
             return null;
+        }
+
+        public async Task AnswerFriendshipRequest(ObjectId friendId, bool accept)
+        {
+            await serverService.ServerService.ReplyToFriendRequestAsync(friendId, accept);
+            if(!accept)
+            {
+                Friends.Remove(GetFriendById(friendId));
+            }
         }
     }
 }

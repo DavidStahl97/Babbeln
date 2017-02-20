@@ -16,5 +16,6 @@ namespace VoIPApp.Modules.Chat.Services
         void UpdateProfilePictures();
         Task<bool> SendFriendRequest(string friendName);
         User GetFriendById(ObjectId id);
+        Task AnswerFriendshipRequest(ObjectId friendId, bool accept);
     }
 }

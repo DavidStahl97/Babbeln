@@ -32,11 +32,6 @@ namespace SharedCode.Services
             UserBsonCollection = database.GetCollection<BsonDocument>("users");
         }
 
-        public async Task<User> GetUser(ObjectId userId)
-        {
-
-        }
-
         public async Task<ObjectId> GetUserId(string userName)
         {
             IMongoQueryable<ObjectId> query = from user in UserCollection.AsQueryable()

@@ -25,8 +25,8 @@ namespace VoIPServer.ServerServiceLibrary.Services
         public async Task<User> AddFriendByName(string friendName)
         {
             IMongoQueryable<User> query = from user in dataBaseService.UserCollection.AsQueryable()
-                          where user.Name.Equals(friendName)
-                          select user;
+                                          where user.Name.Equals(friendName)
+                                          select user;
 
             if (await query.AnyAsync())
             {

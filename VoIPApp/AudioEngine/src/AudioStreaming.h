@@ -4,6 +4,7 @@
 #include "Common.h"
 #include "AudioHandler.h"
 #include "UDPHandler.h"
+#include <vector>
 
 class AudioStreamer
 {
@@ -13,6 +14,9 @@ public:
 	void StartAsync(const std::string& targetIP, int port);
 	void StopAsync();
 	void Init();
+
+private:
+	void ClearQueues();
 
 public:
 	AudioHandler		m_Audio;

@@ -108,11 +108,14 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task<bool> SendFriendRequest(string friendName)
         {
-            User f = await serverService.ServerService.SendFriendRequestAsync(friendName);
-            if(f != null)
+            if(Friends.Where(friend => friend.Name.Equals(friendName)).Count() == 0)
             {
-                Friends.Add(f);
-                return true;
+                User f = await serverService.ServerService.SendFriendRequestAsync(friendName);
+                if(f != null)
+                {
+                    Friends.Add(f);
+                    return true;
+                }
             }
 
             return false;

@@ -26,7 +26,7 @@ void AudioHandler::Init()
 
 	m_OutputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
 	if (m_OutputParameters.device == paNoDevice) {
-		std::cout << "No default output device found" << std::endl;
+		LOG("No default output device found");
 		return;
 	}
 	m_OutputParameters.channelCount = NUMBER_OF_CHANNELS;                     /* stereo output */
@@ -36,7 +36,7 @@ void AudioHandler::Init()
 
 	m_InputParamters.device = Pa_GetDefaultInputDevice(); /* default input device */
 	if (m_InputParamters.device == paNoDevice) {
-		std::cout << "No default input device found" << std::endl;
+		LOG("No default input device found");
 		return;
 	}
 	m_InputParamters.channelCount = NUMBER_OF_CHANNELS;                    /* stereo input */
@@ -78,12 +78,13 @@ VoIPError AudioHandler::StartAsync()
 	{
 		return -1;
 	}
+
+	return VoIP_NoError;
 }
 
 void AudioHandler::StopAsync()
 {
 	PaError err = Pa_AbortStream(m_AudioStream);
-	err = Pa_CloseStream(m_AudioStream);
 }
 
 int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
@@ -91,56 +92,61 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 	const PaStreamCallbackTimeInfo* timeInfo,
 	PaStreamCallbackFlags statusFlags)
 {
-	SampleBuffer* playBuffer = nullptr;
-	Sample* playWritePointer = (Sample*)outputBuffer;
-	Sample* playReadPointer = nullptr;
 
-	SampleBuffer* recordBuffer = m_Pool.malloc();
-	Sample* recordWritePointer = recordBuffer->begin();
-	const Sample* recordReadPointer = (const Sample*)inputBuffer;
-
-	int i;
-
-	if (!m_PlayingQueue.empty())
+	//get the recorded samples and push it to the queue
+	SampleBuffer* recordBuffer; 
+	if (m_Pool.pop(recordBuffer))
 	{
-		m_PlayingQueue.pop(playBuffer);
-		playReadPointer = playBuffer->begin();
+		const Sample* recordReadPointer = (const Sample*)inputBuffer;
+		Sample* recordWritePointer = recordBuffer->begin();
+		for (int i = 0; i < FRAMES_PER_BUFFER; ++i)
+		{
+			*recordWritePointer++ = *recordReadPointer++;
+		}
+
+		if (m_RecordingQueue.write_available() > 0)
+		{
+			m_RecordingQueue.push(recordBuffer);
+		}
 	}
 
-	for (i = 0; i < FRAMES_PER_BUFFER; ++i)
-	{
-		if (playReadPointer != nullptr)
+	//play the samples from the playing queue
+	SampleBuffer* playBuffer;
+	if (m_PlayingQueue.pop(playBuffer))
+	{		
+		Sample* playWritePointer = (Sample*)outputBuffer;
+		Sample* playReadPointer = playBuffer->begin();
+
+		for (size_t i = 0; i < FRAMES_PER_BUFFER; ++i)
 		{
-			Sample sample = *playReadPointer;
-			double dSample = (double)sample * m_Gain;
-			if (dSample > DBL_MAX)
+			if (playReadPointer != nullptr)
 			{
+				/*Sample sample = *playReadPointer;
+				double dSample = (double)sample * m_Gain;
+				if (dSample > DBL_MAX)
+				{
 				dSample = DBL_MAX;
-			}
-			else if (dSample < DBL_MIN)
-			{
+				}
+				else if (dSample < DBL_MIN)
+				{
 				dSample = DBL_MIN;
+				}
+
+				*playWritePointer = (short)dSample;
+
+				playWritePointer++;
+				playReadPointer++;*/
+
+				*playWritePointer++ = *playReadPointer++;
 			}
-
-			*playWritePointer = (short)dSample;
-
-			playWritePointer++;
-			playReadPointer++;
-		}
-		else
-		{
-			*playWritePointer++ = SAMPLE_SILENCE;
+			else
+			{
+				*playWritePointer++ = SAMPLE_SILENCE;
+			}
 		}
 
-		*recordWritePointer++ = *recordReadPointer++;
+		m_Pool.push(playBuffer);
 	}
-
-	if(playBuffer != nullptr)
-	{
-		m_Pool.free(playBuffer);
-	}
-
-	m_RecordingQueue.push(recordBuffer);
 
 	return paContinue;
 }

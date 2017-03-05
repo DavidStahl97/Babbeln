@@ -2,11 +2,13 @@
 #define UDP_HANDLER_H
 
 #include <boost\asio.hpp>
+#include <boost\thread.hpp>
 #include <string>
 #include <atomic>
 #include "Common.h"
 
 class UDPHandler
+
 {
 public:
 	typedef boost::asio::ip::udp udp;
@@ -26,14 +28,15 @@ private:
 	LockfreeQueue&				m_RecordingQueue;
 	LockfreeQueue&				m_PlayingQueue;
 	SampleBufferPool&			m_Pool;
-	CompressedSampleBufferPool  m_CompressedPool;
-	CompressedSampleBuffer*		m_SendBuffer;
-	CompressedSampleBuffer*		m_RecvBuffer;
+	CompressedSampleBuffer		m_SendBuffer;
+	CompressedSampleBuffer		m_RecvBuffer;
 
 	boost::asio::io_service m_IOService;
 	udp::socket				m_Socket;
 	udp::endpoint			m_Endpoint;
 	udp::resolver::iterator m_Iterator;
+
+	std::unique_ptr<boost::thread> m_WorkerThread;
 
 	std::atomic<bool> stop;
 };

@@ -242,7 +242,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="{Binding Path=Friends.CurrentItem.Name}" VerticalAlignment="Center" Margin="20,0,0,0" Grid.Row="0" Foreground="Gray" FontSize="14"/>
+                <Label Content="{Binding Path=FriendsCollectionView.CurrentItem.Name}" VerticalAlignment="Center" Margin="20,0,0,0" Grid.Row="0" Foreground="Gray" FontSize="14"/>
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,15,0,15" Orientation="Horizontal" Grid.Row="1">
                     <Button x:Name="CallButton" Content="&#xE13A;" Command="{Binding Path=CallCommand}" Style="{StaticResource IconButtonStyle}" />
                     <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource IconButtonStyle}" />

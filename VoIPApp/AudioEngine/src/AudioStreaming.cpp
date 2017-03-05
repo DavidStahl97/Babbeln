@@ -11,6 +11,11 @@ AudioStreamer::AudioStreamer()
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+
+	for (int i = 0; i < 64; ++i)
+	{
+		m_Pool.push(new SampleBuffer());
+	}
 }
 
 AudioStreamer::~AudioStreamer()
@@ -18,6 +23,14 @@ AudioStreamer::~AudioStreamer()
 #if defined (Debug) | defined (_DEBUG)
 	FreeConsole();
 #endif
+
+	ClearQueues();
+
+	SampleBuffer* sb;
+	while (m_Pool.pop(sb))
+	{
+		delete sb;
+	}
 }
 
 void AudioStreamer::Init()
@@ -31,11 +44,15 @@ void AudioStreamer::StartAsync(const std::string& targetIP, int port)
 
 	m_StartedSuccessfully = true;
 
-	if (m_Audio.StartAsync() != VoIP_NoError)
+	VoIPError error = m_Audio.StartAsync();
+
+	if (error != VoIP_NoError)
 	{
+		LOG("failed starting audio")
 		m_StartedSuccessfully = false;
 		return;
 	}
+
 	m_UDPClient.StartAsync(targetIP, port);
 }
 
@@ -47,24 +64,29 @@ void AudioStreamer::StopAsync()
 	{
 		m_Audio.StopAsync();
 		m_UDPClient.StopAsync();
+	}
 
-		SampleBuffer* buffer;
-		while (!m_PlayingQeue.empty())
+	ClearQueues();
+}
+
+void AudioStreamer::ClearQueues()
+{
+	SampleBuffer* buffer;
+	while (!m_PlayingQeue.empty())
+	{
+		m_PlayingQeue.pop(buffer);
+		if (buffer != nullptr)
 		{
-			m_PlayingQeue.pop(buffer);
-			if (buffer != nullptr)
-			{
-				m_Pool.free(buffer);
-			}
+			m_Pool.push(buffer);
 		}
+	}
 
-		while (!m_RecordingQueue.empty())
+	while (!m_RecordingQueue.empty())
+	{
+		m_RecordingQueue.pop(buffer);
+		if (buffer != nullptr)
 		{
-			m_RecordingQueue.pop(buffer);
-			if (buffer != nullptr)
-			{
-				m_Pool.free(buffer);
-			}
+			m_Pool.push(buffer);
 		}
 	}
 }

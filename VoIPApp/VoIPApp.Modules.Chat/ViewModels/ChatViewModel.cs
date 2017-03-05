@@ -82,7 +82,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.declineFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnDeclineFriendship);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
 
-            Friends.CurrentChanged += SelectedFriendChanged;
+            FriendsCollectionView.CurrentChanged += SelectedFriendChanged;
 
             this.userId = container.Resolve<ServerServiceProxy>().UserId;
 
@@ -110,11 +110,6 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             get { return this.showFriendshipRequest; }
             set { SetProperty(ref this.showFriendshipRequest, value); }
-        }
-
-        public ICollectionView Friends
-        {
-            get { return this.friends; }
         }
 
         public ObservableCollection<Message> Messages
@@ -199,13 +194,18 @@ namespace VoIPApp.Modules.Chat.ViewModels
             }
         }
 
+        public ICollectionView FriendsCollectionView 
+        {
+            get { return this.friends; }
+        }
+
         private void OnSearchTextBoxChanged(object obj)
         {
             TextChangedEventArgs arg = obj as TextChangedEventArgs;
             TextBox tb = arg.Source as TextBox;
             string filter = tb.Text;
 
-            this.Friends.Filter = item =>
+            this.FriendsCollectionView.Filter = item =>
             {
                 User friend = item as User;
                 if (friend == null) return false;
@@ -216,14 +216,14 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             friends.CustomSort = new CustomSorter(filter);
 
-            Friends.MoveCurrentToPosition(0);
+            FriendsCollectionView.MoveCurrentToPosition(0);
         }
 
         private void SelectedFriendChanged(object sender, EventArgs e)
         {
             Messages.Clear();
 
-            currentFriend = (Friends.CurrentItem as User);
+            currentFriend = (FriendsCollectionView.CurrentItem as User);
             if(currentFriend != null)
             {
                 Messages.AddRange(messageService.GetMessages(currentFriend._id));
@@ -280,7 +280,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private bool CanCall(object arg)
         {
-            User currentFriend = Friends.CurrentItem as User;
+            User currentFriend = FriendsCollectionView.CurrentItem as User;
             if(currentFriend != null)
             {
                 if (currentFriend.FriendStatus == Status.Online && !calling)
@@ -350,6 +350,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             if(currentFriend != null)
             {
                 await friendsService.AnswerFriendshipRequest(currentFriend._id, false);
+                ShowFriendshipRequest = false;
             }
         }
 

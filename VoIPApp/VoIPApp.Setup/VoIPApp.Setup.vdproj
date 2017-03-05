@@ -159,6 +159,30 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_142964F08252ADDA955E808AFA0C335D"
+        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_142964F08252ADDA955E808AFA0C335D"
+        "OwnerKey" = "8:_FD34CB0261E6A3902045C69D08E8AE3B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_142964F08252ADDA955E808AFA0C335D"
+        "OwnerKey" = "8:_EBC0DD1EE40CC436F4655AA5D07C983E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_142964F08252ADDA955E808AFA0C335D"
+        "OwnerKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_16D407B4D1E0F7D04A137D1DE822F9C0"
         "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
         "MsmSig" = "8:_UNDEFINED"
@@ -256,7 +280,19 @@
         "Entry"
         {
         "MsmKey" = "8:_24CFFA583DF267224320E8F333E73400"
+        "OwnerKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_24CFFA583DF267224320E8F333E73400"
         "OwnerKey" = "8:_A3991B4165234AEBA4E65766678F345B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_24CFFA583DF267224320E8F333E73400"
+        "OwnerKey" = "8:_5BDE50DC05E04348FB8EB0683D6D1580"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -292,7 +328,7 @@
         "Entry"
         {
         "MsmKey" = "8:_318B26244A2FBF001088EC759303D3A0"
-        "OwnerKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
+        "OwnerKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -483,30 +519,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_40FA63209BE5DD9490A83336F128C92C"
-        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_40FA63209BE5DD9490A83336F128C92C"
-        "OwnerKey" = "8:_FD34CB0261E6A3902045C69D08E8AE3B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_40FA63209BE5DD9490A83336F128C92C"
-        "OwnerKey" = "8:_EBC0DD1EE40CC436F4655AA5D07C983E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_40FA63209BE5DD9490A83336F128C92C"
-        "OwnerKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_474F8E8B192397CB78E39B37143A4633"
         "OwnerKey" = "8:_5CBA59285EEA598F7ADF80F7ACD14719"
         "MsmSig" = "8:_UNDEFINED"
@@ -615,6 +627,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
+        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
+        "OwnerKey" = "8:_A3991B4165234AEBA4E65766678F345B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
+        "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_548AE95C0C99B1B39F970D0887835C49"
         "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
         "MsmSig" = "8:_UNDEFINED"
@@ -670,7 +700,7 @@
         "Entry"
         {
         "MsmKey" = "8:_5CBA59285EEA598F7ADF80F7ACD14719"
-        "OwnerKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
+        "OwnerKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -735,8 +765,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
+        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
+        "OwnerKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_685F9C847FB0859ACCF70E72DC323BD2"
         "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_685F9C847FB0859ACCF70E72DC323BD2"
+        "OwnerKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -911,6 +959,12 @@
         {
         "MsmKey" = "8:_795E4CA5F43E3137840F5F6233E52A5E"
         "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_795E4CA5F43E3137840F5F6233E52A5E"
+        "OwnerKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1185,24 +1239,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B634B0117730333AD1458055EADCE9ED"
-        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B634B0117730333AD1458055EADCE9ED"
-        "OwnerKey" = "8:_A3991B4165234AEBA4E65766678F345B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B634B0117730333AD1458055EADCE9ED"
-        "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_BA1DD53B99BD6DD474D9FAF88D4155CE"
         "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
         "MsmSig" = "8:_UNDEFINED"
@@ -1312,6 +1348,24 @@
         "Entry"
         {
         "MsmKey" = "8:_C85D4584F45B3A4F58E4C9599645388E"
+        "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8726731AC6E4F5B2757C19A7AE71CF0"
+        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8726731AC6E4F5B2757C19A7AE71CF0"
+        "OwnerKey" = "8:_A3991B4165234AEBA4E65766678F345B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8726731AC6E4F5B2757C19A7AE71CF0"
         "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1437,24 +1491,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-        "OwnerKey" = "8:_A3991B4165234AEBA4E65766678F345B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-        "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E438B0292752A8ED5B6A82B456BAB12B"
         "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
         "MsmSig" = "8:_UNDEFINED"
@@ -1517,18 +1553,6 @@
         {
         "MsmKey" = "8:_EC65CCB2878F78B3194CD7A6F7E925A3"
         "OwnerKey" = "8:_53D1224D92B6463FA86E6ECD8A767168"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EE5646A49E5512BC916482CD8CD906C9"
-        "OwnerKey" = "8:_0B9B615814124AD497332ECEFA0F0CDA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_EE5646A49E5512BC916482CD8CD906C9"
-        "OwnerKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1618,25 +1642,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
+        "OwnerKey" = "8:_543118F8ADF0B90E67730E56789E67D0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EE5646A49E5512BC916482CD8CD906C9"
+        "OwnerKey" = "8:_67F4F39D8EB0F46E5263EFC3D3438EA7"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_40FA63209BE5DD9490A83336F128C92C"
+        "OwnerKey" = "8:_142964F08252ADDA955E808AFA0C335D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B634B0117730333AD1458055EADCE9ED"
+        "OwnerKey" = "8:_C8726731AC6E4F5B2757C19A7AE71CF0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2230,7 +2254,7 @@
             "SourcePath" = "8:System.Runtime.InteropServices.RuntimeInformation.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2292,7 +2316,7 @@
             "SourcePath" = "8:MongoDB.Bson.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2462,6 +2486,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_142964F08252ADDA955E808AFA0C335D"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MongoDB.Bson, Version=2.3.0.157, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_142964F08252ADDA955E808AFA0C335D"
+                    {
+                    "Name" = "8:MongoDB.Bson.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MongoDB.Bson.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_16D407B4D1E0F7D04A137D1DE822F9C0"
             {
             "AssemblyRegister" = "3:1"
@@ -2478,7 +2533,7 @@
             "SourcePath" = "8:System.Runtime.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2571,7 +2626,7 @@
             "SourcePath" = "8:System.Globalization.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2602,7 +2657,7 @@
             "SourcePath" = "8:System.Diagnostics.Debug.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2633,7 +2688,7 @@
             "SourcePath" = "8:MongoDB.Driver.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2819,7 +2874,7 @@
             "SourcePath" = "8:System.Runtime.Extensions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2881,7 +2936,7 @@
             "SourcePath" = "8:System.Globalization.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2912,7 +2967,7 @@
             "SourcePath" = "8:System.Linq.Expressions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2989,37 +3044,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_40FA63209BE5DD9490A83336F128C92C"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MongoDB.Bson, Version=2.3.0.157, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_40FA63209BE5DD9490A83336F128C92C"
-                    {
-                    "Name" = "8:MongoDB.Bson.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:MongoDB.Bson.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_474F8E8B192397CB78E39B37143A4633"
             {
             "AssemblyRegister" = "3:1"
@@ -3036,7 +3060,7 @@
             "SourcePath" = "8:System.Diagnostics.Debug.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3129,7 +3153,7 @@
             "SourcePath" = "8:System.Runtime.Extensions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3191,7 +3215,38 @@
             "SourcePath" = "8:System.Collections.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_543118F8ADF0B90E67730E56789E67D0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:VoIPApp.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_543118F8ADF0B90E67730E56789E67D0"
+                    {
+                    "Name" = "8:VoIPApp.Common.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:VoIPApp.Common.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3284,7 +3339,7 @@
             "SourcePath" = "8:SharedCode.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3392,6 +3447,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_67F4F39D8EB0F46E5263EFC3D3438EA7"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SharedCode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_67F4F39D8EB0F46E5263EFC3D3438EA7"
+                    {
+                    "Name" = "8:SharedCode.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SharedCode.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_685F9C847FB0859ACCF70E72DC323BD2"
             {
             "AssemblyRegister" = "3:1"
@@ -3408,7 +3494,7 @@
             "SourcePath" = "8:MongoDB.Bson.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3470,7 +3556,7 @@
             "SourcePath" = "8:System.Collections.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3656,7 +3742,7 @@
             "SourcePath" = "8:System.ObjectModel.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3687,7 +3773,7 @@
             "SourcePath" = "8:MongoDB.Driver.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3780,7 +3866,7 @@
             "SourcePath" = "8:System.Threading.Tasks.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3842,7 +3928,7 @@
             "SourcePath" = "8:System.Runtime.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3935,7 +4021,7 @@
             "SourcePath" = "8:System.Threading.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4059,37 +4145,6 @@
             "SourcePath" = "8:System.Reflection.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B634B0117730333AD1458055EADCE9ED"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:AudioStreamingCLI, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_B634B0117730333AD1458055EADCE9ED"
-                    {
-                    "Name" = "8:AudioStreamingCLI.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:AudioStreamingCLI.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
             "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
@@ -4183,7 +4238,7 @@
             "SourcePath" = "8:System.Threading.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4245,7 +4300,7 @@
             "SourcePath" = "8:System.Runtime.InteropServices.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4276,7 +4331,7 @@
             "SourcePath" = "8:System.ObjectModel.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4322,6 +4377,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8726731AC6E4F5B2757C19A7AE71CF0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:AudioStreamingCLI, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_C8726731AC6E4F5B2757C19A7AE71CF0"
+                    {
+                    "Name" = "8:AudioStreamingCLI.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:AudioStreamingCLI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8FFE40A4D95AA87063057C0DB376591"
             {
             "AssemblyRegister" = "3:1"
@@ -4338,7 +4424,7 @@
             "SourcePath" = "8:System.Runtime.InteropServices.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4400,7 +4486,7 @@
             "SourcePath" = "8:System.Linq.Expressions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4493,7 +4579,7 @@
             "SourcePath" = "8:System.Threading.Tasks.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4522,37 +4608,6 @@
                     }
                 }
             "SourcePath" = "8:Microsoft.Practices.ServiceLocation.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:VoIPApp.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_E41A0BD10FDA41D13FC92A9C9E4E78DE"
-                    {
-                    "Name" = "8:VoIPApp.Common.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:VoIPApp.Common.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
@@ -4648,7 +4703,7 @@
             "SourcePath" = "8:MongoDB.Driver.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4680,37 +4735,6 @@
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EE5646A49E5512BC916482CD8CD906C9"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SharedCode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_EE5646A49E5512BC916482CD8CD906C9"
-                    {
-                    "Name" = "8:SharedCode.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SharedCode.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4803,7 +4827,7 @@
             "SourcePath" = "8:System.Reflection.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4834,7 +4858,7 @@
             "SourcePath" = "8:MongoDB.Driver.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
+            "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4917,7 +4941,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Babbeln"
         "ProductCode" = "8:{50B8F857-0EE3-42FA-A171-627D6EDB8151}"
-        "PackageCode" = "8:{C00B4ACF-AC99-4DFC-828C-96827DCBC000}"
+        "PackageCode" = "8:{08304C7D-6388-4B0E-85E6-E4E860E4F06D}"
         "UpgradeCode" = "8:{BC56232C-C3E4-405A-B634-0409B34B0F6E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -5438,7 +5462,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0B9B615814124AD497332ECEFA0F0CDA"
             {
-            "SourcePath" = "8:..\\VoIPApp.Modules.Options\\obj\\Debug\\VoIPApp.Modules.Options.dll"
+            "SourcePath" = "8:..\\VoIPApp.Modules.Options\\obj\\Release\\VoIPApp.Modules.Options.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
@@ -5466,7 +5490,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_53D1224D92B6463FA86E6ECD8A767168"
             {
-            "SourcePath" = "8:..\\VoIPApp.Modules.Chat\\obj\\Debug\\VoIPApp.Modules.Chat.dll"
+            "SourcePath" = "8:..\\VoIPApp.Modules.Chat\\obj\\Release\\VoIPApp.Modules.Chat.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_24ECA5BE734A47D48D689D5676124C1C"
@@ -5494,7 +5518,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A3991B4165234AEBA4E65766678F345B"
             {
-            "SourcePath" = "8:..\\VoIPApp\\obj\\Debug\\VoIPApp.exe"
+            "SourcePath" = "8:..\\VoIPApp\\obj\\Release\\VoIPApp.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_253109C5890E4D229B434EEA982FDDC0"

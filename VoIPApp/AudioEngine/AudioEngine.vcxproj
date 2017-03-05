@@ -19,16 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\G711Codec.cpp" />
     <ClCompile Include="src\AudioHandler.cpp" />
     <ClCompile Include="src\AudioStreaming.cpp" />
+    <ClCompile Include="src\G711Codec.cpp" />
     <ClCompile Include="src\UDPHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\G711Codec.h" />
     <ClInclude Include="src\AudioHandler.h" />
     <ClInclude Include="src\AudioStreaming.h" />
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\G711Codec.h" />
     <ClInclude Include="src\UDPHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

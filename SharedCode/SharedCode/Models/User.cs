@@ -18,13 +18,16 @@ namespace SharedCode.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// name of the friend
-        /// </summary>
+        public void OnPropertyChanged(string name)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
         private string name;
 
-        [BsonElement("username")]
-        [DataMember]
         public string Name
         {
             get { return this.name; }
@@ -107,14 +110,6 @@ namespace SharedCode.Models
         [BsonElement("ip")]
         [DataMember]
         public string IP { get; set; }
-
-        public void OnPropertyChanged(string name)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }
 
         [BsonElement("email")]
         public string EMail { get; set; }

@@ -28,20 +28,11 @@
   <wsdl:message name="IServerService_AcceptCall_InputMessage">
     <wsdl:part name="parameters" element="tns:AcceptCall" />
   </wsdl:message>
-  <wsdl:message name="IServerService_SendFriendRequest_InputMessage">
-    <wsdl:part name="parameters" element="tns:SendFriendRequest" />
-  </wsdl:message>
-  <wsdl:message name="IServerService_SendFriendRequest_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SendFriendRequestResponse" />
-  </wsdl:message>
   <wsdl:message name="IServerService_Subscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Subscribe" />
   </wsdl:message>
   <wsdl:message name="IServerService_Subscribe_OutputMessage">
     <wsdl:part name="parameters" element="tns:SubscribeResponse" />
-  </wsdl:message>
-  <wsdl:message name="IServerService_ReplyToFriendRequest_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReplyToFriendRequest" />
   </wsdl:message>
   <wsdl:message name="IServerService_Unsubscribe_InputMessage">
     <wsdl:part name="parameters" element="tns:Unsubscribe" />
@@ -51,6 +42,15 @@
   </wsdl:message>
   <wsdl:message name="IServerService_Register_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_SendFriendRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendFriendRequest" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_SendFriendRequest_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendFriendRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_ReplyToFriendRequest_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReplyToFriendRequest" />
   </wsdl:message>
   <wsdl:message name="IServerService_OnMessageReceived_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnMessageReceived" />
@@ -86,16 +86,9 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="AcceptCall">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/AcceptCall" message="tns:IServerService_AcceptCall_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendFriendRequest">
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/SendFriendRequest" message="tns:IServerService_SendFriendRequest_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/SendFriendRequestResponse" message="tns:IServerService_SendFriendRequest_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Subscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Subscribe" message="tns:IServerService_Subscribe_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/SubscribeResponse" message="tns:IServerService_Subscribe_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ReplyToFriendRequest">
-      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ReplyToFriendRequest" message="tns:IServerService_ReplyToFriendRequest_InputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Unsubscribe">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Unsubscribe" message="tns:IServerService_Unsubscribe_InputMessage" />
@@ -103,6 +96,13 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="Register">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/Register" message="tns:IServerService_Register_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/RegisterResponse" message="tns:IServerService_Register_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendFriendRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/SendFriendRequest" message="tns:IServerService_SendFriendRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/SendFriendRequestResponse" message="tns:IServerService_SendFriendRequest_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ReplyToFriendRequest">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ReplyToFriendRequest" message="tns:IServerService_ReplyToFriendRequest_InputMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnMessageReceived">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnMessageReceived" message="tns:IServerService_OnMessageReceived_OutputCallbackMessage" />
@@ -126,6 +126,7 @@
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendshipRequestAnswered" message="tns:IServerService_OnFriendshipRequestAnswered_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
+  <wsdl:portType msc:usingSession="true" name="IWebsocketService" />
   <wsdl:binding name="NetTcpBinding_IServerService" type="tns:IServerService">
     <wsp:PolicyReference URI="#NetTcpBinding_IServerService_policy" />
     <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
@@ -153,15 +154,6 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="SendFriendRequest">
-      <soap12:operation soapAction="http://tempuri.org/IServerService/SendFriendRequest" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Subscribe">
       <soap12:operation soapAction="http://tempuri.org/IServerService/Subscribe" style="document" />
       <wsdl:input>
@@ -170,12 +162,6 @@
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ReplyToFriendRequest">
-      <soap12:operation soapAction="http://tempuri.org/IServerService/ReplyToFriendRequest" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
     </wsdl:operation>
     <wsdl:operation name="Unsubscribe">
       <soap12:operation soapAction="http://tempuri.org/IServerService/Unsubscribe" style="document" />
@@ -191,6 +177,21 @@
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendFriendRequest">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/SendFriendRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReplyToFriendRequest">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/ReplyToFriendRequest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
     </wsdl:operation>
     <wsdl:operation name="OnMessageReceived">
       <soap12:operation soapAction="http://tempuri.org/IServerService/OnMessageReceived" style="document" />
@@ -235,12 +236,18 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
+  <wsdl:binding name="CustomBinding_IWebsocketService" type="tns:IWebsocketService">
+    <soap12:binding transport="http://schemas.microsoft.com/soap/websocket" />
+  </wsdl:binding>
   <wsdl:service name="ServerService">
     <wsdl:port name="NetTcpBinding_IServerService" binding="tns:NetTcpBinding_IServerService">
       <soap12:address location="net.tcp://localhost:7999/VoIPServer/ServerService" />
       <wsa10:EndpointReference>
         <wsa10:Address>net.tcp://localhost:7999/VoIPServer/ServerService</wsa10:Address>
       </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_IWebsocketService" binding="tns:CustomBinding_IWebsocketService">
+      <soap12:address location="ws://localhost:7998/VoIPServer/WebsocketService" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

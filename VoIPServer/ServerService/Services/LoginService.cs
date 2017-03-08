@@ -15,6 +15,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
 {
     public class LoginService
     {
+        //TODO make subscribers threadsafe
         private static readonly Dictionary<ObjectId, IServerCallBack> subscribers = new Dictionary<ObjectId, IServerCallBack>();
 
         private readonly DataBaseService dataBaseService;

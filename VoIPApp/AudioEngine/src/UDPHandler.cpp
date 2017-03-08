@@ -28,6 +28,7 @@ void UDPHandler::StartAsync(const std::string& targetIP, int port)
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
 
+	//TODO: run ioservice in two threads so receive handle does not get blocked when send handle waits for a new buffer
 	m_WorkerThread.reset(new boost::thread(boost::bind(&boost::asio::io_service::run, &this->m_IOService)));
 }
 
@@ -43,6 +44,7 @@ void UDPHandler::Send()
 {
 	SampleBuffer* pcmBuffer = nullptr;
 
+	//TODO: lock consumer with mutex to avoid polling
 	while (!stop)
 	{
 		if (m_RecordingQueue.pop(pcmBuffer))

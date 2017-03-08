@@ -28,6 +28,7 @@ namespace SharedCode.Models
 
         private string name;
 
+        [BsonElement("username")]
         public string Name
         {
             get { return this.name; }

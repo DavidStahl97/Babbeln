@@ -30,20 +30,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="SendFriendRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="friendName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SendFriendRequestResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="SendFriendRequestResult" nillable="true" type="q5:User" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="Subscribe">
     <xs:complexType>
       <xs:sequence>
@@ -56,15 +42,7 @@
   <xs:element name="SubscribeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="SubscribeResult" type="q6:ObjectId" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="ReplyToFriendRequest">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q7:ObjectId" />
-        <xs:element minOccurs="0" name="accept" type="xs:boolean" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="SubscribeResult" type="q5:ObjectId" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -87,6 +65,28 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="RegisterResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendFriendRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="friendName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendFriendRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/SharedCode.Models" minOccurs="0" name="SendFriendRequestResult" nillable="true" type="q6:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReplyToFriendRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="friendId" type="q7:ObjectId" />
+        <xs:element minOccurs="0" name="accept" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

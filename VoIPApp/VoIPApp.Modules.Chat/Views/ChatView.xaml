@@ -191,7 +191,7 @@
                 <!-- friend list-->
                 <ListBox Grid.Row="1"
                      BorderThickness="0"
-                     ItemsSource="{Binding Path=Friends}"
+                     ItemsSource="{Binding Path=FriendsCollectionView}"
                      ItemContainerStyle="{StaticResource FriendListItemStyle}"
                      Padding="0">
                     <ListBox.ItemTemplate>

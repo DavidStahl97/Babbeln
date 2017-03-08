@@ -26,19 +26,19 @@ namespace VoIPServer.ServerServiceLibrary
         void AcceptCall(ObjectId friendId);
 
         [OperationContract(IsOneWay = false)]
-        Task<User> SendFriendRequest(string friendName);
-
-        [OperationContract(IsOneWay = false)]
         Task<ObjectId> Subscribe(string userName, string password, string ip);
-
-        [OperationContract(IsOneWay = true)]
-        Task ReplyToFriendRequest(ObjectId friendId, bool accept);
 
         [OperationContract(IsOneWay = true)]
         Task Unsubscribe();
 
         [OperationContract(IsOneWay = false)]
         Task<string> Register(string userName, string password, string email, string ip);
+
+        [OperationContract(IsOneWay = false)]
+        Task<User> SendFriendRequest(string friendName);
+
+        [OperationContract(IsOneWay = true)]
+        Task ReplyToFriendRequest(ObjectId friendId, bool accept);
     }
 
     public interface IServerCallBack

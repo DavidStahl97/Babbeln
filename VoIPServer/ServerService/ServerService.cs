@@ -14,12 +14,13 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.Services;
+using System.ServiceModel.Channels;
 
 namespace VoIPServer.ServerServiceLibrary
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, UseSynchronizationContext = true)]
     [ErrorHandlerExtension]
-    public class ServerService : IServerService
+    public class ServerService : IServerService, IWebsocketService
     {
         private static readonly DataBaseService dataBaseService = new DataBaseService();
         private readonly LoginService loginService;
@@ -68,7 +69,7 @@ namespace VoIPServer.ServerServiceLibrary
             return await loginService.Register(userName, password, email, ip);
         }
 
-        public async Task SendMessage(Message msg)
+        public async Task SendMessage(SharedCode.Models.Message msg)
         {
             if(loginService.LoggedIn)
             {
@@ -118,6 +119,11 @@ namespace VoIPServer.ServerServiceLibrary
             {
                 await friendService.ReplyToFriendRequest(friendId, accept);
             }
+        }
+
+        public Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

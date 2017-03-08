@@ -86,6 +86,8 @@ namespace VoIPApp
             base.ConfigureContainer();
 
             serverServiceProxy = new ServerServiceProxy(Container.Resolve<EventAggregator>());
+            // TODO: change to conainercontrolledlifetimemanager
+            // TODO: move audiostreamingservice to chat module as a shared service
             Container.RegisterInstance(audioStreamingService);
             Container.RegisterInstance(dataBaseService);
             Container.RegisterInstance(serverServiceProxy);

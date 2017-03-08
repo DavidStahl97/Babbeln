@@ -17,6 +17,8 @@ using Prism.Events;
 
 namespace VoIPApp.Common.Services
 {
+    //TODO: rearange this project
+    //TODO: only put interfaces of services her
     public class ServerServiceProxy : IServerServiceCallback
     {
         private IServerService serverServiceClient;

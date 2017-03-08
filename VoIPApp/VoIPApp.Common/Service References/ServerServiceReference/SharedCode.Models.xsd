@@ -16,7 +16,6 @@
       <xs:element minOccurs="0" name="Friendship" nillable="true" type="tns:Friendship" />
       <xs:element minOccurs="0" name="IP" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Icon" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProfileName" nillable="true" type="xs:string" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="_id" type="q3:ObjectId" />
     </xs:sequence>

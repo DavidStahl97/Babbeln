@@ -21,10 +21,10 @@
     <ClCompile Include="src\AudioStreaming.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\UDPHandler.cpp">
+    <ClCompile Include="src\G711Codec.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\G711Codec.cpp">
+    <ClCompile Include="src\NetworkHandler.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,10 +38,13 @@
     <ClInclude Include="src\Common.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\UDPHandler.h">
+    <ClInclude Include="src\G711Codec.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="src\G711Codec.h">
+    <ClInclude Include="src\ConsumerLockedQueue.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NetworkHandler.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

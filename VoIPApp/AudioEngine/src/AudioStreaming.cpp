@@ -24,8 +24,6 @@ AudioStreamer::~AudioStreamer()
 	FreeConsole();
 #endif
 
-	ClearQueues();
-
 	SampleBuffer* sb;
 	while (m_Pool.pop(sb))
 	{

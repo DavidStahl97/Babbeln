@@ -104,48 +104,28 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 			*recordWritePointer++ = *recordReadPointer++;
 		}
 
-		if (m_RecordingQueue.write_available() > 0)
-		{
-			m_RecordingQueue.push(recordBuffer);
-		}
+		m_RecordingQueue.push(recordBuffer);
 	}
 
 	//play the samples from the playing queue
 	SampleBuffer* playBuffer;
+	Sample* playWritePointer = (Sample*)outputBuffer;
 	if (m_PlayingQueue.pop(playBuffer))
 	{		
-		Sample* playWritePointer = (Sample*)outputBuffer;
 		Sample* playReadPointer = playBuffer->begin();
-
 		for (size_t i = 0; i < FRAMES_PER_BUFFER; ++i)
 		{
-			if (playReadPointer != nullptr)
-			{
-				/*Sample sample = *playReadPointer;
-				double dSample = (double)sample * m_Gain;
-				if (dSample > DBL_MAX)
-				{
-				dSample = DBL_MAX;
-				}
-				else if (dSample < DBL_MIN)
-				{
-				dSample = DBL_MIN;
-				}
-
-				*playWritePointer = (short)dSample;
-
-				playWritePointer++;
-				playReadPointer++;*/
-
-				*playWritePointer++ = *playReadPointer++;
-			}
-			else
-			{
-				*playWritePointer++ = SAMPLE_SILENCE;
-			}
+			*playWritePointer++ = *playReadPointer++;
 		}
 
 		m_Pool.push(playBuffer);
+	}
+	else
+	{
+		for (size_t i = 0; i < FRAMES_PER_BUFFER; ++i)
+		{
+			*playWritePointer++ = SAMPLE_SILENCE;
+		}
 	}
 
 	return paContinue;

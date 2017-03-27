@@ -18,7 +18,7 @@ using System.ServiceModel.Channels;
 
 namespace VoIPServer.ServerServiceLibrary
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.PerSession, UseSynchronizationContext = true)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.PerSession, UseSynchronizationContext = true)]
     [ErrorHandlerExtension]
     public class ServerService : IServerService, IWebsocketService
     {
@@ -121,9 +121,16 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        public Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
+        //TODO: implement sendmessagetoserver correctly
+        public async Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
         {
-            throw new NotImplementedException();
+            if(msg.IsEmpty)
+            {
+                return;
+            }
+
+            byte[] body = msg.GetBody<byte[]>();
+            string msgTextFromClient = Encoding.UTF8.GetString(body);
         }
     }
 }

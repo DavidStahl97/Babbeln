@@ -7,13 +7,13 @@
 #include <atomic>
 #include "Common.h"
 
-class UDPHandler
+class NetworkHandler
 
 {
 public:
 	typedef boost::asio::ip::udp udp;
 
-	UDPHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool);
+	NetworkHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool);
 
 	void StartAsync(const std::string& targetIP, int port);
 	void StopAsync();
@@ -36,7 +36,7 @@ private:
 	udp::endpoint			m_Endpoint;
 	udp::resolver::iterator m_Iterator;
 
-	std::unique_ptr<boost::thread> m_WorkerThread;
+	boost::array<std::unique_ptr<boost::thread>, 2> m_HandlerThreads;
 
 	std::atomic<bool> stop;
 };

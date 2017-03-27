@@ -22,14 +22,15 @@
     <ClCompile Include="src\AudioHandler.cpp" />
     <ClCompile Include="src\AudioStreaming.cpp" />
     <ClCompile Include="src\G711Codec.cpp" />
-    <ClCompile Include="src\UDPHandler.cpp" />
+    <ClCompile Include="src\NetworkHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ConsumerLockedQueue.h" />
     <ClInclude Include="src\AudioHandler.h" />
     <ClInclude Include="src\AudioStreaming.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\G711Codec.h" />
-    <ClInclude Include="src\UDPHandler.h" />
+    <ClInclude Include="src\NetworkHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FBDF6AEA-037B-40D3-B85E-104D5842E439}</ProjectGuid>

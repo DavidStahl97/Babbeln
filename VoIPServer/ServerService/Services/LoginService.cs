@@ -4,6 +4,7 @@ using MongoDB.Driver.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -15,8 +16,8 @@ namespace VoIPServer.ServerServiceLibrary.Services
 {
     public class LoginService
     {
-        //TODO make subscribers threadsafe
-        private static readonly Dictionary<ObjectId, IServerCallBack> subscribers = new Dictionary<ObjectId, IServerCallBack>();
+        //use threadsafe Dictionary because its used in multiple threads. note the static
+        private static readonly ConcurrentDictionary<ObjectId, IServerCallBack> subscribers = new ConcurrentDictionary<ObjectId, IServerCallBack>();
 
         private readonly DataBaseService dataBaseService;
 
@@ -45,7 +46,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                     UpdateDefinition<BsonDocument> update = Builders<BsonDocument>.Update.Set("ip", ip);
                     await dataBaseService.UserBsonCollection.UpdateOneAsync(filter, update);
 
-                    subscribers.Add(userId, callbackChannel);
+                    subscribers.TryAdd(userId, callbackChannel);
 
                     await NotifyFriendsAboutStatusChange(Status.Online);
 
@@ -62,7 +63,8 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (!userId.Equals(ObjectId.Empty) && subscribers.ContainsKey(userId))
             {
-                subscribers.Remove(userId);
+                IServerCallBack cb;
+                subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
                 await NotifyFriendsAboutStatusChange(Status.Offline);

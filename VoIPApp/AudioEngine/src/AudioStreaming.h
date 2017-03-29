@@ -3,7 +3,7 @@
 
 #include "Common.h"
 #include "AudioHandler.h"
-#include "UDPHandler.h"
+#include "NetworkHandler.h"
 #include <vector>
 
 class AudioStreamer
@@ -20,7 +20,7 @@ private:
 
 public:
 	AudioHandler		m_Audio;
-	UDPHandler			m_UDPClient;
+	NetworkHandler		m_UDPClient;
 
 private:
 	LockfreeQueue		m_PlayingQeue;

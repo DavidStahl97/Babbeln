@@ -8,7 +8,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoIPServer.ServerServiceLibrary
+namespace VoIPServer.ServerServiceLibrary.DataContract
 {
     [ServiceContract(CallbackContract = typeof(IServerCallBack), SessionMode = SessionMode.Required)]
     public interface IServerService
@@ -41,7 +41,7 @@ namespace VoIPServer.ServerServiceLibrary
         Task ReplyToFriendRequest(ObjectId friendId, bool accept);
     }
 
-    public interface IServerCallBack
+    public interface IServerCallback
     {
         [OperationContract(IsOneWay = true)]
         void OnMessageReceived(Message msg);

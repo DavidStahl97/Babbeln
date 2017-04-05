@@ -195,14 +195,20 @@ const std::vector<std::string> AudioHandler::GetDevices(DeviceType type) const
 		case InputDevice:
 			if (deviceInfo->maxInputChannels > 0)
 			{
-				deviceNames.push_back(deviceInfo->name);
+				if (IsDeviceValid(deviceInfo->name, deviceNames))
+				{
+					deviceNames.push_back(deviceInfo->name);
+				}
 			}
 			break;
 
 		case OutputDevice:
 			if (deviceInfo->maxOutputChannels > 0)
 			{
-				deviceNames.push_back(deviceInfo->name);
+				if (IsDeviceValid(deviceInfo->name, deviceNames))
+				{
+					deviceNames.push_back(deviceInfo->name);
+				}
 			}
 			break;
 
@@ -212,6 +218,20 @@ const std::vector<std::string> AudioHandler::GetDevices(DeviceType type) const
 	}
 
 	return deviceNames;
+}
+
+//workaround for bug in portaudio, where devices will be listed multiple times with cutted name
+bool AudioHandler::IsDeviceValid(const std::string& testName, const std::vector<std::string>& deviceNames) const
+{
+	for (const std::string& name : deviceNames)
+	{
+		if (name.find(testName) != std::string::npos)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 void AudioHandler::SetVolumeGain(double gain)

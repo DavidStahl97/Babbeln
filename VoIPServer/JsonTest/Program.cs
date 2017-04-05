@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,8 @@ namespace JsonTest
                                     }
                               }";
 
-            JsonMessage j = JsonConvert.DeserializeObject<JsonMessage>(message);
+            JObject m = JObject.Parse(message);
+            string type = m["type"].ToString();
         }
     }
 }

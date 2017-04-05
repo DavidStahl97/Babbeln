@@ -1,20 +1,14 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
 using ServerServiceLibrary;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.Services;
-using System.ServiceModel.Channels;
+using Newtonsoft.Json.Linq;
+using VoIPServer.ServerServiceLibrary.DataContract;
 
 namespace VoIPServer.ServerServiceLibrary
 {
@@ -22,6 +16,10 @@ namespace VoIPServer.ServerServiceLibrary
     [ErrorHandlerExtension]
     public class ServerService : IServerService, IWebsocketService
     {
+        private const string messageType = "message";
+        private const string requestType = "request";
+        private const string acceptType = "accept";
+
         private static readonly DataBaseService dataBaseService = new DataBaseService();
         private readonly LoginService loginService;
         private readonly FriendService friendService;
@@ -130,7 +128,29 @@ namespace VoIPServer.ServerServiceLibrary
             }
 
             byte[] body = msg.GetBody<byte[]>();
-            string msgTextFromClient = Encoding.UTF8.GetString(body);
+            string clientMessage = Encoding.UTF8.GetString(body);
+
+            JObject jsonMessage = JObject.Parse(clientMessage);
+            string type = jsonMessage["type"].ToString();
+
+            switch(type)
+            {
+                case messageType:
+                    SharedCode.Models.Message textMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedCode.Models.Message>(jsonMessage["data"].ToString());
+                    await chatService.SendMessage(textMessage);
+                    break;
+
+                case requestType:
+
+                    break;
+
+                case acceptType:
+                    break;
+
+                default:
+                    Console.WriteLine(String.Format("{0} type is not supported", type));
+                    break;
+            }
         }
     }
 }

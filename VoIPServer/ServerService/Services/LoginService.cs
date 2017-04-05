@@ -11,13 +11,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary;
+using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
     public class LoginService
     {
         //use threadsafe Dictionary because its used in multiple threads. note the static
-        private static readonly ConcurrentDictionary<ObjectId, IServerCallBack> subscribers = new ConcurrentDictionary<ObjectId, IServerCallBack>();
+        private static readonly ConcurrentDictionary<ObjectId, IClientCallback> subscribers = new ConcurrentDictionary<ObjectId, IClientCallback>();
 
         private readonly DataBaseService dataBaseService;
 
@@ -29,7 +30,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.dataBaseService = dataBaseService;
         }
 
-        public async Task<ObjectId> Subscribe(string userName, string password, string ip, IServerCallBack callbackChannel)
+        public async Task<ObjectId> Subscribe(string userName, string password, string ip, IClientCallback callbackChannel)
         {
             userId = await dataBaseService.GetUserId(userName, password);
 
@@ -63,7 +64,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (!userId.Equals(ObjectId.Empty) && subscribers.ContainsKey(userId))
             {
-                IServerCallBack cb;
+                IClientCallback cb;
                 subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
@@ -108,9 +109,9 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return string.Empty;
         }
 
-        public IServerCallBack GetCallbackChannelByID(ObjectId id)
+        public IClientCallback GetCallbackChannelByID(ObjectId id)
         {
-            IServerCallBack callbackChannel = null;
+            IClientCallback callbackChannel = null;
             subscribers.TryGetValue(id, out callbackChannel);
             return callbackChannel;
         }
@@ -120,7 +121,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
             foreach (ObjectId friendId in friendIds)
             {
-                IServerCallBack callback = GetCallbackChannelByID(friendId);
+                IClientCallback callback = GetCallbackChannelByID(friendId);
                 if (callback != null)
                 {
                     callback.OnFriendStatusChanged(userId, status);

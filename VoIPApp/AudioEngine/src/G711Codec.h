@@ -47,8 +47,6 @@ private:
 
 private:
 	static Sample seg_aend[8];
-	static CompressedSample _u2a[128];
-	static CompressedSample _a2u[128];
 };
 
 #endif

@@ -41,6 +41,7 @@ private:
 		PaStreamCallbackFlags statusFlags);
 	const std::vector<std::string> GetDevices(DeviceType type) const;
 	PaDeviceIndex GetDeviceIndexByName(const std::string& deviceName);
+	bool IsDeviceValid(const std::string& deviceName, const std::vector<std::string>& deviceNames) const;
 
 private:
 	PaStreamParameters	m_InputParamters;

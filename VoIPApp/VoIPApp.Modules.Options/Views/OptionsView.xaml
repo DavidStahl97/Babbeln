@@ -4,21 +4,142 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:common="clr-namespace:VoIPApp.Common;assembly=VoIPApp.Common"
              xmlns:prism="http://prismlibrary.com/"             
-             prism:ViewModelLocator.AutoWireViewModel="True">
-    <StackPanel>
-        <ComboBox ItemsSource="{Binding Path=InputDevices}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <common:InteractiveCommand Command="{Binding InputDeviceSelectionChanged}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ComboBox>
-        <ComboBox ItemsSource="{Binding Path=OutputDevices}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <common:InteractiveCommand Command="{Binding OutputDeviceSelectionChanged}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ComboBox>
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:local="clr-namespace:VoIPApp.Modules.Options.Views"
+             x:Name="ParentView">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="AnimatedExpanderButton" TargetType="{x:Type ToggleButton}">
+            <Border x:Name="ExpanderButtonBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Padding="{TemplateBinding Padding}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Rectangle Fill="Transparent"
+                               Grid.ColumnSpan="2"/>
+                    <Ellipse Name="Circle"
+                             Grid.Column="0"
+                             Stroke="DarkGray"
+                             Width="20"
+                             Height="20"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+                    <Path Name="Arrow"
+                          Grid.Column="0"
+                          Data="M 1,1.5 L 4.5,5 8,1.5"
+                          Stroke="Gray"
+                          StrokeThickness="2"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          RenderTransformOrigin="0.5,0.5">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Path.RenderTransform>
+                    </Path>
+                    <ContentPresenter x:Name="HeaderContent"
+                                      Grid.Column="1"
+                                      Margin="15,0,0,0"
+                                      ContentSource="Content"
+                                      TextBlock.FontSize="20"
+                                      TextBlock.Foreground="Gray"
+                                      VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="Arrow"
+                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                                 To="180"
+                                                 Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="Arrow"
+                                                 Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                                                 To="0"
+                                                 Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        
+        <ControlTemplate x:Key="StretchExpander" TargetType="{x:Type Expander}">
+            <DockPanel>
+                <ToggleButton x:Name="ExpanderButton"
+                              DockPanel.Dock="Top"
+                              Template="{StaticResource AnimatedExpanderButton}"
+                              Content="{TemplateBinding Header}"
+                              IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                              OverridesDefaultStyle="True"
+                              Margin="0,0,0,20"/>
+                <ContentPresenter x:Name="ExpanderContent"
+                                  ContentSource="Content"
+                                  DockPanel.Dock="Bottom">
+                    <ContentPresenter.LayoutTransform>
+                        <ScaleTransform ScaleY="0"/>
+                    </ContentPresenter.LayoutTransform>
+                </ContentPresenter>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsExpanded" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="ExpanderContent"
+                                                 Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                 To="1"
+                                                 Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="ExpanderContent"
+                                                 Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                 To="0"
+                                                 Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="25">
+        <Expander Header="Audio"
+                  Template="{StaticResource StretchExpander}">
+            <StackPanel>
+                <ComboBox ItemsSource="{Binding InputDevices}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <common:InteractiveCommand Command="{Binding InputDeviceSelectionChanged}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+                <ComboBox ItemsSource="{Binding Path=OutputDevices}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <common:InteractiveCommand Command="{Binding OutputDeviceSelectionChanged}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+            </StackPanel>
+        </Expander>
     </StackPanel>
 </UserControl>

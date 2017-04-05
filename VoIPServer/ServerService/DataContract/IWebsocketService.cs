@@ -6,7 +6,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VoIPServer.ServerServiceLibrary
+namespace VoIPServer.ServerServiceLibrary.DataContract
 {
     [ServiceContract(CallbackContract = typeof(IWebsocketCallback), SessionMode = SessionMode.Required)]
     public interface IWebsocketService

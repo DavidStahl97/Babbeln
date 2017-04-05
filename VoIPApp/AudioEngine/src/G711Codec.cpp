@@ -1,10 +1,9 @@
 #include "G711Codec.h"
 
-#define	SIGN_BIT	(0x80)		/* Sign bit for a A-law byte. */
-#define	QUANT_MASK	(0xf)		/* Quantization field mask. */
-#define	NSEGS		(8)		/* Number of A-law segments. */
-#define	SEG_SHIFT	(4)		/* Left shift for segment number. */
-#define	SEG_MASK	(0x70)		/* Segment field mask. */
+#define	SIGN_BIT	(0x80)		// 1000 0000
+#define	QUANT_MASK	(0xf)		// 0000 1111
+#define	SEG_MASK	(0x70)		// 0111 0000
+#define	SEG_SHIFT	(4)			
 
 Sample G711Codec::seg_aend[8] = { 0x1F, 0x3F, 0x7F, 0xFF,
 0x1FF, 0x3FF, 0x7FF, 0xFFF };
@@ -31,20 +30,19 @@ CompressedSample G711Codec::PcmValueToAlaw(Sample pcmValue)
 
 	if (pcmValue >= 0) 
 	{
-		mask = 0xD5;		/* sign (7th) bit = 1 */
+		mask = 0xD5;		//Sign-Bit auf 1
 	}
 	else 
 	{
-		mask = 0x55;		/* sign bit = 0 */
+		mask = 0x55;		//Sign-Bit auf 0
 		pcmValue = -pcmValue - 1;
 	}
 
-	/* Convert the scaled magnitude to segment number. */
+	// suchen des Segmentindexes
 	seg = Search(pcmValue, seg_aend, 8);
 
-	/* Combine the sign, segment, and quantization bits. */
-
-	if (seg >= 8)		/* out of range, return maximum value. */
+	
+	if (seg >= 8)		
 	{
 		return (CompressedSample)(0x7F ^ mask);
 	}

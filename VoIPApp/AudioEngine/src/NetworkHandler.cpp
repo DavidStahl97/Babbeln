@@ -33,7 +33,7 @@ void NetworkHandler::StartAsync(const std::string& targetIP, int port)
 
 void NetworkHandler::StopAsync()
 {
-	stop = true;
+	stop.store(true, std::memory_order_release);
 	m_Socket.close();
 	m_IOService.stop();
 	
@@ -48,7 +48,7 @@ void NetworkHandler::Send()
 	SampleBuffer* pcmBuffer = nullptr;
 
 	//polling is actually better for performance than mutex locks
-	while (!stop)
+	while (!stop.load(std::memory_order_acquire))
 	{
 		if (m_RecordingQueue.pop(pcmBuffer))
 		{
@@ -60,7 +60,7 @@ void NetworkHandler::Send()
 		}
 	}
 
-	if (!stop)
+	if (!stop.load(std::memory_order_acquire))
 	{
 		G711Codec::Encode(*pcmBuffer, m_SendBuffer);
 		m_Pool.push(pcmBuffer);
@@ -74,7 +74,7 @@ void NetworkHandler::Send()
 
 void NetworkHandler::Receive()
 {
-	if (!stop)
+	if (!stop.load(std::memory_order_acquire))
 	{
 		m_Socket.async_receive_from(boost::asio::buffer(m_RecvBuffer, sizeof(CompressedSampleBuffer)), m_Endpoint,
 			boost::bind(&NetworkHandler::HandleReceived, this,

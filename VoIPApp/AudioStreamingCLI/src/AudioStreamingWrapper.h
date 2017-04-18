@@ -24,7 +24,8 @@ namespace CPPWrapper {
 		List<String^>^ GetOutputDevice();
 		void SetInputDevice(String^ inputDevice);
 		void SetOutputDevice(String^ outputDevice);
-		void SetVolumeGain(double gain);
+		void SetInputVolumeGain(double gain);
+		void SetOutputVolumeGain(double gain);
 
 	private:
 		List<String^>^ ConvertStringVectorToList(const std::vector<std::string>& stringVector);

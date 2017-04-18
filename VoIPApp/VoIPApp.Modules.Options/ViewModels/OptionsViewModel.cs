@@ -7,6 +7,7 @@ using CPPWrapper;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Controls;
+using SharedCode.Models;
 
 namespace VoIPApp.Modules.Options.ViewModels
 {
@@ -41,7 +42,11 @@ namespace VoIPApp.Modules.Options.ViewModels
 
             InputDevices = new ObservableCollection<string>(audioStreamingService.GetInputDevice());
             OutputDevices = new ObservableCollection<string>(audioStreamingService.GetOutputDevice());
+
+            StatusStrings = new List<string>(Enum.GetNames(typeof(Status)));
         }
+
+        public List<string> StatusStrings { get; private set; }
 
         /// <summary>
         /// collection of the input devices

@@ -32,7 +32,8 @@ public:
 	const std::vector<std::string> GetOutputDevices() const;
 	void SetInputDevice(const std::string& inputDevice);
 	void SetOutputDevice(const std::string& outputDevice);
-	void SetVolumeGain(double gain);
+	void SetInputVolumeGain(double gain);
+	void SetOutputVolumeGain(double gain);
 
 private:
 	int AudioCallback(const void* inputBuffer, void* outputBuffer,
@@ -42,6 +43,7 @@ private:
 	const std::vector<std::string> GetDevices(DeviceType type) const;
 	PaDeviceIndex GetDeviceIndexByName(const std::string& deviceName);
 	bool IsDeviceValid(const std::string& deviceName, const std::vector<std::string>& deviceNames) const;
+	void AmplifySamples(SampleBuffer& sampleBuffer, double gain);
 
 private:
 	PaStreamParameters	m_InputParamters;
@@ -52,7 +54,8 @@ private:
 	LockfreeQueue&		m_PlayingQueue;
 	SampleBufferPool&   m_Pool;
 
-	std::atomic<double>  m_Gain;
+	std::atomic<double> m_InputGain;
+	std::atomic<double> m_OutputGain;
 
 	friend static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 		unsigned long framesPerBuffer,

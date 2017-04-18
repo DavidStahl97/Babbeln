@@ -11,7 +11,7 @@ static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 }
 
 AudioHandler::AudioHandler(LockfreeQueue& playingQueue, LockfreeQueue& recordingQueue, SampleBufferPool& pool)
-	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool), m_Gain(1.0)
+	: m_PlayingQueue(playingQueue), m_RecordingQueue(recordingQueue), m_Pool(pool), m_InputGain(1.0), m_OutputGain(1.0)
 {
 }
 
@@ -104,6 +104,7 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 			*recordWritePointer++ = *recordReadPointer++;
 		}
 
+		AmplifySamples(*recordBuffer, m_InputGain.load(std::memory_order_acquire));
 		m_RecordingQueue.push(recordBuffer);
 	}
 
@@ -112,6 +113,7 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 	Sample* playWritePointer = (Sample*)outputBuffer;
 	if (m_PlayingQueue.pop(playBuffer))
 	{		
+		AmplifySamples(*playBuffer, m_OutputGain.load(std::memory_order_acquire));
 		Sample* playReadPointer = playBuffer->begin();
 		for (size_t i = 0; i < FRAMES_PER_BUFFER; ++i)
 		{
@@ -129,6 +131,28 @@ int AudioHandler::AudioCallback(const void* inputBuffer, void* outputBuffer,
 	}
 
 	return paContinue;
+}
+
+void AudioHandler::AmplifySamples(SampleBuffer& sampleBuffer, double gain)
+{
+	if (gain > 1.01 || gain < 0.99)
+	{
+		for (SampleBuffer::iterator it = sampleBuffer.begin(); it != sampleBuffer.end(); it++)
+		{
+			double dSample = static_cast<double>(*it) * gain;
+
+			if (dSample > std::numeric_limits<Sample>::max())
+			{
+				dSample = std::numeric_limits<Sample>::max();
+			}
+			else if (dSample < std::numeric_limits<Sample>::min())
+			{
+				dSample = std::numeric_limits<Sample>::min();
+			}
+
+			*it = static_cast<Sample>(dSample);
+		}
+	}
 }
 
 const std::vector<std::string> AudioHandler::GetInputDevices() const
@@ -234,9 +258,14 @@ bool AudioHandler::IsDeviceValid(const std::string& testName, const std::vector<
 	return true;
 }
 
-void AudioHandler::SetVolumeGain(double gain)
+void AudioHandler::SetInputVolumeGain(double gain)
 {
-	m_Gain = gain;
+	m_InputGain.store(gain, std::memory_order_release);
+}
+
+void AudioHandler::SetOutputVolumeGain(double gain)
+{
+	m_OutputGain.store(gain, std::memory_order_release);
 }
 
 

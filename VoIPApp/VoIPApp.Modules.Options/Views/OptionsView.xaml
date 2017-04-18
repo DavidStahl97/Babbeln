@@ -17,13 +17,17 @@
     </UserControl.Resources>
     
     <StackPanel Margin="25">
+        
+        <!--Audio section-->
         <Expander Header="Audio"
                   Template="{StaticResource StretchExpander}"
                   Margin="0,0,0,15">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -55,16 +59,41 @@
                 <ComboBox ItemsSource="{Binding Path=OutputDevices}"
                           Style="{StaticResource ComboBoxFlatStyle}"
                           Grid.Column="1"
-                          Grid.Row="1">
+                          Grid.Row="1"
+                          Margin="0,0,0,10">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectionChanged">
                             <common:InteractiveCommand Command="{Binding OutputDeviceSelectionChanged}"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </ComboBox>
+
+
+                <TextBlock Text="Aufnahmelautstärke"
+                           Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource NormalText}"
+                           Margin="0,0,0,10"/>
+
+                <Slider Grid.Column="1"
+                        Grid.Row="2"
+                        Style="{StaticResource DecibelSlider}"
+                        Margin="0,0,0,10"/>
+
+                <TextBlock Text="Wiedergabelautstärke"
+                           Grid.Column="0"
+                           Grid.Row="3"
+                           Style="{StaticResource NormalText}"/>
+
+                <Slider Grid.Column="1"
+                        Grid.Row="3"
+                        Style="{StaticResource DecibelSlider}"/>
+                
             </Grid>
         </Expander>
-
+        <!--End of Audio section-->
+        
+        <!--Profile section-->
         <Expander Header="Profile"
                   Template="{StaticResource StretchExpander}">
             <Grid>
@@ -87,5 +116,7 @@
                           Grid.Row="0"/>
             </Grid>
         </Expander>
+        <!--End of profile section-->
+        
     </StackPanel>
 </UserControl>

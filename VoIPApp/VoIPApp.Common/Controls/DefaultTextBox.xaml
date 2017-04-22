@@ -9,7 +9,8 @@
             <TextBox.Template>
                 <ControlTemplate TargetType="TextBox">
                     <Grid>
-                        <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"                  BorderThickness="{Binding Path=BorderThickness}" 
+                        <TextBox Text="{Binding Text, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                 BorderThickness="{Binding Path=BorderThickness}" 
                                  Foreground="Gray" 
                                  Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"
                                  Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"

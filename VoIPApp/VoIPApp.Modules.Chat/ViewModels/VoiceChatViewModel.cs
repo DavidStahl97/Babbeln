@@ -76,18 +76,22 @@ namespace VoIPApp.Modules.Chat.ViewModels
         {
             if (!canAccept)
             {
-                await serverServiceProxy.ServerService.CallAsync(CallPartner._id);
+                //await serverServiceProxy.ServerService.CallAsync(CallPartner._id);
+                //TO-DO remove
+                startedAudioStreaming = true;
+                audioStreamingService.StartAsync("localhost", 10000);
             }
         }
 
         private async Task OnCancelCall(object obj)
         {
+            //TO-DO uncomment
             if (startedAudioStreaming)
             {
                 audioStreamingService.StopAsync();
                 startedAudioStreaming = false;
             }
-            await serverServiceProxy.ServerService.CancelCallAsync(CallPartner._id);
+            //await serverServiceProxy.ServerService.CancelCallAsync(CallPartner._id);
 
             this.FinishInteraction();
         }
@@ -105,6 +109,22 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public ICommand AcceptCallCommand
         {
             get { return this.acceptCallCommand; }
+        }
+
+        public double RecorderDecibelValue
+        {
+            set
+            {
+                audioStreamingService.SetInputVolumeGain(DecibelToLinear(value));
+            }
+        }
+
+        public double PlayerDecibelValue
+        {
+            set
+            {
+                audioStreamingService.SetOutputVolumeGain(DecibelToLinear(value));
+            }
         }
 
         private bool canAccept;
@@ -134,5 +154,10 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public bool IncomingCall { get; set; }
 
         public User CallPartner { get; set; }
+
+        private double DecibelToLinear(double db)
+        {
+            return Math.Pow(10.0, db / 10);
+        }
     }
 }

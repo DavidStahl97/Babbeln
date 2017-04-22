@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="VoIPApp.Modules.Chat.Views.VoiceChatView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:VoIPApp.Common.Controls;assembly=VoIPApp.Common"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              MinHeight="300" MinWidth="300" MaxHeight="600" MaxWidth="800" >
@@ -48,7 +49,7 @@
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="3*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Image Source="{Binding CallPartner.Icon}"
@@ -61,18 +62,52 @@
                        Style="{StaticResource TextBlockStyle}"/>
         </Grid>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="25">
-            <Button Content="&#xE137;" 
-                        Style="{StaticResource IconButtonStyle}" 
-                        Command="{Binding CancelCallCommand}"
-                        FontSize="32"
-                        Background="White"/>
-            <StackPanel Style="{StaticResource AcceptStackPanelStyle}">
-                <Button Content="&#xE13A;" 
-                        Style="{StaticResource IconButtonStyle}" 
-                        Command="{Binding AcceptCallCommand}"
-                        FontSize="32"
-                        Background="White"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.Row="1" Margin="25">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Aufnahmelautstärke"
+                               Grid.Column="0"
+                               Grid.Row="0"
+                               Style="{StaticResource NormalText}"
+                               VerticalAlignment="Center"/>
+                <controls:DecibelSlider Grid.Column="1"
+                                        Grid.Row="0"
+                                        Margin="0,0,0,15"
+                                        DecibelValue="{Binding RecorderDecibelValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                <TextBlock Text="Wiedergabelautstärke"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               Style="{StaticResource NormalText}"
+                               VerticalAlignment="Center"/>
+                <controls:DecibelSlider Grid.Column="1"
+                                        Grid.Row="1"
+                                        DecibelValue="{Binding PlayerDecibelValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Content="&#xE137;" 
+                            Style="{StaticResource IconButtonStyle}" 
+                            Command="{Binding CancelCallCommand}"
+                            FontSize="32"
+                            Background="White"/>
+                <StackPanel Style="{StaticResource AcceptStackPanelStyle}">
+                    <Button Content="&#xE13A;" 
+                            Style="{StaticResource IconButtonStyle}" 
+                            Command="{Binding AcceptCallCommand}"
+                            FontSize="32"
+                            Background="White"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -58,6 +58,22 @@ namespace VoIPApp.Modules.Options.ViewModels
         /// </summary>
         public ObservableCollection<string> OutputDevices { get; }
 
+        public double RecorderDecibelValue
+        {
+            set
+            {
+                audioStreamingService.SetInputVolumeGain(DecibelToLinear(value));
+            }
+        }
+
+        public double PlayerDecibelValue
+        {
+            set
+            {
+                audioStreamingService.SetOutputVolumeGain(DecibelToLinear(value));
+            }
+        }
+
         /// <summary>
         /// property for <see cref="inputDeviceSelectionChanged"/>
         /// </summary>
@@ -109,6 +125,11 @@ namespace VoIPApp.Modules.Options.ViewModels
         {
             ComboBox comboBox = arg.Source as ComboBox;
             return comboBox.SelectedItem as string;
+        }
+
+        private double DecibelToLinear(double db)
+        {
+            return Math.Pow(10.0, db / 10);
         }
     }
 }

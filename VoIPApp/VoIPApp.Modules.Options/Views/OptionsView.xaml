@@ -6,6 +6,7 @@
              xmlns:prism="http://prismlibrary.com/"             
              prism:ViewModelLocator.AutoWireViewModel="True"
              xmlns:local="clr-namespace:VoIPApp.Modules.Options.Views"
+             xmlns:controls="clr-namespace:VoIPApp.Common.Controls;assembly=VoIPApp.Common"
              x:Name="ParentView">
 
     <UserControl.Resources>
@@ -73,22 +74,22 @@
                            Grid.Column="0"
                            Grid.Row="2"
                            Style="{StaticResource NormalText}"
-                           Margin="0,0,0,10"/>
+                           VerticalAlignment="Center"/>
+                <controls:DecibelSlider Grid.Column="1"
+                                        Grid.Row="2"
+                                        Margin="0,0,0,15"
+                                        DecibelValue="{Binding RecorderDecibelValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Slider Grid.Column="1"
-                        Grid.Row="2"
-                        Style="{StaticResource DecibelSlider}"
-                        Margin="0,0,0,10"/>
-
+                
                 <TextBlock Text="Wiedergabelautstärke"
                            Grid.Column="0"
                            Grid.Row="3"
-                           Style="{StaticResource NormalText}"/>
+                           Style="{StaticResource NormalText}"
+                           VerticalAlignment="Center"/>
+                <controls:DecibelSlider Grid.Column="1"
+                                        Grid.Row="3"
+                                        DecibelValue="{Binding PlayerDecibelValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <Slider Grid.Column="1"
-                        Grid.Row="3"
-                        Style="{StaticResource DecibelSlider}"/>
-                
             </Grid>
         </Expander>
         <!--End of Audio section-->

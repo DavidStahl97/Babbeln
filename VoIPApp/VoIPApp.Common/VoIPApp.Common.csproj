@@ -96,6 +96,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DecibelSlider.xaml.cs">
+      <DependentUpon>DecibelSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DefaultTextBox.xaml.cs">
       <DependentUpon>DefaultTextBox.xaml</DependentUpon>
     </Compile>
@@ -138,15 +141,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\DecibelSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DefaultTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\HamburgerMenuItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\CustomSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

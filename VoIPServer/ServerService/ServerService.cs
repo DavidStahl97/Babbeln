@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.Services;
 using Newtonsoft.Json.Linq;
 using VoIPServer.ServerServiceLibrary.DataContract;
+using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary
 {
@@ -16,9 +17,10 @@ namespace VoIPServer.ServerServiceLibrary
     [ErrorHandlerExtension]
     public class ServerService : IServerService, IWebsocketService
     {
-        private const string messageType = "message";
-        private const string requestType = "request";
-        private const string acceptType = "accept";
+        private const string Message = "message";
+        private const string FriendshipRequest = "request";
+        private const string FriendshipAccept = "accept";
+        private const string Login = "login";
 
         private static readonly DataBaseService dataBaseService = new DataBaseService();
         private readonly LoginService loginService;
@@ -26,7 +28,6 @@ namespace VoIPServer.ServerServiceLibrary
         private readonly ChatService chatService;
         private static int instanceCount = 0;
 
-        private readonly IServerCallBack currentCallback;
         private int connectionId;
 
         static ServerService()
@@ -40,7 +41,6 @@ namespace VoIPServer.ServerServiceLibrary
             instanceCount++;
             Console.WriteLine("New Server Instance was Created with id: " + instanceCount);
 
-            currentCallback = OperationContext.Current.GetCallbackChannel<IServerCallBack>();
             loginService = new LoginService(dataBaseService);
             chatService = new ChatService(loginService, dataBaseService);
             friendService = new FriendService(dataBaseService, loginService);
@@ -48,12 +48,7 @@ namespace VoIPServer.ServerServiceLibrary
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip)
         {
-            ICommunicationObject obj = (ICommunicationObject)currentCallback;
-            obj.Closed += async (s, e) =>
-            {
-                await loginService.Unsubscribe();
-            };
-
+            IClientCallback currentCallback = CreateCallback();
             return await loginService.Subscribe(userName, password, ip, currentCallback);
         } 
 
@@ -118,12 +113,12 @@ namespace VoIPServer.ServerServiceLibrary
                 await friendService.ReplyToFriendRequest(friendId, accept);
             }
         }
-
-        //TODO: implement sendmessagetoserver correctly
+        
         public async Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
         {
             if(msg.IsEmpty)
             {
+                Console.WriteLine("received empty message");
                 return;
             }
 
@@ -133,24 +128,57 @@ namespace VoIPServer.ServerServiceLibrary
             JObject jsonMessage = JObject.Parse(clientMessage);
             string type = jsonMessage["type"].ToString();
 
-            switch(type)
+            JToken data = jsonMessage["data"];
+
+            if(type.Equals(Login))
             {
-                case messageType:
-                    SharedCode.Models.Message textMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedCode.Models.Message>(jsonMessage["data"].ToString());
-                    await chatService.SendMessage(textMessage);
-                    break;
-
-                case requestType:
-
-                    break;
-
-                case acceptType:
-                    break;
-
-                default:
-                    Console.WriteLine(String.Format("{0} type is not supported", type));
-                    break;
+                IClientCallback webCallback = CreateCallback();
+                await loginService.Subscribe(data, webCallback);
             }
+            else if(loginService.LoggedIn)
+            {
+                switch (type)
+                {
+                    case Message:
+                        await chatService.SendMessage(data);
+                        break;
+
+                    case FriendshipRequest:
+                        friendService.AddFriend(data);
+                        break;
+
+                    case FriendshipAccept:
+                        //TO-DO implement Friendsipaccept
+                        break;
+
+                    default:
+                        Console.WriteLine(String.Format("{0} type is not supported", type));
+                        break;
+                }
+            }
+        }
+
+        private IClientCallback CreateCallback()
+        {
+            IClientCallback currentCallback = ClientCallback.CreateClientCallback();
+
+            ICommunicationObject obj;
+            IServerCallback sc = currentCallback.ServerCallback;
+            if (sc != null)
+            {
+                obj = (ICommunicationObject)sc;
+            }
+            else
+            {
+                obj = (ICommunicationObject)currentCallback.WebsocketCallback;
+            }
+
+            obj.Closed += async (s, e) =>
+            {
+                await loginService.Unsubscribe();
+            };
+
+            return currentCallback;
         }
     }
 }

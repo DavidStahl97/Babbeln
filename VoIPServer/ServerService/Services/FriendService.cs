@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Newtonsoft.Json.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -8,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VoIPServer.ServerServiceLibrary.DataContract;
+using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
@@ -20,6 +23,12 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             this.dataBaseService = dataBaseService;
             this.loginService = loginService;
+        }
+
+        public void AddFriend(JToken data)
+        {
+            ObjectId id = ObjectId.Parse(data["to"].ToString());
+            SendRequest(id);
         }
 
         public async Task<User> AddFriendByName(string friendName)
@@ -43,16 +52,21 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
                 friend.Friendship = friendship;
 
-                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friend._id);
-                if (friendCallback != null)
-                {
-                    friendCallback.OnFriendshipRequested(loginService.UserId);
-                }
+                SendRequest(friend._id);
 
                 return friend;
             }
 
             return null;
+        }
+
+        private void SendRequest(ObjectId friendId)
+        {
+            IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+            if (friendCallback != null)
+            {
+                friendCallback.OnFriendshipRequested(loginService.UserId, loginService.UserId);
+            }
         }
 
         public async Task ReplyToFriendRequest(ObjectId friendId, bool accept)
@@ -70,7 +84,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 await dataBaseService.FriendshipCollection.DeleteOneAsync(filter);
             }
 
-            IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
+            IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if(friendCallback != null)
             {
                 friendCallback.OnFriendshipRequestAnswered(loginService.UserId, accept);

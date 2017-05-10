@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace SharedCode.Models
     /// elements of a message
     /// </summary>
     [DataContract]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Message
     {
         /// <summary>
@@ -20,6 +22,7 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         [BsonElement("text")]
+        [JsonProperty("message")]
         public string Text { get; set; }
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         [BsonElement("receiver")]
+        [JsonProperty("to")]
         public ObjectId Receiver { get; set; }
 
         /// <summary>
@@ -34,10 +38,12 @@ namespace SharedCode.Models
         /// </summary>
         [DataMember]
         [BsonElement("date")]
+        [JsonProperty("date")]
         public DateTime Date { get; set; }
 
         [DataMember]
         [BsonElement("sender")]
+        [JsonProperty("from")]
         public ObjectId Sender { get; set; }
 
         [BsonElement("_id")]

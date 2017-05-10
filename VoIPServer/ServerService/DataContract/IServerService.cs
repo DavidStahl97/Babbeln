@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace VoIPServer.ServerServiceLibrary.DataContract
 {
-    [ServiceContract(CallbackContract = typeof(IServerCallBack), SessionMode = SessionMode.Required)]
+    [ServiceContract(CallbackContract = typeof(IServerCallback), SessionMode = SessionMode.Required)]
     public interface IServerService
     {
         [OperationContract(IsOneWay = true)]

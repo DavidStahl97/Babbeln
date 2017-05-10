@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Newtonsoft.Json.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -11,13 +12,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary;
+using VoIPServer.ServerServiceLibrary.DataContract;
 using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
     public class LoginService
     {
-        //use threadsafe Dictionary because its used in multiple threads. note the static
+        //use threadsafe Dictionary because its used in multiple threads. note static
         private static readonly ConcurrentDictionary<ObjectId, IClientCallback> subscribers = new ConcurrentDictionary<ObjectId, IClientCallback>();
 
         private readonly DataBaseService dataBaseService;
@@ -28,6 +30,14 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             this.userId = ObjectId.Empty;
             this.dataBaseService = dataBaseService;
+        }
+
+        public async Task Subscribe(JToken data, IClientCallback callbackChannel)
+        {
+            string username = data[nameof(username)].ToString();
+            string password = data[nameof(password)].ToString();
+
+            await Subscribe(username, password, string.Empty, callbackChannel);
         }
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip, IClientCallback callbackChannel)

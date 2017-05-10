@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -7,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary;
+using VoIPServer.ServerServiceLibrary.DataContract;
+using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
@@ -21,13 +24,19 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.dataBaseService = dataBaseService;
         }
 
+        public async Task SendMessage(JToken data)
+        {
+            SharedCode.Models.Message textMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedCode.Models.Message>(data.ToString());
+            await SendMessage(textMessage);
+        }
+
         public async Task SendMessage(Message msg)
         {
             if (loginService.LoggedIn)
             {
                 await dataBaseService.MessageCollection.InsertOneAsync(msg);
 
-                IServerCallBack receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
+                IClientCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
                 if (receiverCallback != null)
                 {
                     receiverCallback.OnMessageReceived(msg);
@@ -39,7 +48,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallBack receiverCallback = loginService.GetCallbackChannelByID(receiver);
+                IClientCallback receiverCallback = loginService.GetCallbackChannelByID(receiver);
                 if (receiver != null)
                 {
                     receiverCallback.OnCall(loginService.UserId);
@@ -51,7 +60,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
+                IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallCancelled(loginService.UserId);
@@ -64,7 +73,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallBack friendCallback = loginService.GetCallbackChannelByID(friendId);
+                IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallAccepted(loginService.UserId);

@@ -5,23 +5,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VoIPServer.ServerServiceLibrary.DataContract;
 
 namespace VoIPServer.ServerServiceLibrary.Model
 {
     public interface IClientCallback
     {
-        void OnMessageReceived(Message msg);
-
         void OnCall(ObjectId friendId);
 
         void OnCallAccepted(ObjectId friendId);
 
         void OnCallCancelled(ObjectId friendId);
 
+        void OnFriendshipRequestAnswered(ObjectId friendId, bool accept);
+
+        void OnFriendshipRequested(ObjectId friendId, ObjectId userId);
+
         void OnFriendStatusChanged(ObjectId friendId, Status status);
 
-        void OnFriendshipRequested(ObjectId friendId);
+        void OnMessageReceived(Message msg);
 
-        void OnFriendshipRequestAnswered(ObjectId friendId, bool accept);
+        IServerCallback ServerCallback { get; }
+
+        IWebsocketCallback WebsocketCallback { get; }
     }
 }

@@ -50,7 +50,7 @@ namespace VoIPApp.Modules.Chat.Views
             ChatView chatView = currentView as ChatView;
             if(chatView == null)
             {
-                this.regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.chatViewUri);
+                this.regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.ChatViewUri);
             }
         }
     }

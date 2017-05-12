@@ -77,14 +77,14 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.windowLoadedCommand = DelegateCommand<object>.FromAsyncHandler(this.OnWindowLoaded);
             this.searchTextBoxChanged = new DelegateCommand<object>(this.OnSearchTextBoxChanged);
             this.messageTextBoxChanged = new DelegateCommand<object>(this.OnMessageTextBoxChanged);
-            this.addFriendCommand = new DelegateCommand<object>(this.OnAddFriend);
+            this.addFriendCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAddFriend);
             this.acceptFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptFriendship);
             this.declineFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnDeclineFriendship);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
 
             FriendsCollectionView.CurrentChanged += SelectedFriendChanged;
 
-            this.userId = container.Resolve<ServerServiceProxy>().UserId;
+            this.userId = container.Resolve<ServerServiceProxy>().UserInfo.UserID;
 
             eventAggregator.GetEvent<MessageEvent>().Subscribe(OnMessageReceived, ThreadOption.UIThread, true);
             eventAggregator.GetEvent<CallEvent>().Subscribe(OnIncomingCall, ThreadOption.UIThread, true);
@@ -179,10 +179,11 @@ namespace VoIPApp.Modules.Chat.ViewModels
             }
         }
 
-        private void OnAddFriend(object obj)
+        private async Task OnAddFriend(object obj)
         {
             string friendName = obj as string;
-            friendsService.SendFriendRequest(friendName);
+            bool successfull = await friendsService.SendFriendRequest(friendName);
+            FriendsCollectionView.MoveCurrentToLast();
         }
 
 

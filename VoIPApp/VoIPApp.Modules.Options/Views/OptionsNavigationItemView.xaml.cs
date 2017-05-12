@@ -50,7 +50,7 @@ namespace VoIPApp.Modules.Options.Views
             OptionsNavigationItemView optionsView = currentView as OptionsNavigationItemView;
             if(optionsView == null)
             {
-                regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.optionViewUri);
+                regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.OptionViewUri);
             }
         }
     }

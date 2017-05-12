@@ -14,6 +14,7 @@ using System.Net.NetworkInformation;
 using System.Net;
 using System.Net.Sockets;
 using Prism.Events;
+using VoIPApp.Common.Models;
 
 namespace VoIPApp.Common.Services
 {
@@ -23,19 +24,12 @@ namespace VoIPApp.Common.Services
     {
         private IServerService serverServiceClient;
         private readonly EventAggregator eventAggregator;
-        private ObjectId userId;
-        private string ipAdress;
+        private AccountDetails accountDetails;
 
         public ServerServiceProxy(EventAggregator eventAggregator)
         {
-            this.userId = ObjectId.Empty;
-            this.ipAdress = string.Empty;
+            this.accountDetails = new AccountDetails();
             this.eventAggregator = eventAggregator;
-        }
-
-        public ObjectId UserId
-        {
-            get { return this.userId; }
         }
 
         public IServerService ServerService
@@ -45,8 +39,8 @@ namespace VoIPApp.Common.Services
 
         public bool Connect()
         {
-            ipAdress = GetLocalIPAdress();
-            if (string.IsNullOrEmpty(ipAdress))
+            accountDetails.IP = GetLocalIPAdress();
+            if (string.IsNullOrEmpty(accountDetails.IP))
             {
                 return false;
             }
@@ -65,19 +59,20 @@ namespace VoIPApp.Common.Services
 
         public async Task<bool> LogIn(string userName, string password)
         {
-            userId = await serverServiceClient.SubscribeAsync(userName, password, ipAdress);
-            if(userId.Equals(ObjectId.Empty))
+            accountDetails.UserID = await serverServiceClient.SubscribeAsync(userName, password, accountDetails.IP);
+            if(accountDetails.UserID.Equals(ObjectId.Empty))
             {
                 return false;
             }
 
-            Console.WriteLine("userId: " + userId.ToString());
+            Console.WriteLine("userId: " + accountDetails.UserID.ToString());
+            UserInfo.Username = userName;
             return true;
         }
 
         public async Task<string> Register(string userName, string password, string email)
         {
-            return await serverServiceClient.RegisterAsync(userName, password, email, ipAdress);
+            return await serverServiceClient.RegisterAsync(userName, password, email, accountDetails.IP);
         }
 
         public void OnCall(ObjectId friendId)
@@ -126,6 +121,11 @@ namespace VoIPApp.Common.Services
             }
 
             return localIP;
+        }
+
+        public AccountDetails UserInfo
+        {
+            get { return accountDetails; }
         }
     }
 }

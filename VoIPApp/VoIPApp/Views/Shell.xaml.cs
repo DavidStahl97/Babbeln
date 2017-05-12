@@ -30,7 +30,7 @@ namespace VoIPApp.Views
                 {
                     if (e.ModuleInfo.ModuleName.Equals(ModuleNames.ChatModuleName))
                     {
-                        regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.chatViewUri,
+                        regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.ChatViewUri,
                             (NavigationResult nr) => 
                             {
                                 var error = nr.Error;

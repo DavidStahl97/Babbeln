@@ -44,6 +44,7 @@ private:
 	PaDeviceIndex GetDeviceIndexByName(const std::string& deviceName);
 	bool IsDeviceValid(const std::string& deviceName, const std::vector<std::string>& deviceNames) const;
 	void AmplifySamples(SampleBuffer& sampleBuffer, double gain);
+	double DezibelToLinear(double db);
 
 private:
 	PaStreamParameters	m_InputParamters;

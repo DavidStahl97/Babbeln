@@ -41,27 +41,6 @@ namespace SharedCode.Services
             return (await query.AnyAsync()) ? await query.FirstAsync() : ObjectId.Empty;
         }
 
-        public async Task<ObjectId> GetUserId(string userName, string password)
-
-        {
-            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
-            FilterDefinition<BsonDocument> filter = builder.Eq("username", userName) & builder.Eq("password", password);
-
-            using (IAsyncCursor<BsonDocument> cursor = await UserBsonCollection.FindAsync(filter))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    IEnumerable<BsonDocument> batch = cursor.Current;
-
-                    foreach (BsonDocument document in batch)
-                    {
-                        return document["_id"].AsObjectId;
-                    }
-                }
-            }
-            return ObjectId.Empty;
-        }
-
         public async Task<List<User>> GetFriendList(ObjectId userId)
         {
             List<ObjectId> friendIds = await GetFriendIdList(userId);

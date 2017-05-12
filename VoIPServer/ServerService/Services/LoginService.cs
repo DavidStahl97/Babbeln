@@ -1,26 +1,23 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using Newtonsoft.Json.Linq;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel;
-using System.Text;
 using System.Threading.Tasks;
-using VoIPServer.ServerServiceLibrary;
 using VoIPServer.ServerServiceLibrary.DataContract;
-using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
     public class LoginService
     {
         //use threadsafe Dictionary because its used in multiple threads. note static
-        private static readonly ConcurrentDictionary<ObjectId, IClientCallback> subscribers = new ConcurrentDictionary<ObjectId, IClientCallback>();
+        private static readonly ConcurrentDictionary<ObjectId, IServerCallback> subscribers = new ConcurrentDictionary<ObjectId, IServerCallback>();
+
+        private static IWebsocketCallback websocketCallback = null;
 
         private readonly DataBaseService dataBaseService;
 
@@ -32,17 +29,9 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.dataBaseService = dataBaseService;
         }
 
-        public async Task Subscribe(JToken data, IClientCallback callbackChannel)
+        public async Task<ObjectId> Subscribe(string userName, string password, string ip, IServerCallback callbackChannel)
         {
-            string username = data[nameof(username)].ToString();
-            string password = data[nameof(password)].ToString();
-
-            await Subscribe(username, password, string.Empty, callbackChannel);
-        }
-
-        public async Task<ObjectId> Subscribe(string userName, string password, string ip, IClientCallback callbackChannel)
-        {
-            userId = await dataBaseService.GetUserId(userName, password);
+            userId = await GetUserId(userName, password);
 
             if (!userId.Equals(ObjectId.Empty))
             {
@@ -74,7 +63,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (!userId.Equals(ObjectId.Empty) && subscribers.ContainsKey(userId))
             {
-                IClientCallback cb;
+                IServerCallback cb;
                 subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
@@ -106,10 +95,12 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 return "E-Mail schonn vergeben";
             }
 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
             BsonDocument doc = new BsonDocument
             {
                 {"username", userName},
-                {"password", password },
+                {"password", hashedPassword },
                 {"email", email },
                 {"ip", ip }
             };
@@ -119,9 +110,9 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return string.Empty;
         }
 
-        public IClientCallback GetCallbackChannelByID(ObjectId id)
+        public IServerCallback GetCallbackChannelByID(ObjectId id)
         {
-            IClientCallback callbackChannel = null;
+            IServerCallback callbackChannel = null;
             subscribers.TryGetValue(id, out callbackChannel);
             return callbackChannel;
         }
@@ -131,13 +122,39 @@ namespace VoIPServer.ServerServiceLibrary.Services
             List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
             foreach (ObjectId friendId in friendIds)
             {
-                IClientCallback callback = GetCallbackChannelByID(friendId);
+                IServerCallback callback = GetCallbackChannelByID(friendId);
                 if (callback != null)
                 {
                     callback.OnFriendStatusChanged(userId, status);
                 }
             }
         }
+
+        public async Task<ObjectId> GetUserId(string userName, string password)
+        {
+            FilterDefinitionBuilder<BsonDocument> builder = Builders<BsonDocument>.Filter;
+            FilterDefinition<BsonDocument> filter = builder.Eq("username", userName);
+
+            using (IAsyncCursor<BsonDocument> cursor = await dataBaseService.UserBsonCollection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    IEnumerable<BsonDocument> batch = cursor.Current;
+
+                    foreach (BsonDocument document in batch)
+                    {
+                        string hashedPassword = document["password"].AsString;
+                        if(BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                        {
+                            return document["_id"].AsObjectId;
+                        }
+                    }
+                }
+            }
+            return ObjectId.Empty;
+        }
+
+        public static IWebsocketCallback WebsocketCallback { get; set; }
 
         public bool LoggedIn
         {

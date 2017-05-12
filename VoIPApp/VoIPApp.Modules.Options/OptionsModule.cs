@@ -40,7 +40,7 @@ namespace VoIPApp.Modules.Options
         /// </summary>
         public void Initialize()
         {
-            this.container.RegisterType<object, OptionsView>(NavigationURIs.optionViewUri.OriginalString);
+            this.container.RegisterType<object, OptionsView>(NavigationURIs.OptionViewUri.OriginalString);
         }
     }
 }

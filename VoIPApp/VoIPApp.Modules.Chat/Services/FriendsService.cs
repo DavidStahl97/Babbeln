@@ -34,7 +34,7 @@ namespace VoIPApp.Modules.Chat.Services
             Friends = new ObservableCollection<User>();
 
             this.serverService = serverService;
-            this.userId = serverService.UserId;
+            this.userId = serverService.UserInfo.UserID;
 
             eventAggregator.GetEvent<FriendshipRequestedEvent>().Subscribe(this.OnFriendshipRequested, ThreadOption.BackgroundThread);
             eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Subscribe(this.OnFriendshipAnswered);
@@ -85,6 +85,7 @@ namespace VoIPApp.Modules.Chat.Services
                 friend.Friendship = (from friendship in dataBaseService.FriendshipCollection.AsQueryable()
                                      where friendship.Receiver.Equals(userId) && friendship.Requester.Equals(friendId)
                                      select friendship).First();
+                friend.Icon = "pack://application:,,,/Assets/profile_high.jpg";
 
                 Application.Current.Dispatcher.Invoke(() =>
                 {
@@ -113,6 +114,7 @@ namespace VoIPApp.Modules.Chat.Services
                 User f = await serverService.ServerService.SendFriendRequestAsync(friendName);
                 if(f != null)
                 {
+                    f.Icon = "pack://application:,,,/Assets/profile_high.jpg";
                     Friends.Add(f);
                     return true;
                 }

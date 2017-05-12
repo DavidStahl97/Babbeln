@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.DataContract;
-using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
@@ -62,10 +61,10 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         private void SendRequest(ObjectId friendId)
         {
-            IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+            IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if (friendCallback != null)
             {
-                friendCallback.OnFriendshipRequested(loginService.UserId, loginService.UserId);
+                friendCallback.OnFriendshipRequested(loginService.UserId);
             }
         }
 
@@ -84,7 +83,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 await dataBaseService.FriendshipCollection.DeleteOneAsync(filter);
             }
 
-            IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+            IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if(friendCallback != null)
             {
                 friendCallback.OnFriendshipRequestAnswered(loginService.UserId, accept);

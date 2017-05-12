@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary;
 using VoIPServer.ServerServiceLibrary.DataContract;
-using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary.Services
 {
@@ -36,7 +35,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             {
                 await dataBaseService.MessageCollection.InsertOneAsync(msg);
 
-                IClientCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
+                IServerCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
                 if (receiverCallback != null)
                 {
                     receiverCallback.OnMessageReceived(msg);
@@ -48,7 +47,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IClientCallback receiverCallback = loginService.GetCallbackChannelByID(receiver);
+                IServerCallback receiverCallback = loginService.GetCallbackChannelByID(receiver);
                 if (receiver != null)
                 {
                     receiverCallback.OnCall(loginService.UserId);
@@ -60,7 +59,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+                IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallCancelled(loginService.UserId);
@@ -73,7 +72,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+                IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallAccepted(loginService.UserId);

@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="VoIPApp.Modules.Profile.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/VoIPApp.Common;component/Themes/generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top"
+                    Orientation="Horizontal"
+                    Margin="15,10,0,10">
+            <Button Style="{StaticResource IconButtonStyle}"
+                    Content="&#xE00E;"
+                    Background="White"
+                    Command="{Binding ElementName=Browser, Path=BackCommand}"/>
+            <Button Style="{StaticResource IconButtonStyle}"
+                    Content="&#xE00F;"
+                    Background="White"
+                    Command="{Binding ElementName=Browser, Path=ForwardCommand}"/>
+            <TextBlock Text="{Binding ElementName=Browser, Path=Address}"
+                       Style="{StaticResource HeaderText}"/>
+        </StackPanel>
+        <cefSharp:ChromiumWebBrowser Address="http:\\google.de"
+                                     Name="Browser"/>
+    </DockPanel>
+</UserControl>

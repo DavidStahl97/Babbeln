@@ -61,7 +61,7 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task PopulateMessageDictionary()
         {
-            ObjectId userId = serverServiceProxy.UserId;
+            ObjectId userId = serverServiceProxy.UserInfo.UserID;
 
             IMongoQueryable<Message> query = from message in dataBaseService.MessageCollection.AsQueryable()
                     where message.Sender.Equals(userId) || message.Receiver.Equals(userId)

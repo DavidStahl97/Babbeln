@@ -20,10 +20,6 @@ namespace VoIPApp.Modules.Chat
     public class ChatModule : IModule
     {
         /// <summary>
-        /// <see cref="IRegionManager"/> of the application
-        /// </summary>
-        private readonly IRegionManager regionManager;
-        /// <summary>
         /// <see cref="IUnityContainer"/> of the application
         /// </summary>
         private readonly IUnityContainer container;
@@ -44,12 +40,11 @@ namespace VoIPApp.Modules.Chat
         /// <param name="audioStreamer">injected by the <see cref="IUnityContainer"/>, stored in <see cref="audioStreamer"/></param>
         public ChatModule(IRegionManager regionManager, IUnityContainer container, ModuleManager moduleManager, AudioStreamingService audioStreamer, ServerServiceProxy serverServiceProxy)
         {
-            this.regionManager = regionManager;
             this.container = container;
 
             this.audioStreamer = audioStreamer;
 
-            this.regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
+            regionManager.RegisterViewWithRegion(RegionNames.MainNavigationRegion, typeof(ChatNavigationItemView));
 
             this.audioInitWorker = new BackgroundWorker();
             audioInitWorker.DoWork += audioInitWorker_DoWork;
@@ -69,7 +64,7 @@ namespace VoIPApp.Modules.Chat
             this.container.RegisterType<FriendsService>();
             this.container.RegisterType<MessageService>();
             this.container.RegisterType<VoiceChatViewModel>();
-            this.container.RegisterType<object, ChatView>(NavigationURIs.chatViewUri.OriginalString);
+            this.container.RegisterType<object, ChatView>(NavigationURIs.ChatViewUri.OriginalString);
         }
 
         /// <summary>

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.Services;
 using Newtonsoft.Json.Linq;
 using VoIPServer.ServerServiceLibrary.DataContract;
-using VoIPServer.ServerServiceLibrary.Model;
 
 namespace VoIPServer.ServerServiceLibrary
 {
@@ -44,12 +43,27 @@ namespace VoIPServer.ServerServiceLibrary
             loginService = new LoginService(dataBaseService);
             chatService = new ChatService(loginService, dataBaseService);
             friendService = new FriendService(dataBaseService, loginService);
+
+            string contractName = OperationContext.Current.EndpointDispatcher.ContractName;
+            if(contractName.Equals(nameof(IWebsocketCallback)))
+            {
+                IWebsocketCallback websocketCallback = OperationContext.Current.GetCallbackChannel<IWebsocketCallback>();
+                LoginService.WebsocketCallback = websocketCallback;
+                Console.WriteLine("new websocket connection");
+            }
         }
 
         public async Task<ObjectId> Subscribe(string userName, string password, string ip)
         {
-            IClientCallback currentCallback = CreateCallback();
-            return await loginService.Subscribe(userName, password, ip, currentCallback);
+            IServerCallback desktopClientCallback = OperationContext.Current.GetCallbackChannel<IServerCallback>();
+
+            ICommunicationObject obj = (ICommunicationObject)desktopClientCallback;
+            obj.Closed += async (s, e) =>
+            {
+                await loginService.Unsubscribe();
+            };
+
+            return await loginService.Subscribe(userName, password, ip, desktopClientCallback);
         } 
 
         public async Task Unsubscribe()
@@ -130,55 +144,24 @@ namespace VoIPServer.ServerServiceLibrary
 
             JToken data = jsonMessage["data"];
 
-            if(type.Equals(Login))
+            switch (type)
             {
-                IClientCallback webCallback = CreateCallback();
-                await loginService.Subscribe(data, webCallback);
-            }
-            else if(loginService.LoggedIn)
-            {
-                switch (type)
-                {
-                    case Message:
-                        await chatService.SendMessage(data);
-                        break;
+                case Message:
+                    await chatService.SendMessage(data);
+                    break;
 
-                    case FriendshipRequest:
-                        friendService.AddFriend(data);
-                        break;
+                case FriendshipRequest:
+                    friendService.AddFriend(data);
+                    break;
 
-                    case FriendshipAccept:
-                        //TO-DO implement Friendsipaccept
-                        break;
+                case FriendshipAccept:
+                    //TO-DO implement Friendsipaccept
+                    break;
 
-                    default:
-                        Console.WriteLine(String.Format("{0} type is not supported", type));
-                        break;
-                }
-            }
-        }
-
-        private IClientCallback CreateCallback()
-        {
-            IClientCallback currentCallback = ClientCallback.CreateClientCallback();
-
-            ICommunicationObject obj;
-            IServerCallback sc = currentCallback.ServerCallback;
-            if (sc != null)
-            {
-                obj = (ICommunicationObject)sc;
-            }
-            else
-            {
-                obj = (ICommunicationObject)currentCallback.WebsocketCallback;
-            }
-
-            obj.Closed += async (s, e) =>
-            {
-                await loginService.Unsubscribe();
-            };
-
-            return currentCallback;
+                default:
+                    Console.WriteLine(String.Format("{0} type is not supported", type));
+                    break;
+            }           
         }
     }
 }

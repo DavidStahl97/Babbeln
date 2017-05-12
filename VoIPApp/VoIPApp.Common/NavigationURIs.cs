@@ -14,11 +14,13 @@ namespace VoIPApp.Common
         /// <summary>
         /// <see cref="Uri"/> for the chat view
         /// </summary>
-        public static Uri chatViewUri = new Uri("ChatView", UriKind.Relative);
+        public static Uri ChatViewUri = new Uri("ChatView", UriKind.Relative);
 
         /// <summary>
         /// <see cref="Uri"/> for the option view
         /// </summary>
-        public static Uri optionViewUri = new Uri("OptionView", UriKind.Relative);
+        public static Uri OptionViewUri = new Uri("OptionView", UriKind.Relative);
+
+        public static Uri ProfileViewUri = new Uri("ProfileView", UriKind.Relative);
     }
 }

@@ -1,4 +1,5 @@
 #include "AudioHandler.h"
+#include <math.h>
 
 static int StaticAudioCallback(const void *inputBuffer, void *outputBuffer,
 	unsigned long framesPerBuffer,
@@ -260,12 +261,19 @@ bool AudioHandler::IsDeviceValid(const std::string& testName, const std::vector<
 
 void AudioHandler::SetInputVolumeGain(double gain)
 {
-	m_InputGain.store(gain, std::memory_order_release);
+	double linear = DezibelToLinear(gain);
+	m_InputGain.store(linear, std::memory_order_release);
 }
 
 void AudioHandler::SetOutputVolumeGain(double gain)
 {
-	m_OutputGain.store(gain, std::memory_order_release);
+	double linear = DezibelToLinear(gain);
+	m_OutputGain.store(linear, std::memory_order_release);
+}
+
+double AudioHandler::DezibelToLinear(double db)
+{
+	return std::pow(10.0, db / 10);
 }
 
 

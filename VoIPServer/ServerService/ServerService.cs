@@ -25,6 +25,7 @@ namespace VoIPServer.ServerServiceLibrary
         private readonly LoginService loginService;
         private readonly FriendService friendService;
         private readonly ChatService chatService;
+        private readonly AccountService accountService;
         private static int instanceCount = 0;
 
         private int connectionId;
@@ -43,6 +44,7 @@ namespace VoIPServer.ServerServiceLibrary
             loginService = new LoginService(dataBaseService);
             chatService = new ChatService(loginService, dataBaseService);
             friendService = new FriendService(dataBaseService, loginService);
+            accountService = new AccountService(dataBaseService, loginService);
 
             string contractName = OperationContext.Current.EndpointDispatcher.ContractName;
             if(contractName.Equals(nameof(IWebsocketCallback)))
@@ -53,7 +55,7 @@ namespace VoIPServer.ServerServiceLibrary
             }
         }
 
-        public async Task<ObjectId> Subscribe(string userName, string password, string ip)
+        public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip)
         {
             IServerCallback desktopClientCallback = OperationContext.Current.GetCallbackChannel<IServerCallback>();
 
@@ -127,7 +129,20 @@ namespace VoIPServer.ServerServiceLibrary
                 await friendService.ReplyToFriendRequest(friendId, accept);
             }
         }
-        
+
+        public async Task ChangeStatus(Status status)
+        {
+            if(loginService.LoggedIn)
+            {
+                await loginService.ChangeStatus(status);
+            }
+        }
+
+        public async Task ChangeUsername(string username)
+        {
+            await accountService.ChangeUsername(username);
+        }
+
         public async Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
         {
             if(msg.IsEmpty)

@@ -227,7 +227,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             currentFriend = (FriendsCollectionView.CurrentItem as User);
             if(currentFriend != null)
             {
-                Messages.AddRange(messageService.GetMessages(currentFriend._id));
+                Messages.AddRange(messageService.ReadMessages(currentFriend._id));
 
                 if(!currentFriend.Friendship.Accepted)
                 {

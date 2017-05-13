@@ -94,7 +94,7 @@
           <serializedValue>System.ServiceModel.Configuration.HttpMessageHandlerFactoryElement</serializedValue>
         </property>
         <property path="/httpTransport/messageHandlerFactory/handlers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.DelegatingHandlerElementCollection, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Auflistung)</serializedValue>
+          <serializedValue>(Collection)</serializedValue>
         </property>
         <property path="/httpTransport/messageHandlerFactory/type" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -127,7 +127,7 @@
           <serializedValue>TransportSelected</serializedValue>
         </property>
         <property path="/httpTransport/extendedProtectionPolicy/customServiceNames" isComplexType="true" isExplicitlyDefined="false" clrType="System.Security.Authentication.ExtendedProtection.Configuration.ServiceNameElementCollection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Auflistung)</serializedValue>
+          <serializedValue>(Collection)</serializedValue>
         </property>
         <property path="/httpTransport/webSocketSettings" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.WebSocketTransportSettingsElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.WebSocketTransportSettingsElement</serializedValue>
@@ -254,7 +254,7 @@
           <serializedValue>TransportSelected</serializedValue>
         </property>
         <property path="/security/transport/extendedProtectionPolicy/customServiceNames" isComplexType="true" isExplicitlyDefined="false" clrType="System.Security.Authentication.ExtendedProtection.Configuration.ServiceNameElementCollection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>(Auflistung)</serializedValue>
+          <serializedValue>(Collection)</serializedValue>
         </property>
         <property path="/security/transport/sslProtocols" isComplexType="false" isExplicitlyDefined="false" clrType="System.Security.Authentication.SslProtocols, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>Tls, Tls11, Tls12</serializedValue>

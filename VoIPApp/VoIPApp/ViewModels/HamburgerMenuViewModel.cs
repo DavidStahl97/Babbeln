@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
+using VoIPApp.Common.Models;
 using VoIPApp.Common.Services;
 
 namespace VoIPApp.ViewModels
@@ -21,7 +22,7 @@ namespace VoIPApp.ViewModels
         /// <summary>
         /// profile name of the user
         /// </summary>
-        private string profileName;
+        private AccountDetails accountDetails;
 
         /// <summary>
         /// creates a new instance of the <see cref="HamburgerMenuViewModel"/> class. Initializes the <see cref="profileIcon"/> and <see cref="profileName"/>
@@ -29,7 +30,7 @@ namespace VoIPApp.ViewModels
         public HamburgerMenuViewModel(ServerServiceProxy serverService)
         {
             profileIcon = new BitmapImage(new Uri("pack://application:,,,/Assets/profile_high.jpg"));
-            profileName = serverService.UserInfo.Username;
+            accountDetails = serverService.UserInfo;
         }
 
         /// <summary>
@@ -46,8 +47,11 @@ namespace VoIPApp.ViewModels
         /// </summary>
         public string ProfileName
         {
-            get { return this.profileName; }
-            set { SetProperty(ref this.profileName, value); }
+            get { return this.accountDetails.Username; }
+            set {
+                    string username = accountDetails.Username;
+                    SetProperty(ref username, value);
+                }
         }
 
     }

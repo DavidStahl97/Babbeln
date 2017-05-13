@@ -57,17 +57,18 @@ namespace VoIPApp.Common.Services
             return true;
         }
 
-        public async Task<bool> LogIn(string userName, string password)
+        public async Task<string> LogIn(string userName, string password)
         {
-            accountDetails.UserID = await serverServiceClient.SubscribeAsync(userName, password, accountDetails.IP);
-            if(accountDetails.UserID.Equals(ObjectId.Empty))
+            Tuple<ObjectId, string> result = await serverServiceClient.SubscribeAsync(userName, password, accountDetails.IP);
+
+            if(string.IsNullOrEmpty(result.Item2))
             {
-                return false;
+                accountDetails.UserID = result.Item1;
+                Console.WriteLine("userId: " + accountDetails.UserID.ToString());
+                UserInfo.Username = userName;
             }
 
-            Console.WriteLine("userId: " + accountDetails.UserID.ToString());
-            UserInfo.Username = userName;
-            return true;
+            return result.Item2;
         }
 
         public async Task<string> Register(string userName, string password, string email)
@@ -108,6 +109,11 @@ namespace VoIPApp.Common.Services
         public void OnFriendshipRequestAnswered(ObjectId friendId, bool accept)
         {
             eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Publish(new FriendshipRequestAnsweredEventArgs { FriendId = friendId, Accepted = accept });
+        }
+
+        public void OnFriendsUsernameChanged(ObjectId friendId, string username)
+        {
+            eventAggregator.GetEvent<FriendUsernameChanged>().Publish(new FriendUsernameChangedEventArgs { FriendId = friendId, NewUsername = username });
         }
 
         private string GetLocalIPAdress()

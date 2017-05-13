@@ -10,30 +10,35 @@
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-        <!--Style for ListBoxItem-->
-        <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListStyle">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Bd"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/VoIPApp.Common;component/Themes/generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!--Style for ListBoxItem-->
+            <Style TargetType="{x:Type ListBoxItem}" x:Key="MenuListStyle">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border x:Name="Bd"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}"
                                 Padding="{TemplateBinding Padding}"
                                 SnapsToDevicePixels="true">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="Bd" Property="Background" Value="LightGray"/>
-                                <Setter TargetName="Bd" Property="BorderThickness" Value="1"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#c6c6c6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+                                <ContentPresenter/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter TargetName="Bd" Property="Background" Value="LightGray"/>
+                                    <Setter TargetName="Bd" Property="BorderThickness" Value="1"/>
+                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#c6c6c6"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid x:Name="MainGrid" MouseLeave="MainGrid_MouseLeave">
@@ -60,7 +65,8 @@
                        Text="{Binding ProfileName}" 
                        x:Name="ProfileName" 
                        HorizontalAlignment="Center"
-                       Foreground="Gray"/>
+                       Foreground="Gray"
+                       Style="{StaticResource NormalText}"/>
         </StackPanel>
 
         <!--bottom section with HamburgerMenuItems-->

@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Controls;
 using SharedCode.Models;
+using VoIPApp.Common.Services;
+using System.Threading.Tasks;
 
 namespace VoIPApp.Modules.Options.ViewModels
 {
@@ -29,16 +31,22 @@ namespace VoIPApp.Modules.Options.ViewModels
         /// </summary>
         private readonly DelegateCommand<object> outputDeviceSelectionChanged;
 
+        private readonly DelegateCommand<object> statusSelectionChanged;
+
+        private readonly ServerServiceProxy serverService;
+
         /// <summary>
         /// creates a new instance of the <see cref="OptionsViewModel"/> class
         /// </summary>
         /// <param name="audioStreamingService">will be injected by the <see cref="IUnityContainer"/>, stored in <see cref="audioStreamingService"/></param>
-        public OptionsViewModel(AudioStreamingService audioStreamingService)
+        public OptionsViewModel(AudioStreamingService audioStreamingService, ServerServiceProxy serverService)
         {
             this.audioStreamingService = audioStreamingService;
+            this.serverService = serverService;
 
             this.inputDeviceSelectionChanged = new DelegateCommand<object>(this.OnInputDeviceSelectionChanged);
             this.outputDeviceSelectionChanged = new DelegateCommand<object>(this.OnOutputDeviceSelectionChanged);
+            this.statusSelectionChanged = DelegateCommand<object>.FromAsyncHandler(this.OnStatusSelectionChanged);
 
             InputDevices = new ObservableCollection<string>(audioStreamingService.GetInputDevice());
             OutputDevices = new ObservableCollection<string>(audioStreamingService.GetOutputDevice());
@@ -82,6 +90,11 @@ namespace VoIPApp.Modules.Options.ViewModels
             get { return outputDeviceSelectionChanged; }
         }
 
+        public ICommand StatusSelectionChanged
+        {
+            get { return statusSelectionChanged; }
+        }
+
         /// <summary>
         /// sets the new output device in the <see cref="audioStreamingService"/> when changed
         /// </summary>
@@ -106,6 +119,13 @@ namespace VoIPApp.Modules.Options.ViewModels
             {
                 audioStreamingService.SetInputDevice(selectedDeviceName);
             }
+        }
+
+        private async Task OnStatusSelectionChanged(object arg)
+        {
+            string selectedStatus = GetSelectedStringFromEventArgs(arg as SelectionChangedEventArgs);
+            Status status = (Status)Enum.Parse(typeof(Status), selectedStatus);
+            await serverService.ServerService.ChangeStatusAsync(status);
         }
 
         /// <summary>

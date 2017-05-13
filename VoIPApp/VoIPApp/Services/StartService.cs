@@ -32,13 +32,7 @@ namespace VoIPApp.Services
 
         public async Task<string> LogIn(string userName, string password)
         {
-            bool loggedIn = await serverService.LogIn(userName, password);
-            if(!loggedIn)
-            {
-                return "Passwort oder Benutzername falsch";
-            }
-
-            return string.Empty;
+            return await serverService.LogIn(userName, password);
         }
 
         public async Task<string> Register(string userName, string password, string email)

@@ -101,24 +101,7 @@ namespace VoIPApp.ViewModels
             IHavePassword passwordContainer = arg as IHavePassword;
             if(passwordContainer != null)
             {
-                string unsecurePassword = SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password);
-                string unsecureConfirmationPassword = SecureStringConverter.ConvertToUnsecureString(passwordContainer.ConfirmationPassword);
-
-                if(!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(unsecurePassword) && !string.IsNullOrWhiteSpace(unsecureConfirmationPassword))
-                {
-                    if (!unsecurePassword.Equals(unsecureConfirmationPassword))
-                    {
-                        Message = "Passwörter stimmen nicht überein";
-                        return false;
-                    }
-
-                    Message = string.Empty;
-                    return true;
-                }
-                else
-                {
-                    Message = "Füllen Sie alle Felder aus";
-                }
+                return ValidatePassword(passwordContainer);
             }
 
             return false;
@@ -155,6 +138,40 @@ namespace VoIPApp.ViewModels
             }
         }
 
+        private bool ValidatePassword(IHavePassword passwordContainer)
+        {
+            string unsecurePassword = SecureStringConverter.ConvertToUnsecureString(passwordContainer.Password);
+            string unsecureConfirmationPassword = SecureStringConverter.ConvertToUnsecureString(passwordContainer.ConfirmationPassword);
+
+            if (!string.IsNullOrWhiteSpace(userName) && !string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(unsecurePassword) && !string.IsNullOrWhiteSpace(unsecureConfirmationPassword))
+            {
+                if (!unsecurePassword.Equals(unsecureConfirmationPassword))
+                {
+                    Message = "Passwörter stimmen nicht überein";
+                    return false;
+                }
+
+                if (unsecurePassword.Length < 6)
+                {
+                    Message = "Das Passswort muss mindestends 6 Zeichen haben";
+                    return false;
+                }
+
+                if (unsecurePassword.Contains(userName))
+                {
+                    Message = "Das Passwort darf nicht den Nutzernamen beinhalten";
+                    return false;
+                }
+
+                Message = string.Empty;
+                return true;
+            }
+            else
+            {
+                Message = "Füllen Sie alle Felder aus";
+                return false;
+            }
+        }
 
         private void OnCancel(object obj)
         {

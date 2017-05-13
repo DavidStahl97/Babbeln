@@ -57,7 +57,7 @@
                                             <Setter Property="Grid.Column" Value="0"/>
                                             <Setter Property="HorizontalAlignment" Value="Left"/>
                                             <Setter Property="Background" Value="LightGray"/>
-                                            <Setter Property="Margin" Value="10,20,0,0"/>
+                                            <Setter Property="Margin" Value="15,20,0,0"/>
                                             <Style.Triggers>
                                                 <DataTrigger Value="True">
                                                     <DataTrigger.Binding>
@@ -69,7 +69,7 @@
                                                     <Setter Property="Grid.Column" Value="1"/>
                                                     <Setter Property="HorizontalAlignment" Value="Right"/>
                                                     <Setter Property="Background" Value="White"/>
-                                                    <Setter Property="Margin" Value="0,20,10,0"/>
+                                                    <Setter Property="Margin" Value="0,20,15,0"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -210,13 +210,26 @@
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0" Grid.Column="0" HorizontalAlignment="Left">
                                             <TextBlock Text="{Binding Path=Name}" Style="{StaticResource NormalText}"/>
+                                            <TextBlock Text="{Binding Path=FriendStatus, Converter={StaticResource StatusConverter}}"
+                                                       Style="{StaticResource NormalText}"
+                                                       Margin="15,0,0,0"/>
                                         </StackPanel>
-                                        <TextBlock Grid.Column="1" 
-                                                   Text="{Binding Path=FriendStatus, Converter={StaticResource StatusConverter}}"
-                                                   Style="{StaticResource NormalText}"
-                                                   VerticalAlignment="Center" 
-                                                   HorizontalAlignment="Right" 
-                                                   Margin="0,0,15,0"/>
+                                        <TextBlock Text="{Binding Path=UnreadMessages, StringFormat=+{0:#}}"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"
+                                                   Grid.Column="1"
+                                                   Margin="0,0,10,0">
+                                            <TextBlock.Style>
+                                                <Style BasedOn="{StaticResource NormalText}" TargetType="{x:Type TextBlock}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding UnreadMessages}" Value="0">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </Grid>
                                 </Grid>
                             </Border>
@@ -245,7 +258,14 @@
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,15,0,15" Orientation="Horizontal" Grid.Row="1">
                     <Button x:Name="CallButton" Content="&#xE13A;" Command="{Binding Path=CallCommand}" Style="{StaticResource IconButtonStyle}" />
                     <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource IconButtonStyle}" />
-                    <Button x:Name="MenuButton" Content="&#xE10C;" Style="{StaticResource IconButtonStyle}" />
+                    <Button x:Name="MenuButton" Content="&#xE10C;" Style="{StaticResource IconButtonStyle}" Click="MenuButton_Click">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Löschen"/>
+                                <MenuItem Header="Profil"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
                 </StackPanel>
             </Grid>
 

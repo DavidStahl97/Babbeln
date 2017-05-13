@@ -46,7 +46,11 @@ namespace SharedCode.Models
         [JsonProperty("from")]
         public ObjectId Sender { get; set; }
 
+        [DataMember]
         [BsonElement("_id")]
         public ObjectId Id { get; set; }
+
+        [BsonElement("read")]
+        public bool Read { get; set; }
     }
 }

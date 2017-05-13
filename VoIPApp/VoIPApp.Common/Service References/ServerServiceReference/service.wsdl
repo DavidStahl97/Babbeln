@@ -14,6 +14,7 @@
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/SharedCode.Models" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/MongoDB.Bson" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IServerService_SendMessage_InputMessage">
@@ -52,6 +53,12 @@
   <wsdl:message name="IServerService_ReplyToFriendRequest_InputMessage">
     <wsdl:part name="parameters" element="tns:ReplyToFriendRequest" />
   </wsdl:message>
+  <wsdl:message name="IServerService_ChangeStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeStatus" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_ChangeUsername_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUsername" />
+  </wsdl:message>
   <wsdl:message name="IServerService_OnMessageReceived_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnMessageReceived" />
   </wsdl:message>
@@ -72,6 +79,9 @@
   </wsdl:message>
   <wsdl:message name="IServerService_OnFriendshipRequestAnswered_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnFriendshipRequestAnswered" />
+  </wsdl:message>
+  <wsdl:message name="IServerService_OnFriendsUsernameChanged_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnFriendsUsernameChanged" />
   </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IServerService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessage">
@@ -104,6 +114,12 @@
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ReplyToFriendRequest">
       <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ReplyToFriendRequest" message="tns:IServerService_ReplyToFriendRequest_InputMessage" />
     </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ChangeStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ChangeStatus" message="tns:IServerService_ChangeStatus_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ChangeUsername">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServerService/ChangeUsername" message="tns:IServerService_ChangeUsername_InputMessage" />
+    </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnMessageReceived">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnMessageReceived" message="tns:IServerService_OnMessageReceived_OutputCallbackMessage" />
     </wsdl:operation>
@@ -124,6 +140,9 @@
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendshipRequestAnswered">
       <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendshipRequestAnswered" message="tns:IServerService_OnFriendshipRequestAnswered_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="OnFriendsUsernameChanged">
+      <wsdl:output wsaw:Action="http://tempuri.org/IServerService/OnFriendsUsernameChanged" message="tns:IServerService_OnFriendsUsernameChanged_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType msc:usingSession="true" name="IWebsocketService" />
@@ -193,6 +212,18 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
+    <wsdl:operation name="ChangeStatus">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/ChangeStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUsername">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/ChangeUsername" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
     <wsdl:operation name="OnMessageReceived">
       <soap12:operation soapAction="http://tempuri.org/IServerService/OnMessageReceived" style="document" />
       <wsdl:output>
@@ -231,6 +262,12 @@
     </wsdl:operation>
     <wsdl:operation name="OnFriendshipRequestAnswered">
       <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendshipRequestAnswered" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OnFriendsUsernameChanged">
+      <soap12:operation soapAction="http://tempuri.org/IServerService/OnFriendsUsernameChanged" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

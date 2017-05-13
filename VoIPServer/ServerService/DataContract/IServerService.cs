@@ -26,7 +26,7 @@ namespace VoIPServer.ServerServiceLibrary.DataContract
         void AcceptCall(ObjectId friendId);
 
         [OperationContract(IsOneWay = false)]
-        Task<ObjectId> Subscribe(string userName, string password, string ip);
+        Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip);
 
         [OperationContract(IsOneWay = true)]
         Task Unsubscribe();
@@ -39,6 +39,12 @@ namespace VoIPServer.ServerServiceLibrary.DataContract
 
         [OperationContract(IsOneWay = true)]
         Task ReplyToFriendRequest(ObjectId friendId, bool accept);
+
+        [OperationContract(IsOneWay = true)]
+        Task ChangeStatus(Status status);
+
+        [OperationContract(IsOneWay = true)]
+        Task ChangeUsername(string username);
     }
 
     public interface IServerCallback
@@ -63,5 +69,8 @@ namespace VoIPServer.ServerServiceLibrary.DataContract
 
         [OperationContract(IsOneWay = true)]
         void OnFriendshipRequestAnswered(ObjectId friendId, bool accept);
+
+        [OperationContract(IsOneWay = true)]
+        void OnFriendsUsernameChanged(ObjectId friendId, string username);
     }
 }

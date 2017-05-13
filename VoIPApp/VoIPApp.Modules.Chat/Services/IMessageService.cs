@@ -10,7 +10,7 @@ namespace VoIPApp.Modules.Chat.Services
 {
     public interface IMessageService
     {
-        ObservableCollection<Message> GetMessages(MongoDB.Bson.ObjectId _id);
+        ObservableCollection<Message> ReadMessages(MongoDB.Bson.ObjectId _id);
         Task SendMessage(Message msg);
         Task PopulateMessageDictionary();
     }

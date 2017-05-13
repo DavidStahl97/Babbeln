@@ -4,8 +4,9 @@
   <xs:complexType name="Message">
     <xs:sequence>
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Receiver" type="q1:ObjectId" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Sender" type="q2:ObjectId" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Id" type="q1:ObjectId" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Receiver" type="q2:ObjectId" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Sender" type="q3:ObjectId" />
       <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -16,8 +17,9 @@
       <xs:element minOccurs="0" name="Friendship" nillable="true" type="tns:Friendship" />
       <xs:element minOccurs="0" name="IP" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Icon" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProfileName" nillable="true" type="xs:string" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="_id" type="q3:ObjectId" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="_id" type="q4:ObjectId" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="User" nillable="true" type="tns:User" />
@@ -25,6 +27,8 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Offline" />
       <xs:enumeration value="Online" />
+      <xs:enumeration value="Abwesend" />
+      <xs:enumeration value="Beschäftigt" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Status" nillable="true" type="tns:Status" />
@@ -32,9 +36,9 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Accepted" type="xs:boolean" />
       <xs:element minOccurs="0" name="Date" type="xs:dateTime" />
-      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Receiver" type="q4:ObjectId" />
-      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Requester" type="q5:ObjectId" />
-      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="id" type="q6:ObjectId" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Receiver" type="q5:ObjectId" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="Requester" type="q6:ObjectId" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/MongoDB.Bson" minOccurs="0" name="id" type="q7:ObjectId" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Friendship" nillable="true" type="tns:Friendship" />

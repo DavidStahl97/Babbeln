@@ -29,7 +29,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.dataBaseService = dataBaseService;
         }
 
-        public async Task<ObjectId> Subscribe(string userName, string password, string ip, IServerCallback callbackChannel)
+        public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip, IServerCallback callbackChannel)
         {
             userId = await GetUserId(userName, password);
 
@@ -38,7 +38,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 if (subscribers.ContainsKey(userId))
                 {
                     Console.WriteLine(userName + " is already connected");
-                    return userId;
+                    return new Tuple<ObjectId, string>(ObjectId.Empty, "Sie sind schon angemeldet");
                 }
                 else
                 {
@@ -48,15 +48,17 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
                     subscribers.TryAdd(userId, callbackChannel);
 
-                    await NotifyFriendsAboutStatusChange(Status.Online);
+                    await ChangeStatus(Status.Online);
 
                     Console.WriteLine(userName + " successfully connected with id: " + userId.ToString());
 
-                    return userId;
+                    return new Tuple<ObjectId, string>(userId, string.Empty);
                 }
             }
-
-            return ObjectId.Empty;
+            else
+            {
+                return new Tuple<ObjectId, string>(ObjectId.Empty, "Passwort oder Benutzername falsch");
+            }
         }
 
         public async Task Unsubscribe()
@@ -67,7 +69,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
-                await NotifyFriendsAboutStatusChange(Status.Offline);
+                await ChangeStatus(Status.Offline);
             }
             else
             {
@@ -117,7 +119,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return callbackChannel;
         }
 
-        private async Task NotifyFriendsAboutStatusChange(Status status)
+        public async Task ChangeStatus(Status status)
         {
             List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
             foreach (ObjectId friendId in friendIds)
@@ -128,6 +130,10 @@ namespace VoIPServer.ServerServiceLibrary.Services
                     callback.OnFriendStatusChanged(userId, status);
                 }
             }
+
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", userId);
+            UpdateDefinition<User> update = Builders<User>.Update.Set("status", status.ToString());
+            await dataBaseService.UserCollection.UpdateOneAsync(filter, update);
         }
 
         public async Task<ObjectId> GetUserId(string userName, string password)

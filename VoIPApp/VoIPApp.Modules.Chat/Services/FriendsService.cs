@@ -38,6 +38,7 @@ namespace VoIPApp.Modules.Chat.Services
 
             eventAggregator.GetEvent<FriendshipRequestedEvent>().Subscribe(this.OnFriendshipRequested, ThreadOption.BackgroundThread);
             eventAggregator.GetEvent<FriendshipRequestAnswerdEvent>().Subscribe(this.OnFriendshipAnswered);
+            eventAggregator.GetEvent<FriendUsernameChanged>().Subscribe(this.OnFriendUsernameChanged);
         }
 
         public ObservableCollection<User> Friends { get; set; }
@@ -143,6 +144,13 @@ namespace VoIPApp.Modules.Chat.Services
             {
                 Friends.Remove(GetFriendById(friendId));
             }
+        }
+
+
+        private void OnFriendUsernameChanged(FriendUsernameChangedEventArgs obj)
+        {
+            User friend = GetFriendById(obj.FriendId);
+            friend.Name = obj.NewUsername;
         }
     }
 }

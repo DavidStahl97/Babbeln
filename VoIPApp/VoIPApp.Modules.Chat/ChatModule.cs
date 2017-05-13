@@ -61,8 +61,8 @@ namespace VoIPApp.Modules.Chat
         /// </summary>
         public void Initialize()
         {          
-            this.container.RegisterType<FriendsService>();
-            this.container.RegisterType<MessageService>();
+            this.container.RegisterType<FriendsService>(new ContainerControlledLifetimeManager());
+            this.container.RegisterType<MessageService>(new ContainerControlledLifetimeManager());
             this.container.RegisterType<VoiceChatViewModel>();
             this.container.RegisterType<object, ChatView>(NavigationURIs.ChatViewUri.OriginalString);
         }

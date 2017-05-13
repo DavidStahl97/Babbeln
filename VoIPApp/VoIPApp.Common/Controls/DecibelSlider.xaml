@@ -13,8 +13,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="DecibelSlider" TargetType="{x:Type Slider}">
-                <Setter Property="Minimum" Value="-20"/>
-                <Setter Property="Maximum" Value="20"/>
+                <Setter Property="Minimum" Value="-15"/>
+                <Setter Property="Maximum" Value="15"/>
                 <Setter Property="TickFrequency" Value="0.5"/>
                 <Setter Property="TickPlacement" Value="BottomRight"/>
                 <Setter Property="IsSnapToTickEnabled" Value="True"/>

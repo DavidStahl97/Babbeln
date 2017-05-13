@@ -33,6 +33,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
+                msg.Read = false;
                 await dataBaseService.MessageCollection.InsertOneAsync(msg);
 
                 IServerCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);

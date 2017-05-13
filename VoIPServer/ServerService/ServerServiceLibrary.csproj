@@ -83,6 +83,7 @@
     <Compile Include="Model\Websocket.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerService.cs" />
+    <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\FriendService.cs" />
     <Compile Include="Services\LoginService.cs" />

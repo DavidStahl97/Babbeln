@@ -27,6 +27,7 @@
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="80061eef-7dfe-43fa-89b3-0351408db45a" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
     <MetadataFile FileName="SharedCode.Models.xsd" MetadataType="Schema" ID="a8a216d3-f65c-4be7-969f-76dc9835c45f" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
     <MetadataFile FileName="MongoDB.Bson.xsd" MetadataType="Schema" ID="7f498193-00b1-4c66-8c17-9d7ee7f3a727" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
+    <MetadataFile FileName="System.xsd" MetadataType="Schema" ID="2188f87b-312e-4b1e-b775-a1e94bfe381b" SourceId="1" SourceUrl="http://localhost:7998/VoIPServer/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

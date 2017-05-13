@@ -187,7 +187,9 @@
     <Compile Include="StatusConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\MongoDB.Bson.ObjectId.datasource" />
     <None Include="Properties\DataSources\SharedCode.Models.Friend.datasource" />
@@ -205,6 +207,9 @@
     <None Include="Service References\ServerServiceReference\SharedCode.Models.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ServerServiceReference\System.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DecibelSlider.xaml">
@@ -216,6 +221,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\HamburgerMenuItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\FlatContextMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

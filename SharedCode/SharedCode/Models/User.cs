@@ -16,6 +16,11 @@ namespace SharedCode.Models
     [BsonIgnoreExtraElements]
     public class User : INotifyPropertyChanged
     {
+        public User()
+        {
+            UnreadMessages = 0;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnPropertyChanged(string name)
@@ -38,7 +43,7 @@ namespace SharedCode.Models
                 if (this.name != value)
                 {
                     this.name = value;
-                    OnPropertyChanged("Name");
+                    OnPropertyChanged(nameof(Name));
                 }
             }
         }
@@ -57,7 +62,7 @@ namespace SharedCode.Models
                 if(this.profileName != value)
                 {
                     this.profileName = value;
-                    OnPropertyChanged("ProfileName");
+                    OnPropertyChanged(nameof(ProfileName));
                 }
             }
         }
@@ -76,7 +81,7 @@ namespace SharedCode.Models
                 if(icon != value)
                 {
                     this.icon = value;
-                    OnPropertyChanged("Icon");
+                    OnPropertyChanged(nameof(Icon));
                 }
             }
         }
@@ -94,6 +99,8 @@ namespace SharedCode.Models
         private Status status; 
 
         [DataMember]
+        [BsonElement("status")]
+        [BsonRepresentation(BsonType.String)]
         public Status FriendStatus {
             get { return status; }
             set
@@ -101,7 +108,7 @@ namespace SharedCode.Models
                 if(status != value)
                 {
                     this.status = value;
-                    OnPropertyChanged("FriendStatus");
+                    OnPropertyChanged(nameof(FriendStatus));
                 }
             }
         }
@@ -118,6 +125,20 @@ namespace SharedCode.Models
 
         [DataMember]
         public Friendship Friendship { get; set; }
+
+        private int unreadMessages;
+        public int UnreadMessages
+        {
+            get { return unreadMessages; }
+            set
+            {
+                if(unreadMessages != value)
+                {
+                    this.unreadMessages = value;
+                    OnPropertyChanged(nameof(UnreadMessages));
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -126,6 +147,8 @@ namespace SharedCode.Models
     public enum Status
     {
         Offline,
-        Online
+        Online,
+        Abwesend,
+        Beschäftigt
     }
 }

@@ -7,21 +7,35 @@
              d:DesignHeight="300" d:DesignWidth="300"
              x:Name="parent">
     <UserControl.Resources>
-        <!--mouse hover effect for labels-->
-        <Style TargetType="Label" x:Key="LableStyle" >
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="36"/>
-            <Setter Property="Foreground" Value="Gray"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter Property="Foreground" Value="Black"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/VoIPApp.Common;component/Themes/generic.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--mouse hover effect for labels-->
+            <Style TargetType="Label" x:Key="LableStyle" >
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+                <Setter Property="FontSize" Value="36"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
+    
     <StackPanel Orientation="Horizontal" DataContext="{Binding ElementName=parent}">
-        <Label Content="{Binding Icon}" Style="{StaticResource LableStyle}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <TextBlock Text="{Binding Text}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray" Margin="15,0,0,0"/>
+        <Label Content="{Binding Icon}" 
+               Style="{StaticResource LableStyle}" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Text}" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Margin="15,0,0,0"
+                   Style="{StaticResource NormalText}"/>
     </StackPanel>
 </UserControl>

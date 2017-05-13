@@ -27,5 +27,13 @@ namespace VoIPApp.Modules.Chat.Views
             btn.Command.Execute(btn.CommandParameter);
             MessageTextBox.InputText = string.Empty;
         }
+
+        private void MenuButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            /*ContextMenu cm = this.FindResource("FriendContextMenu") as ContextMenu;
+            //cm.Style = FindResource("FlatContextMenu") as System.Windows.Style;
+            cm.PlacementTarget = sender as Button;
+            cm.IsOpen = true;*/
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.Services;
 using Newtonsoft.Json.Linq;
 using VoIPServer.ServerServiceLibrary.DataContract;
+using System.Configuration;
 
 namespace VoIPServer.ServerServiceLibrary
 {
@@ -20,8 +21,9 @@ namespace VoIPServer.ServerServiceLibrary
         private const string FriendshipRequest = "request";
         private const string FriendshipAccept = "accept";
         private const string Login = "login";
+        private const string Logout = "logout";
 
-        private static readonly DataBaseService dataBaseService = new DataBaseService();
+        private static readonly DataBaseService dataBaseService = new DataBaseService(ConfigurationManager.AppSettings["MongoURL"].ToString());
         private readonly LoginService loginService;
         private readonly FriendService friendService;
         private readonly ChatService chatService;
@@ -45,26 +47,11 @@ namespace VoIPServer.ServerServiceLibrary
             chatService = new ChatService(loginService, dataBaseService);
             friendService = new FriendService(dataBaseService, loginService);
             accountService = new AccountService(dataBaseService, loginService);
-
-            string contractName = OperationContext.Current.EndpointDispatcher.ContractName;
-            if(contractName.Equals(nameof(IWebsocketCallback)))
-            {
-                IWebsocketCallback websocketCallback = OperationContext.Current.GetCallbackChannel<IWebsocketCallback>();
-                LoginService.WebsocketCallback = websocketCallback;
-                Console.WriteLine("new websocket connection");
-            }
         }
 
         public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip)
         {
             IServerCallback desktopClientCallback = OperationContext.Current.GetCallbackChannel<IServerCallback>();
-
-            ICommunicationObject obj = (ICommunicationObject)desktopClientCallback;
-            obj.Closed += async (s, e) =>
-            {
-                await loginService.Unsubscribe();
-            };
-
             return await loginService.Subscribe(userName, password, ip, desktopClientCallback);
         } 
 
@@ -176,6 +163,15 @@ namespace VoIPServer.ServerServiceLibrary
 
                 case FriendshipAccept:
                     //TO-DO implement Friendsipaccept
+                    break;
+
+                case Login:
+                    IWebsocketCallback webCallback = OperationContext.Current.GetCallbackChannel<IWebsocketCallback>();
+                    await loginService.Subscribe(data, webCallback);
+                    break;
+
+                case Logout:
+                    await loginService.Unsubscribe(data);
                     break;
 
                 default:

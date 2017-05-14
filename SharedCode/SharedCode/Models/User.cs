@@ -149,6 +149,7 @@ namespace SharedCode.Models
         Offline,
         Online,
         Abwesend,
-        Beschäftigt
+        Beschäftigt,
+        Web
     }
 }

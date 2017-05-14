@@ -1,12 +1,15 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using Newtonsoft.Json.Linq;
+using ServerServiceLibrary.Model;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.DataContract;
 
@@ -15,9 +18,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
     public class LoginService
     {
         //use threadsafe Dictionary because its used in multiple threads. note static
-        private static readonly ConcurrentDictionary<ObjectId, IServerCallback> subscribers = new ConcurrentDictionary<ObjectId, IServerCallback>();
-
-        private static IWebsocketCallback websocketCallback = null;
+        private static readonly ConcurrentDictionary<ObjectId, ClientCallback> subscribers = new ConcurrentDictionary<ObjectId, ClientCallback>();
 
         private readonly DataBaseService dataBaseService;
 
@@ -29,7 +30,23 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.dataBaseService = dataBaseService;
         }
 
-        public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip, IServerCallback callbackChannel)
+        public async Task Subscribe(JToken data, IWebsocketCallback webcallback)
+        {
+            ObjectId id = ObjectId.Parse(data["id"].ToString());
+            ClientCallback callback = new ClientCallback(webcallback, id);
+            subscribers.TryAdd(id, callback);
+            await ChangeStatus(Status.Web, id);
+        }
+
+        public async Task Unsubscribe(JToken data)
+        {
+            ObjectId id = ObjectId.Parse(data["id"].ToString());
+            ClientCallback cb;
+            subscribers.TryRemove(id, out cb);
+            await ChangeStatus(Status.Offline, id);
+        }
+
+        public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip, IServerCallback desktopCallback)
         {
             userId = await GetUserId(userName, password);
 
@@ -46,9 +63,17 @@ namespace VoIPServer.ServerServiceLibrary.Services
                     UpdateDefinition<BsonDocument> update = Builders<BsonDocument>.Update.Set("ip", ip);
                     await dataBaseService.UserBsonCollection.UpdateOneAsync(filter, update);
 
-                    subscribers.TryAdd(userId, callbackChannel);
+                    ClientCallback callback = new ClientCallback(desktopCallback);
 
-                    await ChangeStatus(Status.Online);
+                    ICommunicationObject obj = (ICommunicationObject)desktopCallback;
+                    obj.Closed += async (s, e) =>
+                    {
+                        await Unsubscribe();
+                    };
+
+                    subscribers.TryAdd(userId, callback);
+
+                    await ChangeStatus(Status.Online, userId);
 
                     Console.WriteLine(userName + " successfully connected with id: " + userId.ToString());
 
@@ -65,11 +90,11 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (!userId.Equals(ObjectId.Empty) && subscribers.ContainsKey(userId))
             {
-                IServerCallback cb;
+                ClientCallback cb;
                 subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
-                await ChangeStatus(Status.Offline);
+                await ChangeStatus(Status.Offline, userId);
             }
             else
             {
@@ -112,28 +137,33 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return string.Empty;
         }
 
-        public IServerCallback GetCallbackChannelByID(ObjectId id)
+        public ClientCallback GetCallbackChannelByID(ObjectId id)
         {
-            IServerCallback callbackChannel = null;
+            ClientCallback callbackChannel = null;
             subscribers.TryGetValue(id, out callbackChannel);
             return callbackChannel;
         }
 
-        public async Task ChangeStatus(Status status)
+        public async Task ChangeStatus(Status status, ObjectId id)
         {
-            List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
+            List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(id);
             foreach (ObjectId friendId in friendIds)
             {
-                IServerCallback callback = GetCallbackChannelByID(friendId);
+                ClientCallback callback = GetCallbackChannelByID(friendId);
                 if (callback != null)
                 {
-                    callback.OnFriendStatusChanged(userId, status);
+                    callback.OnFriendStatusChanged(id, status);
                 }
             }
 
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", userId);
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", id);
             UpdateDefinition<User> update = Builders<User>.Update.Set("status", status.ToString());
             await dataBaseService.UserCollection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task ChangeStatus(Status status)
+        {
+            await ChangeStatus(status, userId);
         }
 
         public async Task<ObjectId> GetUserId(string userName, string password)

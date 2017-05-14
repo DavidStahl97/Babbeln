@@ -16,11 +16,10 @@ namespace SharedCode.Services
         private readonly IMongoClient client;
         private IMongoDatabase database;
 
-        public DataBaseService()
+        public DataBaseService(string url)
         {
-            string connectionString = "mongodb://babbeln.ddns.net:27017";
-            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-            client = new MongoClient();
+            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(url));
+            client = new MongoClient(settings);
         }
 
         public void Connect()

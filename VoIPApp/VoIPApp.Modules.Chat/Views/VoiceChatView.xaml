@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:VoIPApp.Common.Controls;assembly=VoIPApp.Common"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             MinHeight="300" MinWidth="300" MaxHeight="600" MaxWidth="800" >
+             >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -43,33 +43,28 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Image Source="{Binding CallPartner.Icon}"
-                   Grid.Row="0"
-                   Margin="25"/>
-            <TextBlock Grid.Row="1"
-                       Text="{Binding CallPartner.Name}"
-                       HorizontalAlignment="Center"
-                       FontSize="24"
-                       Style="{StaticResource TextBlockStyle}"/>
-        </Grid>
+        <Ellipse Width="128"
+                 Height="128"
+                 Grid.Row="0"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Margin="10">
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="{Binding CallPartner.Icon}"/>
+            </Ellipse.Fill>
+        </Ellipse>
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.Row="1" Margin="25">
-            <Grid>
+            <Grid Margin="15">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
@@ -78,12 +73,14 @@
                                Grid.Column="0"
                                Grid.Row="1"
                                Style="{StaticResource NormalText}"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,15"/>
                 <controls:DecibelSlider Grid.Column="1"
                                         Grid.Row="1"
+                                        Width="200"
                                         DecibelValue="{Binding PlayerDecibelValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
-            
+
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Content="&#xE137;" 

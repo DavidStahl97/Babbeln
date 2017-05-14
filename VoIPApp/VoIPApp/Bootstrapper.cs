@@ -12,6 +12,7 @@ using Prism.Interactivity.InteractionRequest;
 using VoIPApp.ViewModels;
 using Prism.Regions;
 using Prism.Events;
+using System.Configuration;
 
 namespace VoIPApp
 {
@@ -27,7 +28,7 @@ namespace VoIPApp
         /// <summary>
         /// instance of <see cref="DataBaseService"/> for entire application
         /// </summary>
-        private readonly DataBaseService dataBaseService = new DataBaseService();
+        private readonly DataBaseService dataBaseService = new DataBaseService(ConfigurationManager.AppSettings["MongoURL"].ToString());
 
         private ServerServiceProxy serverServiceProxy;
 

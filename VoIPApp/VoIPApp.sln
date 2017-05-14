@@ -136,8 +136,8 @@ Global
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x64.ActiveCfg = Release|Any CPU
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x64.Build.0 = Release|Any CPU
-		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x86.ActiveCfg = Release|Any CPU
-		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x86.Build.0 = Release|Any CPU
+		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x86.ActiveCfg = Release|x86
+		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.Release|x86.Build.0 = Release|x86
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|Any CPU
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.ReleaseMinDependency|Any CPU.Build.0 = Release|Any CPU
 		{99C9E82C-C594-446D-AA59-8FFBC43AD226}.ReleaseMinDependency|x64.ActiveCfg = Release|Any CPU
@@ -160,8 +160,8 @@ Global
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x64.ActiveCfg = Release|Any CPU
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x64.Build.0 = Release|Any CPU
-		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x86.ActiveCfg = Release|Any CPU
-		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x86.Build.0 = Release|Any CPU
+		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x86.ActiveCfg = Release|x86
+		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.Release|x86.Build.0 = Release|x86
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|Any CPU
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.ReleaseMinDependency|Any CPU.Build.0 = Release|Any CPU
 		{AB8B448C-DD74-4D60-A041-3E5D03A32180}.ReleaseMinDependency|x64.ActiveCfg = Release|Any CPU
@@ -184,8 +184,8 @@ Global
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x64.ActiveCfg = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x64.Build.0 = Release|Any CPU
-		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x86.ActiveCfg = Release|Any CPU
-		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x86.Build.0 = Release|Any CPU
+		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x86.ActiveCfg = Release|x86
+		{4B42B02B-4187-4591-9376-09786DBA1F75}.Release|x86.Build.0 = Release|x86
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|Any CPU.Build.0 = Release|Any CPU
 		{4B42B02B-4187-4591-9376-09786DBA1F75}.ReleaseMinDependency|x64.ActiveCfg = Release|Any CPU
@@ -226,8 +226,8 @@ Global
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x64.ActiveCfg = Release|Any CPU
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x64.Build.0 = Release|Any CPU
-		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x86.ActiveCfg = Release|Any CPU
-		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x86.Build.0 = Release|Any CPU
+		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x86.ActiveCfg = Release|x86
+		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.Release|x86.Build.0 = Release|x86
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|Any CPU
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.ReleaseMinDependency|Any CPU.Build.0 = Release|Any CPU
 		{B4724469-0555-42F1-A3AA-209F2A0FA9D6}.ReleaseMinDependency|x64.ActiveCfg = Release|Any CPU
@@ -272,8 +272,8 @@ Global
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x64.ActiveCfg = Release|Any CPU
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x64.Build.0 = Release|Any CPU
-		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x86.ActiveCfg = Release|Any CPU
-		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x86.Build.0 = Release|Any CPU
+		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x86.ActiveCfg = Release|x86
+		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.Release|x86.Build.0 = Release|x86
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.ReleaseMinDependency|Any CPU.ActiveCfg = Release|Any CPU
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.ReleaseMinDependency|Any CPU.Build.0 = Release|Any CPU
 		{7D31A0B3-306D-4972-8B35-7242C725CEA6}.ReleaseMinDependency|x64.ActiveCfg = Release|Any CPU

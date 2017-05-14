@@ -284,8 +284,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
             User currentFriend = FriendsCollectionView.CurrentItem as User;
             if(currentFriend != null)
             {
-                //TO-DO Change to Online again
-                if (currentFriend.FriendStatus == Status.Offline && !calling)
+                if (currentFriend.FriendStatus == Status.Online && !calling)
                 {
                     return true;
                 }

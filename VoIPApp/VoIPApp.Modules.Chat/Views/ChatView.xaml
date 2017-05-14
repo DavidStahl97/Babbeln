@@ -130,8 +130,14 @@
         <i:Interaction.Triggers>
             <prism:InteractionRequestTrigger SourceObject="{Binding ShowVoiceChatRequest}">
                 <prism:PopupWindowAction IsModal="False" CenterOverAssociatedObject="True">
+                    <prism:PopupWindowAction.WindowStyle>
+                        <Style TargetType="{x:Type Window}">
+                            <Setter Property="ResizeMode" Value="NoResize"/>
+                            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+                        </Style>
+                    </prism:PopupWindowAction.WindowStyle>
                     <prism:PopupWindowAction.WindowContent>
-                        <views:VoiceChatView/>
+                        <views:VoiceChatView Width="Auto" Height="Auto"/>
                     </prism:PopupWindowAction.WindowContent>
                 </prism:PopupWindowAction>
             </prism:InteractionRequestTrigger>

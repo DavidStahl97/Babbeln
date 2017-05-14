@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
+using ServerServiceLibrary.Model;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -36,7 +37,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 msg.Read = false;
                 await dataBaseService.MessageCollection.InsertOneAsync(msg);
 
-                IServerCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
+                ClientCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
                 if (receiverCallback != null)
                 {
                     receiverCallback.OnMessageReceived(msg);
@@ -48,7 +49,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallback receiverCallback = loginService.GetCallbackChannelByID(receiver);
+                ClientCallback receiverCallback = loginService.GetCallbackChannelByID(receiver);
                 if (receiver != null)
                 {
                     receiverCallback.OnCall(loginService.UserId);
@@ -60,7 +61,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+                ClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallCancelled(loginService.UserId);
@@ -73,7 +74,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
         {
             if (loginService.LoggedIn)
             {
-                IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+                ClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
                 if (friendCallback != null)
                 {
                     friendCallback.OnCallAccepted(loginService.UserId);

@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Newtonsoft.Json.Linq;
+using ServerServiceLibrary.Model;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -61,7 +62,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         private void SendRequest(ObjectId friendId)
         {
-            IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+            ClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if (friendCallback != null)
             {
                 friendCallback.OnFriendshipRequested(loginService.UserId);
@@ -83,7 +84,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 await dataBaseService.FriendshipCollection.DeleteOneAsync(filter);
             }
 
-            IServerCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
+            ClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if(friendCallback != null)
             {
                 friendCallback.OnFriendshipRequestAnswered(loginService.UserId, accept);

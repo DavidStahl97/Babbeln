@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using ServerServiceLibrary.Model;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -32,7 +33,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
             List<ObjectId> friends = await databaseService.GetFriendIdList(loginService.UserId);
             friends.ForEach(friendId =>
             {
-                IServerCallback clientCallback = loginService.GetCallbackChannelByID(friendId);
+                ClientCallback clientCallback = loginService.GetCallbackChannelByID(friendId);
                 if(clientCallback != null)
                 {
                     clientCallback.OnFriendsUsernameChanged(loginService.UserId, username);

@@ -56,7 +56,9 @@ namespace VoIPApp.Modules.Options.ViewModels
             InputDevices = new ObservableCollection<string>(audioStreamingService.GetInputDevice());
             OutputDevices = new ObservableCollection<string>(audioStreamingService.GetOutputDevice());
 
-            StatusStrings = new List<string>(Enum.GetNames(typeof(Status)));
+            List<string> statuses = new List<string>(Enum.GetNames(typeof(Status)));
+            statuses.Remove(statuses.Where(status => status.Equals(Status.Web.ToString())).First());
+            StatusStrings = statuses;
         }
 
         public List<string> StatusStrings { get; private set; }

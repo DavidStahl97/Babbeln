@@ -56,13 +56,16 @@
                     x:Name="ProfileIconContainer" 
                     MouseEnter="ProfileIconContainer_MouseEnter"
                     Margin="0,0,0,10">
-            <Image Source="{Binding ProfileIcon}" 
-                   Margin="0,0,0,10" 
-                   x:Name="ProfileImage"
-                   Width="Auto"
-                   Height="Auto"/>
+            <Ellipse Margin="0,0,0,10"
+                     Width="64"
+                     Height="64"
+                     x:Name="ProfileImage">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding ProfileIcon}"/>
+                </Ellipse.Fill>
+            </Ellipse>
             <TextBlock Visibility="Collapsed" 
-                       Text="{Binding ProfileName}" 
+                       Text="{Binding UserInfo.Username}" 
                        x:Name="ProfileName" 
                        HorizontalAlignment="Center"
                        Foreground="Gray"

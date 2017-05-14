@@ -33,7 +33,11 @@ namespace VoIPApp.Modules.Options.ViewModels
 
         private readonly DelegateCommand<object> statusSelectionChanged;
 
+        private readonly DelegateCommand<object> accountInfoSendCommand;
+
         private readonly ServerServiceProxy serverService;
+
+        private bool changedUsername;
 
         /// <summary>
         /// creates a new instance of the <see cref="OptionsViewModel"/> class
@@ -47,6 +51,7 @@ namespace VoIPApp.Modules.Options.ViewModels
             this.inputDeviceSelectionChanged = new DelegateCommand<object>(this.OnInputDeviceSelectionChanged);
             this.outputDeviceSelectionChanged = new DelegateCommand<object>(this.OnOutputDeviceSelectionChanged);
             this.statusSelectionChanged = DelegateCommand<object>.FromAsyncHandler(this.OnStatusSelectionChanged);
+            this.accountInfoSendCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAccountInfoSendCommand, CanSendAccountInfo);
 
             InputDevices = new ObservableCollection<string>(audioStreamingService.GetInputDevice());
             OutputDevices = new ObservableCollection<string>(audioStreamingService.GetOutputDevice());
@@ -55,6 +60,18 @@ namespace VoIPApp.Modules.Options.ViewModels
         }
 
         public List<string> StatusStrings { get; private set; }
+
+        private string newUsername;
+        public string NewUserName
+        {
+            get { return this.newUsername; }
+            set
+            {
+                this.newUsername = value;
+                changedUsername = true;
+                accountInfoSendCommand.RaiseCanExecuteChanged();
+            }
+        }
 
         /// <summary>
         /// collection of the input devices
@@ -95,6 +112,11 @@ namespace VoIPApp.Modules.Options.ViewModels
             get { return statusSelectionChanged; }
         }
 
+        public ICommand AccountInfoSendCommand
+        {
+            get { return accountInfoSendCommand; }
+        }
+
         /// <summary>
         /// sets the new output device in the <see cref="audioStreamingService"/> when changed
         /// </summary>
@@ -126,6 +148,19 @@ namespace VoIPApp.Modules.Options.ViewModels
             string selectedStatus = GetSelectedStringFromEventArgs(arg as SelectionChangedEventArgs);
             Status status = (Status)Enum.Parse(typeof(Status), selectedStatus);
             await serverService.ServerService.ChangeStatusAsync(status);
+        }
+
+        private async Task OnAccountInfoSendCommand(object arg)
+        {
+            serverService.UserInfo.Username = NewUserName;
+            await serverService.ServerService.ChangeUsernameAsync(NewUserName);
+            changedUsername = false;
+            accountInfoSendCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanSendAccountInfo(object arg)
+        {
+            return !string.IsNullOrWhiteSpace(newUsername) && changedUsername && !newUsername.Equals(serverService.UserInfo.Username);
         }
 
         /// <summary>

@@ -45,6 +45,9 @@ namespace VoIPServer.ServerServiceLibrary.DataContract
 
         [OperationContract(IsOneWay = true)]
         Task ChangeUsername(string username);
+
+        [OperationContract(IsOneWay = true)]
+        Task ChangePassword(string password);
     }
 
     public interface IServerCallback

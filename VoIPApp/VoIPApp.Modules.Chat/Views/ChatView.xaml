@@ -202,7 +202,14 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Image Source="{Binding Path=Icon, Converter={StaticResource NullImageConverter}}" Width="50" Height="50" Margin="10" Grid.Column="0"/>
+                                    <Ellipse Width="50" 
+                                             Height="50" 
+                                             Margin="10"
+                                             Grid.Column="0">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource="{Binding Path=Icon, Converter={StaticResource NullImageConverter}}"/>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
                                     <Grid Grid.Column="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>

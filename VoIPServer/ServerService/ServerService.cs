@@ -143,6 +143,11 @@ namespace VoIPServer.ServerServiceLibrary
             await accountService.ChangeUsername(username);
         }
 
+        public async Task ChangePassword(string password)
+        {
+            await accountService.ChangePassword(password);
+        }
+
         public async Task SendMessageToServer(System.ServiceModel.Channels.Message msg)
         {
             if(msg.IsEmpty)

@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -30,6 +31,8 @@ namespace VoIPApp.Views
         /// true when the animation is finished
         /// </summary>
         private bool animFinished = true;
+
+        private TimeSpan AnimationDuration = new TimeSpan(0, 0, 0, 0, 200);
 
         /// <summary>
         /// size of the profile picture when the <see cref="HamburgerMenu"/> is opened
@@ -73,11 +76,20 @@ namespace VoIPApp.Views
                 {
                     From = new GridLength(PictureSizeSmall, GridUnitType.Pixel),
                     To = new GridLength(PictureSizeBig, GridUnitType.Pixel),
-                    Duration = new TimeSpan(0, 0, 0, 0, 200)
+                    Duration = AnimationDuration
+                };
+
+                DoubleAnimation doubleAnim = new DoubleAnimation
+                {
+                    From = PictureSizeSmall,
+                    To = PictureSizeBig,
+                    Duration = AnimationDuration 
                 };
 
                 gridAnim.Completed += animationCompleted;
                 MainGrid.ColumnDefinitions[0].BeginAnimation(ColumnDefinition.WidthProperty, gridAnim);
+                ProfileImage.BeginAnimation(Ellipse.HeightProperty, doubleAnim);
+                ProfileImage.BeginAnimation(Ellipse.WidthProperty, doubleAnim);
 
                 ProfileName.Visibility = Visibility.Visible;
             }
@@ -109,11 +121,20 @@ namespace VoIPApp.Views
                 {
                     From = new GridLength(PictureSizeBig, GridUnitType.Pixel),
                     To = new GridLength(PictureSizeSmall, GridUnitType.Pixel),
-                    Duration = new TimeSpan(0, 0, 0, 0, 200)
+                    Duration = AnimationDuration
+                };
+
+                DoubleAnimation doubleAnim = new DoubleAnimation
+                {
+                    From = PictureSizeBig,
+                    To = PictureSizeSmall,
+                    Duration = AnimationDuration
                 };
 
                 gridAnim.Completed += animationCompleted;
                 MainGrid.ColumnDefinitions[0].BeginAnimation(ColumnDefinition.WidthProperty, gridAnim);
+                ProfileImage.BeginAnimation(Ellipse.HeightProperty, doubleAnim);
+                ProfileImage.BeginAnimation(Ellipse.WidthProperty, doubleAnim);
 
                 ProfileName.Visibility = Visibility.Collapsed;
             }

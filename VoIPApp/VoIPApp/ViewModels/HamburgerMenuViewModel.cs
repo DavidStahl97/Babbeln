@@ -19,10 +19,6 @@ namespace VoIPApp.ViewModels
         /// bitmap profile image
         /// </summary>
         private BitmapImage profileIcon;
-        /// <summary>
-        /// profile name of the user
-        /// </summary>
-        private AccountDetails accountDetails;
 
         /// <summary>
         /// creates a new instance of the <see cref="HamburgerMenuViewModel"/> class. Initializes the <see cref="profileIcon"/> and <see cref="profileName"/>
@@ -30,7 +26,7 @@ namespace VoIPApp.ViewModels
         public HamburgerMenuViewModel(ServerServiceProxy serverService)
         {
             profileIcon = new BitmapImage(new Uri("pack://application:,,,/Assets/profile_high.jpg"));
-            accountDetails = serverService.UserInfo;
+            UserInfo = serverService.UserInfo;
         }
 
         /// <summary>
@@ -42,17 +38,6 @@ namespace VoIPApp.ViewModels
             set { SetProperty(ref this.profileIcon, value); }
         }
 
-        /// <summary>
-        /// bindable property for <see cref="profileName"/>
-        /// </summary>
-        public string ProfileName
-        {
-            get { return this.accountDetails.Username; }
-            set {
-                    string username = accountDetails.Username;
-                    SetProperty(ref username, value);
-                }
-        }
-
+        public AccountDetails UserInfo { get; set; }
     }
 }

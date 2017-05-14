@@ -17,7 +17,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel Margin="25">
+    <StackPanel Margin="25"
+                Orientation="Vertical">
         <!--Audio section-->
         <Expander Header="Audio"
                   Template="{StaticResource StretchExpander}"
@@ -68,7 +69,7 @@
                     </i:Interaction.Triggers>
                 </ComboBox>
 
-                <TextBlock Text="Wiedergabelautstärke"
+                <TextBlock Text="Wiedergabelautstaerke"
                            Grid.Column="0"
                            Grid.Row="3"
                            Style="{StaticResource NormalText}"
@@ -82,13 +83,16 @@
 
         <!--Profile section-->
         <Expander Header="Profile"
-                  Template="{StaticResource StretchExpander}">
+                  Template="{StaticResource StretchExpander}"
+                  Margin="0,0,0,15">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
@@ -100,10 +104,41 @@
                 <ComboBox Style="{StaticResource ComboBoxFlatStyle}"
                           ItemsSource="{Binding StatusStrings}"
                           Grid.Column="1"
-                          Grid.Row="0"/>
+                          Grid.Row="0"
+                          Margin="0,0,0,10">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <common:InteractiveCommand Command="{Binding StatusSelectionChanged}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
+
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Style="{StaticResource NormalText}"
+                           Text="Namen aenderen"/>
+
+                <controls:DefaultTextBox DefaultText="Nutzername"
+                                         Grid.Column="1"
+                                         Grid.Row="1"
+                                         InputText="{Binding NewUserName, Mode=TwoWay}"
+                                         BorderThickness="1"
+                                         Margin="0,0,0,10"/>
+
+                <Button Style="{StaticResource TextButtonStyle}"
+                        Content="Account Aenderungen senden"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        Command="{Binding AccountInfoSendCommand}"
+                        Margin="0,0,0,10"/>
+
             </Grid>
         </Expander>
         <!--End of profile section-->
 
+        <Expander Header="Style"
+                  Template="{StaticResource StretchExpander}">
+            
+        </Expander>
     </StackPanel>
 </UserControl> 

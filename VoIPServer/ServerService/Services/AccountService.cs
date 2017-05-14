@@ -22,6 +22,11 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.loginService = loginService;
         }
 
+        public async Task ChangePassword(string password)
+        {
+
+        }
+
         public async Task ChangeUsername(string username)
         {
             List<ObjectId> friends = await databaseService.GetFriendIdList(loginService.UserId);

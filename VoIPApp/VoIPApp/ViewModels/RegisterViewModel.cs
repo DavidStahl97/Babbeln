@@ -5,6 +5,7 @@ using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,7 +15,12 @@ namespace VoIPApp.ViewModels
 {
     public class RegisterViewModel : BindableBase
     {
-        private string userName;
+
+        public string RegisterAddress
+        {
+            get { return ConfigurationManager.AppSettings["WebsiteRegister"]; }
+        }
+        /*private string userName;
         private string message;
         private string email;
 
@@ -39,12 +45,12 @@ namespace VoIPApp.ViewModels
             this.cancelCommand = new DelegateCommand<object>(OnCancel);
             this.showLoginDialogRequest = new InteractionRequest<LoginDialogViewModel>();
         }
-
+        */
         public string ViewName
         {
             get { return "Registrieren"; }
         }
-
+        /*
         public string UserName
         {
             get { return this.userName; }
@@ -176,6 +182,7 @@ namespace VoIPApp.ViewModels
         private void OnCancel(object obj)
         {
             eventAggregator.GetEvent<CloseStartDialogEvent>().Publish(false);
-        }
+        }*/
     }
+    
 }

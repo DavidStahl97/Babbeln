@@ -6,6 +6,7 @@ using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Regions;
 using SharedCode.Models;
 using SharedCode.Services;
 using System;
@@ -39,33 +40,41 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private readonly DelegateCommand<object> windowLoadedCommand;
         private readonly DelegateCommand<object> acceptFriendshipCommand;
         private readonly DelegateCommand<object> declineFriendshipCommand;
+        private readonly DelegateCommand<object> navigateToProfileCommand;
+        private readonly DelegateCommand<object> deleteFriendCommand;
         private readonly InteractionRequest<VoiceChatViewModel> showVoiceChatRequest;
         private readonly IUnityContainer container;
+        private readonly IRegionManager regionManager;
         private ObjectId userId;
         private User currentFriend;
         private bool calling;
         private bool populatedChatView;
         private bool showFriendshipInfo;
         private bool showFriendshipRequest;
+        private string username;
 
-        public ChatViewModel(FriendsService friendsService, MessageService messageService, IUnityContainer container, EventAggregator eventAggregator)
+
+        public ChatViewModel(FriendsService friendsService, MessageService messageService, IUnityContainer container, EventAggregator eventAggregator, IRegionManager regionManager, ServerServiceProxy serverServie)
         {
-            if(friendsService == null)
+            if (friendsService == null)
             {
                 throw new ArgumentNullException("chatService");
             }
 
-            if(container == null)
+            if (container == null)
             {
                 throw new ArgumentNullException("container");
             }
 
-            if(messageService == null)
+            if (messageService == null)
             {
                 throw new ArgumentNullException("messageService");
             }
 
+            username = serverServie.UserInfo.Username;
+
             this.container = container;
+            this.regionManager = regionManager;
             this.friendsService = friendsService;
             this.messageService = messageService;
 
@@ -81,6 +90,8 @@ namespace VoIPApp.Modules.Chat.ViewModels
             this.acceptFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnAcceptFriendship);
             this.declineFriendshipCommand = DelegateCommand<object>.FromAsyncHandler(this.OnDeclineFriendship);
             this.showVoiceChatRequest = new InteractionRequest<VoiceChatViewModel>();
+            this.navigateToProfileCommand = new DelegateCommand<object>(OnNavigateToProfile, CanNavigateToProfile);
+            this.deleteFriendCommand = DelegateCommand<object>.FromAsyncHandler(OnDeleteFriend, CanDeleteFriend);
 
             FriendsCollectionView.CurrentChanged += SelectedFriendChanged;
 
@@ -115,6 +126,11 @@ namespace VoIPApp.Modules.Chat.ViewModels
         public ObservableCollection<Message> Messages
         {
             get { return this.messages; }
+        }
+
+        public ICommand DeleteFriendCommand
+        {
+            get { return this.deleteFriendCommand; }
         }
 
         public ICommand SendCommand
@@ -157,6 +173,11 @@ namespace VoIPApp.Modules.Chat.ViewModels
             get { return this.declineFriendshipCommand; }
         }
 
+        public ICommand NavigateToProfileCommand
+        {
+            get { return this.navigateToProfileCommand; }
+        }
+
         public IInteractionRequest ShowVoiceChatRequest
         {
             get { return this.showVoiceChatRequest; }
@@ -169,7 +190,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private async Task OnWindowLoaded(object arg)
         {
-            if(!populatedChatView)
+            if (!populatedChatView)
             {
                 await friendsService.PopulateFriendList();
                 await messageService.PopulateMessageDictionary();
@@ -182,20 +203,23 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private async Task OnAddFriend(object obj)
         {
             string friendName = obj as string;
-            bool successfull = await friendsService.SendFriendRequest(friendName);
-            FriendsCollectionView.MoveCurrentToLast();
+            if(!friendName.Equals(username))
+            {
+                bool successfull = await friendsService.SendFriendRequest(friendName);
+                FriendsCollectionView.MoveCurrentToLast();
+            }
         }
 
 
         private void OnMessageReceived(Message obj)
-        {            
-            if(currentFriend != null && currentFriend._id.Equals(obj.Sender))
+        {
+            if (currentFriend != null && currentFriend._id.Equals(obj.Sender))
             {
                 Messages.Add(obj);
             }
         }
 
-        public ICollectionView FriendsCollectionView 
+        public ICollectionView FriendsCollectionView
         {
             get { return this.friends; }
         }
@@ -225,13 +249,13 @@ namespace VoIPApp.Modules.Chat.ViewModels
             Messages.Clear();
 
             currentFriend = (FriendsCollectionView.CurrentItem as User);
-            if(currentFriend != null)
+            if (currentFriend != null)
             {
                 Messages.AddRange(messageService.ReadMessages(currentFriend._id));
 
-                if(!currentFriend.Friendship.Accepted)
+                if (!currentFriend.Friendship.Accepted)
                 {
-                    if(currentFriend.Friendship.Receiver.Equals(userId))
+                    if (currentFriend.Friendship.Receiver.Equals(userId))
                     {
                         ShowFriendshipRequest = true;
                         ShowFriendshipInfo = false;
@@ -248,15 +272,19 @@ namespace VoIPApp.Modules.Chat.ViewModels
                     ShowFriendshipInfo = false;
                 }
             }
+            else
+            {
+                ShowFriendshipRequest = false;
+                ShowFriendshipInfo = false;
+            }
 
-            callCommand.RaiseCanExecuteChanged();
-            sendCommand.RaiseCanExecuteChanged();
+            RaiseCanExecuteFriendNavigationButtons();
         }
 
         private async Task OnSend(object arg)
         {
             string userMessage = arg as string;
-            Message message = new Message { Text = userMessage, Receiver = currentFriend._id, Date = DateTime.Now, Sender = userId };
+            Message message = new Message { Text = userMessage, Receiver = currentFriend._id, Hour = String.Format("{0:00}", DateTime.Now.Hour), Minute = String.Format("{0:00}", DateTime.Now.Minute), Sender = userId };
             await messageService.SendMessage(message);
             Messages.Add(message);
         }
@@ -267,9 +295,9 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
             if (!string.IsNullOrEmpty(userMessage))
             {
-                if(currentFriend != null)
+                if (currentFriend != null)
                 {
-                    if(currentFriend.Friendship.Accepted)
+                    if (currentFriend.Friendship.Accepted)
                     {
                         return true;
                     }
@@ -281,15 +309,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private bool CanCall(object arg)
         {
-            User currentFriend = FriendsCollectionView.CurrentItem as User;
-            if(currentFriend != null)
-            {
-                if (currentFriend.FriendStatus == Status.Online && !calling)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return IsUserSelected() && currentFriend.FriendStatus == Status.Online && !calling && currentFriend.Friendship.Accepted;
         }
 
         private void OnCall(object obj)
@@ -308,7 +328,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private void OnIncomingCall(ObjectId obj)
         {
             User caller = friendsService.GetFriendById(obj);
-            if(caller != null)
+            if (caller != null)
             {
                 VoiceChatViewModel viewModel = this.container.Resolve<VoiceChatViewModel>();
                 viewModel.Title = "Anruf von " + caller.Name;
@@ -317,7 +337,7 @@ namespace VoIPApp.Modules.Chat.ViewModels
                 viewModel.CanAccept = true;
                 viewModel.CallAccepted = true;
 
-                OpenCallDialog(viewModel); 
+                OpenCallDialog(viewModel);
             }
         }
 
@@ -338,17 +358,20 @@ namespace VoIPApp.Modules.Chat.ViewModels
         private void OnFriendStatusChanged(FriendStatusChangedEventArgs obj)
         {
             User f = friendsService.GetFriendById(obj.FriendId);
-            f.FriendStatus = obj.Status;
-
-            if(currentFriend != null && f._id.Equals(currentFriend._id))
+            if(f != null)
             {
-                callCommand.RaiseCanExecuteChanged();
+                f.FriendStatus = obj.Status;
+
+                if (currentFriend != null && f._id.Equals(currentFriend._id))
+                {
+                    callCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
         private async Task OnDeclineFriendship(object obj)
         {
-            if(currentFriend != null)
+            if (currentFriend != null)
             {
                 await friendsService.AnswerFriendshipRequest(currentFriend._id, false);
                 ShowFriendshipRequest = false;
@@ -368,17 +391,52 @@ namespace VoIPApp.Modules.Chat.ViewModels
 
         private void OnFriendshipRequestAnswered(FriendshipRequestAnsweredEventArgs obj)
         {
-            if(obj.Accepted)
+            if (obj.Accepted)
             {
-                if(currentFriend != null)
+                if (currentFriend != null)
                 {
-                    if(currentFriend._id.Equals(obj.FriendId))
+                    if (currentFriend._id.Equals(obj.FriendId))
                     {
                         ShowFriendshipInfo = false;
                         sendCommand.RaiseCanExecuteChanged();
                     }
                 }
-            } 
+            }
+        }
+
+        private bool CanNavigateToProfile(object arg)
+        {
+            return IsUserSelected();
+        }
+
+        private void OnNavigateToProfile(object obj)
+        {
+            NavigationParameters navigationParameters = new NavigationParameters();
+            navigationParameters.Add("username", currentFriend.Name);
+            regionManager.RequestNavigate(RegionNames.MainContentRegion, NavigationURIs.ProfileViewUri, navigationParameters);
+        }
+
+        private bool CanDeleteFriend(object arg)
+        {
+            return IsUserSelected() && currentFriend.Friendship.Accepted;
+        }
+
+        private async Task OnDeleteFriend(object arg)
+        {
+            //server
+        }
+
+        private void RaiseCanExecuteFriendNavigationButtons()
+        {
+            callCommand.RaiseCanExecuteChanged();
+            sendCommand.RaiseCanExecuteChanged();
+            navigateToProfileCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool IsUserSelected()
+        {
+            User currentFriend = FriendsCollectionView.CurrentItem as User;
+            return currentFriend != null;
         }
     }
 }

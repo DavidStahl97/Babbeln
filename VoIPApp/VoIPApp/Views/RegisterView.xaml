@@ -14,6 +14,12 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <TextBlock Margin="20" Style="{StaticResource NormalText}" TextWrapping="Wrap">           
+    <Hyperlink NavigateUri="{Binding RegisterAddress}">
+        Registrieren Sie sich auf unserer Website
+    </Hyperlink>
+    </TextBlock>
+    <!--
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ShowLoginDialogRequest}">
             <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
@@ -111,5 +117,5 @@
                     Margin="5,0,0,0"
                     Padding="10"/>
         </StackPanel>
-    </Grid>
+    </Grid>-->
 </UserControl>

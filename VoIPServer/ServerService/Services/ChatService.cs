@@ -26,8 +26,17 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task SendMessage(JToken data)
         {
-            SharedCode.Models.Message textMessage = Newtonsoft.Json.JsonConvert.DeserializeObject<SharedCode.Models.Message>(data.ToString());
-            await SendMessage(textMessage);
+            ObjectId receiver = ObjectId.Parse(data["to"].ToString());
+            string message = data["message"].ToString();
+
+            Message msg = new Message { Sender = loginService.UserId, Receiver = receiver, Hour = String.Format("{0:00}",DateTime.Now.Hour), Minute = String.Format("{0:00}", DateTime.Now.Minute), Read = false, Text =  message};
+            await dataBaseService.MessageCollection.InsertOneAsync(msg);
+
+            ClientCallback receiverCallback = loginService.GetCallbackChannelByID(msg.Receiver);
+            if (receiverCallback != null)
+            {
+                receiverCallback.OnMessageReceived(msg);
+            }
         }
 
         public async Task SendMessage(Message msg)

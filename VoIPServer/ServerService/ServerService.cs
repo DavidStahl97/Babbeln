@@ -10,6 +10,8 @@ using VoIPServer.ServerServiceLibrary.Services;
 using Newtonsoft.Json.Linq;
 using VoIPServer.ServerServiceLibrary.DataContract;
 using System.Configuration;
+using System.ServiceModel.Channels;
+using System.Net.WebSockets;
 
 namespace VoIPServer.ServerServiceLibrary
 {
@@ -146,7 +148,7 @@ namespace VoIPServer.ServerServiceLibrary
             byte[] body = msg.GetBody<byte[]>();
             string clientMessage = Encoding.UTF8.GetString(body);
 
-            JObject jsonMessage = JObject.Parse(clientMessage);
+           JObject jsonMessage = JObject.Parse(clientMessage);
             string type = jsonMessage["type"].ToString();
 
             JToken data = jsonMessage["data"];
@@ -158,20 +160,16 @@ namespace VoIPServer.ServerServiceLibrary
                     break;
 
                 case FriendshipRequest:
-                    friendService.AddFriend(data);
+                    await friendService.AddFriend(data);
                     break;
 
                 case FriendshipAccept:
-                    //TO-DO implement Friendsipaccept
+                    await friendService.ReplyToFriendRequest(data);
                     break;
 
                 case Login:
                     IWebsocketCallback webCallback = OperationContext.Current.GetCallbackChannel<IWebsocketCallback>();
                     await loginService.Subscribe(data, webCallback);
-                    break;
-
-                case Logout:
-                    await loginService.Unsubscribe(data);
                     break;
 
                 default:

@@ -9,14 +9,14 @@ namespace VoIPApp.Views
     /// <summary>
     /// Interaction logic for RegisterView
     /// </summary>
-    public partial class RegisterView : UserControl, IHavePassword
+    public partial class RegisterView : UserControl
     {
         public RegisterView()
         {
             InitializeComponent();
         }
 
-        public SecureString ConfirmationPassword
+        /*public SecureString ConfirmationPassword
         {
             get { return this.PasswordBox.SecurePassword; }
         }
@@ -24,6 +24,6 @@ namespace VoIPApp.Views
         public SecureString Password
         {
             get { return this.ConfirmationPasswordBox.SecurePassword; }
-        }
+        }*/
     }
 }

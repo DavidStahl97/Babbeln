@@ -24,11 +24,11 @@ namespace SharedCode.Services
 
         public void Connect()
         {
-            this.database = client.GetDatabase("test");
+            this.database = client.GetDatabase("babbeln");
             MessageCollection = database.GetCollection<Message>("messages");
-            UserCollection = database.GetCollection<User>("users");
+            UserCollection = database.GetCollection<User>("user");
             FriendshipCollection = database.GetCollection<Friendship>("friends");
-            UserBsonCollection = database.GetCollection<BsonDocument>("users");
+            UserBsonCollection = database.GetCollection<BsonDocument>("user");
         }
 
         public async Task<ObjectId> GetUserId(string userName)

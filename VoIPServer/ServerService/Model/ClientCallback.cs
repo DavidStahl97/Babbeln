@@ -8,6 +8,7 @@ using SharedCode.Models;
 using VoIPServer.ServerServiceLibrary.DataContract;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Net.WebSockets;
 
 namespace ServerServiceLibrary.Model
 {
@@ -15,18 +16,15 @@ namespace ServerServiceLibrary.Model
     {
         private readonly IServerCallback desktopCallback;
         private readonly IWebsocketCallback websocketCallback;
-        private ObjectId userId;
 
         public ClientCallback(IServerCallback serverCallback)
         {
             this.desktopCallback = serverCallback;
             this.websocketCallback = null;
-            this.userId = ObjectId.Empty;
         }
 
-        public ClientCallback(IWebsocketCallback websocketCallback, ObjectId userId)
+        public ClientCallback(IWebsocketCallback websocketCallback)
         {
-            this.userId = userId;
             this.desktopCallback = null;
             this.websocketCallback = websocketCallback;
         }
@@ -67,33 +65,29 @@ namespace ServerServiceLibrary.Model
             }
         }
 
-        public void OnFriendshipRequestAnswered(ObjectId friendId, bool accept)
+        public void OnFriendshipRequestAnswered(ObjectId userId, bool accept)
         {
             if(websocketCallback == null)
             {
-                desktopCallback.OnFriendshipRequestAnswered(friendId, accept);
+                desktopCallback.OnFriendshipRequestAnswered(userId, accept);
             }
             else
             {
-                //TO-DO implement friendsip anwsered for webbased clients
+                string json = "{'type':'message','data': {'from':'" + userId.ToString() + "' 'accept':'" + accept + "'}";
+                websocketCallback.OnMessageReceived(CreateMessage(json));
             }
         }
 
-        public void OnFriendshipRequested(ObjectId friendId)
+        public void OnFriendshipRequested(ObjectId userId)
         {
             if(websocketCallback == null)
             {
-                desktopCallback.OnFriendshipRequested(friendId);
+                desktopCallback.OnFriendshipRequested(userId);
             }
             else
             {
-                string jsonAccept = String.Format(@"'type':'accept',
-                                                'data': {
-                                                    'from':'{0}'
-                                                    'to':'{1}'
-                                                    'date'{2}'",
-                                        userId.ToString(), friendId.ToString(), string.Empty);
-                websocketCallback.OnMessageReceived(System.ServiceModel.Channels.Message.CreateMessage(MessageVersion.Default, jsonAccept));
+                string json = "{'type':'accept','data': {'from':'" + userId.ToString() + "'}";
+                websocketCallback.OnMessageReceived(CreateMessage(json));
             }
         }
 
@@ -129,14 +123,23 @@ namespace ServerServiceLibrary.Model
             }
             else
             {
-                string jsonMessage = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
-                websocketCallback.OnMessageReceived(System.ServiceModel.Channels.Message.CreateMessage(MessageVersion.Default, jsonMessage));
+                string json = "{'type':'message','data': {'to':'" + msg.Sender + "' 'hour':" + msg.Hour + "' 'minute':" + msg.Minute + "' 'message':'" + msg.Text + "'}";
+                websocketCallback.OnMessageReceived(CreateMessage(json));
             }
         }
 
-        public IServerCallback DesktopCallback
+        private System.ServiceModel.Channels.Message CreateMessage(string msgText)
         {
-            get { return desktopCallback; }
+            System.ServiceModel.Channels.Message msg = ByteStreamMessage.CreateMessage(
+                new ArraySegment<byte>(Encoding.UTF8.GetBytes(msgText)));
+
+            msg.Properties["WebSocketMessageProperty"] =
+                new WebSocketMessageProperty
+                {
+                    MessageType = WebSocketMessageType.Text
+                };
+
+            return msg;
         }
     }
 }

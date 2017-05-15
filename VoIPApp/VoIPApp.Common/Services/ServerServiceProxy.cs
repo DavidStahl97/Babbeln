@@ -118,7 +118,7 @@ namespace VoIPApp.Common.Services
 
         private string GetLocalIPAdress()
         {
-            string localIP = string.Empty;
+            /*string localIP = string.Empty;
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
                 socket.Connect("10.0.2.4", 65530);
@@ -126,7 +126,16 @@ namespace VoIPApp.Common.Services
                 localIP = endPoint.Address.ToString();
             }
 
-            return localIP;
+            return localIP;*/
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
         }
 
         public AccountDetails UserInfo

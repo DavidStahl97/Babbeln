@@ -33,14 +33,6 @@ namespace SharedCode.Models
         [JsonProperty("to")]
         public ObjectId Receiver { get; set; }
 
-        /// <summary>
-        /// point of time when message was sent
-        /// </summary>
-        [DataMember]
-        [BsonElement("date")]
-        [JsonProperty("date")]
-        public DateTime Date { get; set; }
-
         [DataMember]
         [BsonElement("sender")]
         [JsonProperty("from")]
@@ -52,5 +44,13 @@ namespace SharedCode.Models
 
         [BsonElement("read")]
         public bool Read { get; set; }
+
+        [BsonElement("hour")]
+        [DataMember]
+        public string Hour { get; set; }
+
+        [BsonElement("minute")]
+        [DataMember]
+        public string Minute { get; set; }
     }
 }

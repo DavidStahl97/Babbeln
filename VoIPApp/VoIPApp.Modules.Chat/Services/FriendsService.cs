@@ -62,16 +62,8 @@ namespace VoIPApp.Modules.Chat.Services
         public void UpdateProfilePictures()
         {
             foreach(User friend in Friends)
-            {
-                string profilePicturePath = string.Format("pack://application:,,,/Images/{0}.jpg", friend._id.ToString());
-                if (File.Exists(profilePicturePath))
-                {
-                    friend.Icon = profilePicturePath;
-                }
-                else
-                {
-                    friend.Icon = "pack://application:,,,/Assets/profile_high.jpg";
-                }
+            {             
+                friend.Icon = "pack://application:,,,/Assets/profile_high.jpg";
             }
         }
 
@@ -135,6 +127,11 @@ namespace VoIPApp.Modules.Chat.Services
             }
 
             return null;
+        }
+
+        public async Task DeleteFriend(ObjectId id)
+        {
+            //serverService.ServerService.
         }
 
         public async Task AnswerFriendshipRequest(ObjectId friendId, bool accept)

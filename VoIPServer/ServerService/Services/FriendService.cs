@@ -25,10 +25,17 @@ namespace VoIPServer.ServerServiceLibrary.Services
             this.loginService = loginService;
         }
 
-        public void AddFriend(JToken data)
+        public async Task AddFriend(JToken data)
         {
             ObjectId id = ObjectId.Parse(data["to"].ToString());
-            SendRequest(id);
+            Friendship f = new Friendship
+            {
+                Receiver = id,
+                Requester = loginService.UserId,
+                Date = DateTime.Now,
+                Accepted = false
+            };
+            await SendRequest(id, f);
         }
 
         public async Task<User> AddFriendByName(string friendName)
@@ -47,12 +54,10 @@ namespace VoIPServer.ServerServiceLibrary.Services
                     Date = DateTime.Now,
                     Accepted = false
                 };
-        
-                await dataBaseService.FriendshipCollection.InsertOneAsync(friendship);
 
                 friend.Friendship = friendship;
 
-                SendRequest(friend._id);
+                await SendRequest(friend._id, friendship);
 
                 return friend;
             }
@@ -60,13 +65,21 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return null;
         }
 
-        private void SendRequest(ObjectId friendId)
+        private async Task SendRequest(ObjectId friendId, Friendship friendship)
         {
+            await dataBaseService.FriendshipCollection.InsertOneAsync(friendship);
             ClientCallback friendCallback = loginService.GetCallbackChannelByID(friendId);
             if (friendCallback != null)
             {
                 friendCallback.OnFriendshipRequested(loginService.UserId);
             }
+        }
+
+        public async Task ReplyToFriendRequest(JToken data)
+        {
+            ObjectId friendId = ObjectId.Parse(data["to"].ToString());
+            bool accept = Boolean.Parse(data["accept"].ToString());
+            await ReplyToFriendRequest(friendId, accept);
         }
 
         public async Task ReplyToFriendRequest(ObjectId friendId, bool accept)

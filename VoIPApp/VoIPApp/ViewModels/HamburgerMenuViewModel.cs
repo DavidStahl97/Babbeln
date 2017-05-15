@@ -25,6 +25,7 @@ namespace VoIPApp.ViewModels
         /// </summary>
         public HamburgerMenuViewModel(ServerServiceProxy serverService)
         {
+
             profileIcon = new BitmapImage(new Uri("pack://application:,,,/Assets/profile_high.jpg"));
             UserInfo = serverService.UserInfo;
         }

@@ -82,8 +82,8 @@
                                            HorizontalAlignment="Right">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat=" {0}:{1}">
-                                                    <Binding Path="Date.Hour"/>
-                                                    <Binding Path="Date.Minute"/>
+                                                    <Binding Path="Hour"/>
+                                                    <Binding Path="Minute"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
@@ -270,15 +270,8 @@
                 <Label Content="{Binding Path=FriendsCollectionView.CurrentItem.Name}" VerticalAlignment="Center" Margin="20,0,0,0" Grid.Row="0" Foreground="Gray" FontSize="14"/>
                 <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,15,0,15" Orientation="Horizontal" Grid.Row="1">
                     <Button x:Name="CallButton" Content="&#xE13A;" Command="{Binding Path=CallCommand}" Style="{StaticResource IconButtonStyle}" />
-                    <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource IconButtonStyle}" />
-                    <Button x:Name="MenuButton" Content="&#xE10C;" Style="{StaticResource IconButtonStyle}" Click="MenuButton_Click">
-                        <Button.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Löschen"/>
-                                <MenuItem Header="Profil"/>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
+                    <Button x:Name="ContactButton" Content="&#xE13D;" Style="{StaticResource IconButtonStyle}" Command="{Binding NavigateToProfileCommand}"/>
+                    <Button x:Name="MenuButton" Content="&#xE107;" Style="{StaticResource IconButtonStyle}" Command="{Binding DeleteFriendCommand}"/>
                 </StackPanel>
             </Grid>
 

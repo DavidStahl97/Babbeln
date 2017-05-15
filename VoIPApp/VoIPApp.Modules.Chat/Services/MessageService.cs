@@ -42,11 +42,20 @@ namespace VoIPApp.Modules.Chat.Services
 
         private void OnMessageReceived(Message obj)
         {
-            ObservableCollection<Message> msgList;
-            if(messages.TryGetValue(obj.Sender, out msgList))
+            ObservableCollection<Message> msgList = null;
+            if(!messages.TryGetValue(obj.Sender, out msgList))
+            {
+                if(friendsService.GetFriendById(obj.Sender) != null)
+                {
+                    msgList = new ObservableCollection<Message>();
+                    messages.Add(obj.Sender, msgList);
+                }
+            }
+
+            if(msgList != null)
             {
                 msgList.Add(obj);
-                if(obj.Sender.Equals(lastMessagesRead))
+                if (obj.Sender.Equals(lastMessagesRead))
                 {
                     ChangeMessageToRead(obj);
                 }
@@ -59,6 +68,12 @@ namespace VoIPApp.Modules.Chat.Services
 
         public async Task SendMessage(Message msg)
         {
+            ObservableCollection<Message> msgs = null;
+            messages.TryGetValue(msg.Receiver, out msgs);
+            if (msgs != null)
+            {
+                msgs.Add(msg);
+            }
             await serverServiceProxy.ServerService.SendMessageAsync(msg);
         }
 
@@ -68,6 +83,7 @@ namespace VoIPApp.Modules.Chat.Services
             messages.TryGetValue(_id, out msg);
             if(msg == null)
             {
+                lastMessagesRead = _id;
                 return new ObservableCollection<Message>();
             }
 
@@ -102,7 +118,7 @@ namespace VoIPApp.Modules.Chat.Services
                  ObservableCollection<Message> msgList;
                  if (messages.TryGetValue(friendId, out msgList))
                  {
-                    if(!m.Read)
+                    if(!m.Read && m.Receiver.Equals(userId))
                     {
                         friendsService.GetFriendById(friendId).UnreadMessages++;
                     }

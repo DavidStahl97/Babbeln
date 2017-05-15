@@ -9,7 +9,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.ServiceModel;
+using System.Text;
 using System.Threading.Tasks;
 using VoIPServer.ServerServiceLibrary.DataContract;
 
@@ -32,18 +34,16 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
         public async Task Subscribe(JToken data, IWebsocketCallback webcallback)
         {
-            ObjectId id = ObjectId.Parse(data["id"].ToString());
-            ClientCallback callback = new ClientCallback(webcallback, id);
-            subscribers.TryAdd(id, callback);
-            await ChangeStatus(Status.Web, id);
-        }
+            userId = ObjectId.Parse(data["id"].ToString());
+            ClientCallback callback = new ClientCallback(webcallback);
+            subscribers.TryAdd(userId, callback);
+            await ChangeStatus(Status.Web);
 
-        public async Task Unsubscribe(JToken data)
-        {
-            ObjectId id = ObjectId.Parse(data["id"].ToString());
-            ClientCallback cb;
-            subscribers.TryRemove(id, out cb);
-            await ChangeStatus(Status.Offline, id);
+            ICommunicationObject obj = (ICommunicationObject)webcallback;
+            obj.Closed += async (s, e) =>
+            {
+                await Unsubscribe();
+            };
         }
 
         public async Task<Tuple<ObjectId, string>> Subscribe(string userName, string password, string ip, IServerCallback desktopCallback)
@@ -73,7 +73,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
 
                     subscribers.TryAdd(userId, callback);
 
-                    await ChangeStatus(Status.Online, userId);
+                    await ChangeStatus(Status.Online);
 
                     Console.WriteLine(userName + " successfully connected with id: " + userId.ToString());
 
@@ -94,7 +94,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 subscribers.TryRemove(userId, out cb);
                 Console.WriteLine(userId + " removed");
 
-                await ChangeStatus(Status.Offline, userId);
+                await ChangeStatus(Status.Offline);
             }
             else
             {
@@ -122,7 +122,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                 return "E-Mail schonn vergeben";
             }
 
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            string hashedPassword = CreateHash(password);
 
             BsonDocument doc = new BsonDocument
             {
@@ -144,26 +144,21 @@ namespace VoIPServer.ServerServiceLibrary.Services
             return callbackChannel;
         }
 
-        public async Task ChangeStatus(Status status, ObjectId id)
+        public async Task ChangeStatus(Status status)
         {
-            List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(id);
+            List<ObjectId> friendIds = await dataBaseService.GetFriendIdList(userId);
             foreach (ObjectId friendId in friendIds)
             {
                 ClientCallback callback = GetCallbackChannelByID(friendId);
                 if (callback != null)
                 {
-                    callback.OnFriendStatusChanged(id, status);
+                    callback.OnFriendStatusChanged(userId, status);
                 }
             }
 
-            FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", id);
+            FilterDefinition<User> filter = Builders<User>.Filter.Eq("_id", userId);
             UpdateDefinition<User> update = Builders<User>.Update.Set("status", status.ToString());
             await dataBaseService.UserCollection.UpdateOneAsync(filter, update);
-        }
-
-        public async Task ChangeStatus(Status status)
-        {
-            await ChangeStatus(status, userId);
         }
 
         public async Task<ObjectId> GetUserId(string userName, string password)
@@ -180,7 +175,7 @@ namespace VoIPServer.ServerServiceLibrary.Services
                     foreach (BsonDocument document in batch)
                     {
                         string hashedPassword = document["password"].AsString;
-                        if(BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+                        if(hashedPassword.Equals(CreateHash(password)))
                         {
                             return document["_id"].AsObjectId;
                         }
@@ -203,6 +198,21 @@ namespace VoIPServer.ServerServiceLibrary.Services
         public ObjectId UserId
         {
             get { return this.userId; }
+        }
+
+        private string CreateHash(string s)
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(s);
+            SHA256Managed hashstring = new SHA256Managed();
+            byte[] hash = hashstring.ComputeHash(bytes);
+
+            string hashString = string.Empty;
+            foreach (byte x in hash)
+            {
+                hashString += String.Format("{0:x2}", x);
+            }
+
+            return hashString;
         }
     }
 }
